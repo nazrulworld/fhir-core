@@ -1,0 +1,17 @@
+graft fhir_core
+prune tests
+prune .github
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.rst
+include LICENSE
+include README.rst
+
+exclude tox.ini
+exclude Makefile
+exclude .editorconfig
+exclude .gitmodules
+exclude pyproject.toml .flake8 .isort.cfg appveyor.yml .python-version
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

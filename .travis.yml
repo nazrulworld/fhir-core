@@ -1,0 +1,51 @@
+# Config file for automatic testing at travis-ci.org
+language: python
+jobs:
+  include:
+    - name: "Python 3.8 on Linux (dist:focal)"
+      os: linux
+      dist: focal
+      language: python
+      python: 3.8
+      env: python_version=3.8
+
+    - name: "Python 3.9 on Linux (dist:focal)"
+      os: linux
+      dist: focal
+      language: python
+      python: 3.9
+      env: python_version=3.9
+
+    - name: "Python 3.10 on Linux (dist:focal)"
+      os: linux
+      dist: focal
+      language: python
+      python: 3.10
+      env: python_version=3.10
+
+    - name: "Python 3.11-dev on Linux (dist:focal)"
+      os: linux
+      dist: focal
+      language: python
+      python: 3.11-dev
+      env: python_version=3.11-dev
+
+  allow_failures:
+    - python: 3.11-dev
+
+cache:
+  directories:
+    - eggs
+install:
+  - pip install -U pip
+  - pip install -e .[test]
+  - pip install codecov
+  - sleep 1
+script:
+  - make clean
+  - make lint
+  - mypy fhir_core
+  - black --check --verbose fhir_core
+  - pytest -s --cov=tests -s --tb=native -v --cov-report term-missing --cov-append tests
+after_success:
+  - codecov
