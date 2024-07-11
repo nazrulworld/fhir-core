@@ -1,8 +1,12 @@
-import pytest
+import decimal
 import typing
+import uuid
+import pytest
 from pydantic import BaseModel, Field
 from pydantic_core import ValidationError
+
 from fhir_core import types as fhirtypes
+
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
@@ -31,7 +35,9 @@ def test_string_type():
     assert model.name == ""
 
     class MySimpleStringModel3(BaseModel):
-        names: typing.List[fhirtypes.StringType] = Field(..., alias="names", title="My Name")
+        names: typing.List[fhirtypes.StringType] = Field(
+            ..., alias="names", title="My Name"
+        )
 
     model = MySimpleStringModel3(names=["Joe", "Bussen"])
     assert model.names[1] == "Bussen"
@@ -39,12 +45,73 @@ def test_string_type():
     with pytest.raises(ValidationError) as exc_info:
         # empty string should not be allowed
         MySimpleStringModel3(names=["Joe", None])
-    assert 'input_type=NoneType' in str(exc_info)
+    assert "input_type=NoneType" in str(exc_info)
 
     class MySimpleStringModel4(BaseModel):
-        names: typing.List[typing.Union[StringType, None]] = Field(..., alias="names", title="My Name")
+        names: typing.List[typing.Union[StringType, None]] = Field(
+            ..., alias="names", title="My Name"
+        )
 
     model = MySimpleStringModel4(names=["Joe", "", None])
     assert model.names[2] is None
 
 
+def test_bool_type():
+    """ """
+
+    class MySimpleBooleanModel(BaseModel):
+        isTrue: fhirtypes.BooleanType = Field(..., alias="isTrue", title="Is True")
+
+    assert MySimpleBooleanModel(isTrue="true").isTrue is True
+    assert MySimpleBooleanModel(isTrue="false").isTrue is False
+    assert MySimpleBooleanModel(isTrue=True).isTrue is True
+
+
+def test_code_type():
+    """ """
+
+
+def test_uuid():
+    """ """
+
+    class MySimpleUUIDModel(BaseModel):
+        myUUID: fhirtypes.UuidType = Field(..., alias="myUUID", title="UUID")
+
+    model = MySimpleUUIDModel(myUUID="8c7f56df-b047-47c4-9391-7733e00fe512")
+    assert isinstance(model.myUUID, uuid.UUID)
+    # test with short version
+    MySimpleUUIDModel(myUUID="8c7f56dfb04747c493917733e00fe512")
+    assert (
+        MySimpleUUIDModel(myUUID="8c7f56dfb04747c493917733e00fe512").myUUID
+        == model.myUUID
+    )
+
+    with pytest.raises(ValidationError) as exc_info:
+        MySimpleUUIDModel(myUUID="8c7f56dfb04747c493917733e00fe51")
+    assert "Input should be a valid UUID" in str(exc_info)
+
+
+def test_decimal_type():
+    """ """
+
+    class MySimpleDecimalModel(BaseModel):
+        point: fhirtypes.DecimalType = Field(
+            ..., alias="point", title="My Decimal Point"
+        )
+
+    model = MySimpleDecimalModel(point="0.14009")
+    assert isinstance(model.point, decimal.Decimal)
+
+
+def test_date_type():
+    """ """
+
+    class MySimpleDateModel(BaseModel):
+        birthday: fhirtypes.DateType = Field(..., alias="birthday", title="Birthday")
+
+    # Test with only year
+    model = MySimpleDateModel(birthday="2016")
+    isinstance(model.birthday, str)
+    # test with year and month
+    model = MySimpleDateModel(birthday="2016-09")
+    isinstance(model.birthday, str)

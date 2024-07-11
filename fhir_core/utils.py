@@ -35,6 +35,7 @@ def _is_primitive_type(annotation: typing.Any) -> typing.Union[bool, None]:
         if _is_primitive_type(arg) is not None:
             # check number of args
             return True
+    return
 
 
 @lru_cache(maxsize=1024, typed=True)

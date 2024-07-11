@@ -84,7 +84,7 @@ class FhirBase:
     @lru_cache(typed=True)
     def produce_inner_schema(
         cls, source_type: type[typing.Any], handler: GetCoreSchemaHandler
-    ) -> core_schema.CoreSchema:
+    ) -> typing.Optional[core_schema.CoreSchema]:
         if isinstance(source_type, cls):
             return handler.generate_schema(source_type.model_klass)
         if typing.get_origin(source_type) is not None:
@@ -92,6 +92,7 @@ class FhirBase:
                 inner_schema = cls.produce_inner_schema(tp, handler)
                 if inner_schema:
                     return inner_schema
+        return
 
     @classmethod
     def __get_pydantic_core_schema__(
