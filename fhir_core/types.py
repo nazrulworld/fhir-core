@@ -3,7 +3,7 @@ import datetime
 import decimal
 import re
 import typing
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from uuid import UUID
 
 from annotated_types import SLOTS, BaseMetadata, GroupedMetadata, MaxLen, MinLen
@@ -11,7 +11,7 @@ from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
 from pydantic.types import UUID4
-from pydantic_core import PydanticCustomError
+from pydantic_core import InitErrorDetails, PydanticCustomError
 from pydantic_core import Url as PydanticUrl
 from pydantic_core import ValidationError, core_schema
 from pydantic_core.core_schema import ValidationInfo
@@ -49,7 +49,7 @@ FHIR_PRIMITIVES = frozenset(
 )
 
 
-@dataclasses.dataclass(**SLOTS)
+@dataclasses.dataclass
 class FhirBase:
     """The base type aka validator for FHIR resource model.
 
@@ -74,11 +74,17 @@ class FhirBase:
     ```
     """
 
-    model_klass: type[FHIRAbstractModel]
+    _model_klass: str = None
 
     def __init__(self, model_klass: str):
         """ """
-        self.model_klass = import_string(model_klass)
+        self._model_klass = model_klass
+
+    @cached_property
+    def model_klass(self) -> typing.Type[FHIRAbstractModel]:
+        """ """
+        breakpoint()
+        return import_string(self._model_klass)
 
     @classmethod
     @lru_cache(typed=True)
@@ -86,7 +92,9 @@ class FhirBase:
         cls, source_type: type[typing.Any], handler: GetCoreSchemaHandler
     ) -> typing.Optional[core_schema.CoreSchema]:
         if isinstance(source_type, cls):
-            return handler.generate_schema(source_type.model_klass)
+            # @TODO: find the best way to generate schema from actual class!
+            schema = handler.generate_schema(FHIRAbstractModel)
+            return schema
         if typing.get_origin(source_type) is not None:
             for tp in typing.get_args(source_type):
                 inner_schema = cls.produce_inner_schema(tp, handler)
@@ -162,22 +170,28 @@ class FhirBase:
         value: typing.Union[str, bytes, dict, FHIRAbstractModel],
         model_klass: type[FHIRAbstractModel],
     ):
-        """ """
         if isinstance(value, (str, bytes)):
             value = model_klass.model_validate_json(value)
 
         elif isinstance(value, dict):
             value = model_klass.model_validate(value)
 
+        error_: InitErrorDetails = None
+
         if not isinstance(value, model_klass):
-            raise PydanticCustomError(
+            error_type = PydanticCustomError(
                 "model_validation_format",
-                "Value is expected from the instance of {model_class}, but got type {type}",
-                {"model_class": model_klass.__name__, "type": type(value)},
+                message_template="Value is expected from the instance of {model_class}, but got type {type}",
+                context={"model_class": model_klass.__name__, "type": type(value)},
             )
+            error_: InitErrorDetails = {
+                "type": error_type,
+                "loc": ("root",),
+                "input": value,
+            }
 
         if model_klass.__resource_type__ != value.__resource_type__:
-            raise PydanticCustomError(
+            error_type = PydanticCustomError(
                 "model_validation_format",
                 'Expected resource_type is "{model_name}", but value has resource_type "{resource_type}"',
                 {
@@ -185,10 +199,18 @@ class FhirBase:
                     "resource_type": value.__resource_type__,
                 },
             )
+            error_: InitErrorDetails = {
+                "type": error_type,
+                "loc": ("root",),
+                "input": value,
+            }
+        if error_ is not None:
+            raise ValidationError.from_exception_data(cls.__name__, [error_])
+
         return value
 
     def __hash__(self) -> int:
-        return hash(self.model_klass)
+        return hash(self._model_klass)
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)

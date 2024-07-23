@@ -38,11 +38,6 @@ FHIRErrorCodes = Literal[
 ]
 
 
-class WrongResourceType(PydanticValueError):
-    code = "wrong.resource_type"
-    msg_template = "Wrong ResourceType: {error}"
-
-
 class FHIRAbstractModel(BaseModel):
     """Abstract base model class for all FHIR elements."""
 
@@ -112,10 +107,10 @@ class FHIRAbstractModel(BaseModel):
 
     @classmethod
     @lru_cache(maxsize=1024, typed=True)
-    def has_resource_base(cls: typing.Type["BaseModel"]) -> bool:
+    def has_resource_base(cls) -> bool:
         """ """
         # xxx: calculate metrics, other than cache it!
-        for cl in inspect.getmro(cls)[:-4]:
+        for cl in inspect.getmro(cls)[:-3]:
             if cl.__name__ == "Resource":
                 return True
         return False
@@ -305,7 +300,7 @@ class FHIRAbstractModel(BaseModel):
         serialize: typing.Callable[[typing.Any], typing.Any],
         info: SerializationInfo,
     ) -> "TupleGenerator":
-        return None, None
+
         if self.__class__.has_resource_base():
             yield "resourceType", self.__resource_type__
 
@@ -364,14 +359,16 @@ class FHIRAbstractModel(BaseModel):
         if len(one_of_many_fields) == 0:
             return
         for prefix, fields in one_of_many_fields.items():
-            assert cls.__fields__[fields[0]].field_info.extra["one_of_many"] == prefix
+            assert (
+                self.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix
+            )
             required = (
-                cls.__fields__[fields[0]].field_info.extra["one_of_many_required"]
+                self.model_fields[fields[0]].json_schema_extra["one_of_many_required"]
                 is True
             )
             found = False
             for field in fields:
-                if field in values and values[field] is not None:
+                if getattr(self, field, None) is not None:
                     if found is True:
                         raise ValueError(
                             "Any of one field value is expected from "
@@ -400,30 +397,30 @@ class FHIRAbstractModel(BaseModel):
 
         errors: typing.List["ErrorWrapper"] = []
         for name, ext in required_fields:
-            field = cls.__fields__[name]
-            ext_field = cls.__fields__[ext]
-            value = values.get(field.alias, _missing)
+            field_info = self.model_fields[name]
+            ext_field_info = self.model_fields[ext]
+            value = getattr(self, field_info.alias, _missing)
             if value not in (_missing, None):
                 continue
-            ext_value = values.get(ext_field.alias, _missing)
+            ext_value = getattr(self, ext_field_info.alias, _missing)
             missing_ext = True
             if ext_value not in (_missing, None):
                 if isinstance(ext_value, dict):
                     missing_ext = len(ext_value.get("extension", [])) == 0
                 elif (
-                    getattr(ext_value.__class__, "get_resource_type", _fallback)()
+                    getattr(ext_value, "__resource_type__", None)
                     == "FHIRPrimitiveExtension"
                 ):
                     if ext_value.extension and len(ext_value.extension) > 0:
                         missing_ext = False
                 else:
                     validate_pass = True
-                    for validator in ext_field.type_.__get_validators__():
-                        try:
-                            ext_value = validator(v=ext_value)
-                        except ValidationError as exc:
-                            errors.append(ErrorWrapper(exc, loc=ext_field.alias))
-                            validate_pass = False
+                    # for validator in ext_field.type_.__get_validators__():
+                    #    try:
+                    #        ext_value = validator(v=ext_value)
+                    #    except ValidationError as exc:
+                    #        errors.append(ErrorWrapper(exc, loc=ext_field.alias))
+                    #        validate_pass = False
                     if not validate_pass:
                         continue
                     if ext_value.extension and len(ext_value.extension) > 0:
