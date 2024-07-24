@@ -47,9 +47,9 @@ class Resource(FHIRAbstractModel):
         # if property is element of this resource.
         json_schema_extra={"element_property": True},
     )
-    # implicitRules__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-    #    None, alias="_implicitRules", title="Extension field for ``implicitRules``."
-    # )
+    implicitRules__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
+        None, alias="_implicitRules", title="Extension field for ``implicitRules``."
+    )
 
     language: fhirtypes.CodeType = Field(
         None,

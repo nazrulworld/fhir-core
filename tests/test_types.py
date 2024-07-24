@@ -4,11 +4,30 @@ import uuid
 import pytest
 from pydantic import BaseModel, Field
 from pydantic_core import ValidationError
+from fhir_core.fhirabstractmodel import FHIRAbstractModel
 
 from fhir_core import types as fhirtypes
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
+
+
+class MyFhirPatientModel(FHIRAbstractModel):
+    __resource_type__ = "MyFhirPatientModel"
+    name: fhirtypes.StringType = Field(..., title="Name")
+
+
+MyFhirPatientModelType = fhirtypes.FhirBase(
+    model_klass="tests.test_types.MyFhirPatientModel"
+)
+
+
+def test_fhirbase_type():
+    """ """
+
+    class MyHospitalModel(FHIRAbstractModel):
+        __resource_type__ = "MyHospitalModel"
+        patients: typing.List[MyFhirPatientModelType]
 
 
 def test_string_type():

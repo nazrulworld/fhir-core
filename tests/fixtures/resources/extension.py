@@ -36,20 +36,21 @@ class Extension(datatype.DataType):
         json_schema_extra={"element_property": True, "element_required": True},
     )
 
-    # valueAddress: fhirtypes.AddressType = Field(
-    #     None,
-    #     alias="valueAddress",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueAddress: fhirtypes.AddressType = Field(
+        None,
+        alias="valueAddress",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueAge: fhirtypes.AgeType = Field(
     #     None,

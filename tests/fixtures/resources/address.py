@@ -8,7 +8,7 @@ Last updated: 2023-03-26T15:21:02.749+11:00
 """
 import typing
 
-from pydantic.v1 import Field
+from pydantic import Field
 
 from . import datatype, fhirtypes
 
@@ -29,9 +29,9 @@ class Address(datatype.DataType):
     the contents of strings in an Address.
     """
 
-    resource_type = Field("Address", const=True)
+    __resource_type__ = "Address"
 
-    city: fhirtypes.String = Field(
+    city: fhirtypes.StringType = Field(
         None,
         alias="city",
         title="Name of city, town etc.",
@@ -40,37 +40,37 @@ class Address(datatype.DataType):
             "delivery center."
         ),
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     city__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_city", title="Extension field for ``city``."
     )
 
-    country: fhirtypes.String = Field(
+    country: fhirtypes.StringType = Field(
         None,
         alias="country",
         title="Country (e.g. may be ISO 3166 2 or 3 letter code)",
         description="Country - a nation as commonly understood or generally accepted.",
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     country__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_country", title="Extension field for ``country``."
     )
 
-    district: fhirtypes.String = Field(
+    district: fhirtypes.StringType = Field(
         None,
         alias="district",
         title="District name (aka county)",
         description="The name of the administrative area (county).",
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     district__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_district", title="Extension field for ``district``."
     )
 
-    line: typing.List[typing.Optional[fhirtypes.String]] = Field(
+    line: typing.List[typing.Optional[fhirtypes.StringType]] = Field(
         None,
         alias="line",
         title="Street name, number, direction & P.O. Box etc.",
@@ -80,11 +80,11 @@ class Address(datatype.DataType):
             "address information."
         ),
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
-    line__ext: typing.List[
-        typing.Union[fhirtypes.FHIRPrimitiveExtensionType, None]
-    ] = Field(None, alias="_line", title="Extension field for ``line``.")
+    line__ext: typing.List[typing.Union[fhirtypes.FHIRPrimitiveExtensionType, None]] = (
+        Field(None, alias="_line", title="Extension field for ``line``.")
+    )
 
     period: fhirtypes.PeriodType = Field(
         None,
@@ -92,22 +92,22 @@ class Address(datatype.DataType):
         title="Time period when address was/is in use",
         description=None,
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
 
-    postalCode: fhirtypes.String = Field(
+    postalCode: fhirtypes.StringType = Field(
         None,
         alias="postalCode",
         title="Postal code for area",
         description="A postal code designating a region defined by the postal service.",
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     postalCode__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_postalCode", title="Extension field for ``postalCode``."
     )
 
-    state: fhirtypes.String = Field(
+    state: fhirtypes.StringType = Field(
         None,
         alias="state",
         title="Sub-unit of country (abbreviations ok)",
@@ -117,13 +117,13 @@ class Address(datatype.DataType):
             " US 2 letter state codes)."
         ),
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     state__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_state", title="Extension field for ``state``."
     )
 
-    text: fhirtypes.String = Field(
+    text: fhirtypes.StringType = Field(
         None,
         alias="text",
         title="Text representation of the address",
@@ -133,13 +133,13 @@ class Address(datatype.DataType):
             "specific parts."
         ),
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={"element_property": True},
     )
     text__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_text", title="Extension field for ``text``."
     )
 
-    type: fhirtypes.Code = Field(
+    type: fhirtypes.CodeType = Field(
         None,
         alias="type",
         title="postal | physical | both",
@@ -149,25 +149,29 @@ class Address(datatype.DataType):
             "addresses are both."
         ),
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={
+            "element_property": True,
+            "enum_values": ["postal", "physical", "both"],
+        },
         # note: Enum values can be used in validation,
         # but use in your own responsibilities, read official FHIR documentation.
-        enum_values=["postal", "physical", "both"],
     )
     type__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_type", title="Extension field for ``type``."
     )
 
-    use: fhirtypes.Code = Field(
+    use: fhirtypes.CodeType = Field(
         None,
         alias="use",
         title="home | work | temp | old | billing - purpose of this address",
         description="The purpose of this address.",
         # if property is element of this resource.
-        element_property=True,
+        json_schema_extra={
+            "element_property": True,
+            "enum_values": ["home", "work", "temp", "old", "billing"],
+        },
         # note: Enum values can be used in validation,
         # but use in your own responsibilities, read official FHIR documentation.
-        enum_values=["home", "work", "temp", "old", "billing"],
     )
     use__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_use", title="Extension field for ``use``."
@@ -193,4 +197,3 @@ class Address(datatype.DataType):
             "country",
             "period",
         ]
-from pydantic import BaseModel, ValidationError
