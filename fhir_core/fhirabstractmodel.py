@@ -16,8 +16,6 @@ from pydantic import (
 )
 from pydantic.fields import FieldInfo
 from pydantic.main import IncEx
-from pydantic.v1.error_wrappers import ErrorWrapper, ValidationError
-from pydantic.v1.errors import PydanticValueError
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
@@ -70,10 +68,10 @@ class FHIRAbstractModel(BaseModel):
             expected_resource_type = self.__resource_type__
             error_type: PydanticCustomError = PydanticCustomError(
                 "fhir-validation-wrong-resource-type",
-                message_template="""``{module_name}.{class_name}`` expects resource type ``{expected_resource_type}``,
+                """``{module_name}.{class_name}`` expects resource type ``{expected_resource_type}``,
                     but got ``{resource_type}``. Make sure resource type name is correct and right
                     ModelClass has been chosen.""",
-                context={
+                {
                     "module_name": self.__class__.__module__,
                     "class_name": self.__class__.__name__,
                     "expected_resource_type": expected_resource_type,
@@ -91,7 +89,7 @@ class FHIRAbstractModel(BaseModel):
 
     @classmethod
     def element_properties(
-        cls: typing.Type["Model"],
+        cls: typing.Type["FHIRAbstractModel"],
     ) -> typing.Generator[FieldInfo, None, None]:
         """ """
         for field_info in cls.model_fields.values():
@@ -117,7 +115,7 @@ class FHIRAbstractModel(BaseModel):
 
     @classmethod
     @lru_cache(maxsize=None, typed=True)
-    def get_resource_type(cls: typing.Type["Model"]) -> str:
+    def get_resource_type(cls: typing.Type["FHIRAbstractModel"]) -> str:
         """ """
         return cls.__resource_type__
 
@@ -144,10 +142,10 @@ class FHIRAbstractModel(BaseModel):
         include: IncEx = None,
         exclude: IncEx = None,
         context: dict[str, typing.Any] | None = None,
-        by_alias: bool = False,
+        by_alias: bool = True,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
-        exclude_none: bool = False,
+        exclude_none: bool = True,
         round_trip: bool = False,
         warnings: bool | Literal["none", "warn", "error"] = True,
         serialize_as_any: bool = False,
@@ -215,10 +213,10 @@ class FHIRAbstractModel(BaseModel):
         include: IncEx = None,
         exclude: IncEx = None,
         context: dict[str, typing.Any] | None = None,
-        by_alias: bool = False,
+        by_alias: bool = True,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
-        exclude_none: bool = False,
+        exclude_none: bool = True,
         round_trip: bool = False,
         warnings: bool | Literal["none", "warn", "error"] = True,
         serialize_as_any: bool = False,
@@ -307,18 +305,21 @@ class FHIRAbstractModel(BaseModel):
         alias_maps = self.get_alias_mapping()
         for prop_name in self.elements_sequence():
             field_key = alias_maps[prop_name]
-            field = self.model_fields[field_key]
-            is_primitive = is_primitive_type(field)
-            dict_key = info.by_alias and field.alias or field_key
-            value = serialize(self.__dict__.get(field_key, None))
-
+            field_info = self.model_fields[field_key]
+            is_primitive = is_primitive_type(field_info)
+            dict_key = info.by_alias and field_info.alias or field_key
+            value = self.__dict__.get(field_key, None)
+            if not is_primitive and value is not None:
+                value = serialize(value)
             if value is not None or (info.exclude_none is False and value is None):
                 yield dict_key, value
 
             # looking for comments or primitive extension for primitive data type
             if is_primitive:
                 ext_key = f"{field_key}__ext"
-                ext_val = serialize(self.__dict__.get(ext_key, None))
+                ext_val = self.__dict__.get(ext_key, None)
+                if ext_val is not None:
+                    ext_val = serialize(ext_val)
                 if ext_val is not None:
                     dict_key_ = (
                         info.by_alias and self.model_fields[ext_key].alias or ext_key
@@ -395,7 +396,8 @@ class FHIRAbstractModel(BaseModel):
         def _fallback():
             return ""
 
-        errors: typing.List["ErrorWrapper"] = []
+        errors: typing.List[InitErrorDetails] = list()
+
         for name, ext in required_fields:
             field_info = self.model_fields[name]
             ext_field_info = self.model_fields[ext]
@@ -427,13 +429,34 @@ class FHIRAbstractModel(BaseModel):
                         missing_ext = False
             if missing_ext:
                 if value is _missing:
-                    errors.append(ErrorWrapper(MissingError(), loc=field.alias))
-                else:
-                    errors.append(
-                        ErrorWrapper(NoneIsNotAllowedError(), loc=field.alias)
+                    # 'field required'
+                    error_type = PydanticCustomError(
+                        "model_field_validation_format",
+                        "Value for the field '{field_name}' is required.",
+                        {"field_name": field_info.alias},
                     )
+                    error_: InitErrorDetails = {
+                        "type": error_type,
+                        "loc": (field_info.alias,),
+                        "input": value,
+                    }
+                    errors.append(error_)
+                else:
+                    # 'none is not an allowed value'
+                    error_type = PydanticCustomError(
+                        "model_field_validation_format",
+                        "None value is not allowed for the field '{field_name}'.",
+                        {"field_name": field_info.alias},
+                    )
+                    error_: InitErrorDetails = {
+                        "type": error_type,
+                        "loc": (field_info.alias,),
+                        "input": value,
+                    }
+                    errors.append(error_)
+
         if len(errors) > 0:
-            raise ValidationError(errors, cls)  # type: ignore
+            raise ValidationError.from_exception_data(self.__class__.__name__, errors)  # type: ignore
 
     def get_required_fields(self) -> typing.List[typing.Tuple[str, str]]:
         """This method should be overridden in each subclass.

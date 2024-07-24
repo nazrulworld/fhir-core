@@ -29,7 +29,6 @@ def _is_primitive_type(annotation: typing.Any) -> typing.Union[bool, None]:
     if origin is None:
         if annotation in PY_PRIMITIVES:
             return True
-        raise NotImplementedError
 
     args = get_args(annotation)
     for arg in args:

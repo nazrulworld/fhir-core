@@ -6,7 +6,7 @@ import typing
 from functools import cached_property, lru_cache
 from uuid import UUID
 
-from annotated_types import SLOTS, BaseMetadata, GroupedMetadata, MaxLen, MinLen
+from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
 from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
@@ -83,7 +83,6 @@ class FhirBase:
     @cached_property
     def model_klass(self) -> typing.Type[FHIRAbstractModel]:
         """ """
-        breakpoint()
         return import_string(self._model_klass)
 
     @classmethod
@@ -150,9 +149,10 @@ class FhirBase:
                 FHIRAbstractModel: The parsed FHIR resource.
 
             """
-            return validator(
-                cls.fhir_model_validator(input_value, source_type.model_klass)
-            )
+            model_klass = source_type.model_klass
+            if typing.TYPE_CHECKING:
+                model_klass = typing.cast(typing.Type[FHIRAbstractModel], model_klass)
+            return validator(cls.fhir_model_validator(input_value, model_klass))
 
         return core_schema.with_info_wrap_validator_function(
             _validate,
@@ -176,19 +176,20 @@ class FhirBase:
         elif isinstance(value, dict):
             value = model_klass.model_validate(value)
 
-        error_: InitErrorDetails = None
+        errors: typing.List[InitErrorDetails] = list()
 
         if not isinstance(value, model_klass):
             error_type = PydanticCustomError(
                 "model_validation_format",
-                message_template="Value is expected from the instance of {model_class}, but got type {type}",
-                context={"model_class": model_klass.__name__, "type": type(value)},
+                "Value is expected from the instance of {model_class}, but got type {type}",
+                {"model_class": model_klass.__name__, "type": type(value)},
             )
             error_: InitErrorDetails = {
                 "type": error_type,
                 "loc": ("root",),
                 "input": value,
             }
+            errors.append(error_)
 
         if model_klass.__resource_type__ != value.__resource_type__:
             error_type = PydanticCustomError(
@@ -204,8 +205,11 @@ class FhirBase:
                 "loc": ("root",),
                 "input": value,
             }
-        if error_ is not None:
-            raise ValidationError.from_exception_data(cls.__name__, [error_])
+            errors.append(error_)
+        if len(errors) > 0:
+            raise ValidationError.from_exception_data(cls.__name__, errors)
+        else:
+            del errors
 
         return value
 
@@ -404,9 +408,9 @@ class Integer(GroupedMetadata):
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
         """ """
-        yield MinLen(self.min_length)
+        yield Le(self.max_length)
 
-        yield MaxLen(self.max_length)
+        yield Ge(self.min_length)
 
     @classmethod
     def to_string(cls, value):
