@@ -15,6 +15,7 @@ from pydantic_core import InitErrorDetails, PydanticCustomError
 from pydantic_core import Url as PydanticUrl
 from pydantic_core import ValidationError, core_schema
 from pydantic_core.core_schema import ValidationInfo
+from typing_extensions import Annotated
 
 from .fhirabstractmodel import FHIRAbstractModel
 
@@ -232,10 +233,10 @@ class String(GroupedMetadata):
 
     ```py
     from pydantic import BaseModel
-    from typing import Annotated
+    from typing_extension import Annotated
     from fhir_core.types import String
 
-    StringType = typing.Annotated[str, String(allow_empty_str=False)]
+    StringType = Annotated[str, String(allow_empty_str=False)]
 
     class StringModel(BaseModel):
         myString: StringType = None
@@ -877,51 +878,51 @@ BooleanType = bool
 FHIR_PRIMITIVES_MAPS[BooleanType] = "boolean"
 
 # string
-StringType = typing.Annotated[str, String(allow_empty_str=False)]
+StringType = Annotated[str, String(allow_empty_str=False)]
 FHIR_PRIMITIVES_MAPS[StringType] = "string"
 
 # base64Binary
-Base64BinaryType = typing.Annotated[Base64Bytes, Base64Binary()]
+Base64BinaryType = Annotated[Base64Bytes, Base64Binary()]
 FHIR_PRIMITIVES_MAPS[Base64BinaryType] = "base64Binary"
 
 # code
-CodeType = typing.Annotated[str, Code()]
+CodeType = Annotated[str, Code()]
 FHIR_PRIMITIVES_MAPS[CodeType] = "code"
 
 # id
-IdType = typing.Annotated[str, Id()]
+IdType = Annotated[str, Id()]
 FHIR_PRIMITIVES_MAPS[IdType] = "id"
 
 # decimal
-DecimalType = typing.Annotated[decimal.Decimal, Decimal()]
+DecimalType = Annotated[decimal.Decimal, Decimal()]
 FHIR_PRIMITIVES_MAPS[DecimalType] = "decimal"
 
 # integer
-IntegerType = typing.Annotated[int, Integer()]
+IntegerType = Annotated[int, Integer()]
 FHIR_PRIMITIVES_MAPS[IntegerType] = "integer"
 
 # integer64
-Integer64Type = typing.Annotated[int, Integer64()]
+Integer64Type = Annotated[int, Integer64()]
 FHIR_PRIMITIVES_MAPS[Integer64Type] = "integer64"
 
 # unsignedInt
-UnsignedIntType = typing.Annotated[int, UnsignedInt()]
+UnsignedIntType = Annotated[int, UnsignedInt()]
 FHIR_PRIMITIVES_MAPS[UnsignedIntType] = "unsignedInt"
 
 # positiveInt
-PositiveIntType = typing.Annotated[int, PositiveInt()]
+PositiveIntType = Annotated[int, PositiveInt()]
 FHIR_PRIMITIVES_MAPS[PositiveIntType] = "positiveInt"
 
 # uri
-UriType = typing.Annotated[str, Uri()]
+UriType = Annotated[str, Uri()]
 FHIR_PRIMITIVES_MAPS[UriType] = "uri"
 
 # canonical
-CanonicalType = typing.Annotated[str, Canonical()]
+CanonicalType = Annotated[str, Canonical()]
 FHIR_PRIMITIVES_MAPS[CanonicalType] = "canonical"
 
 # oid
-OidType = typing.Annotated[str, Oid()]
+OidType = Annotated[str, Oid()]
 FHIR_PRIMITIVES_MAPS[OidType] = "oid"
 
 # uuid
@@ -929,31 +930,31 @@ UuidType = UUID4
 FHIR_PRIMITIVES_MAPS[UuidType] = "uuid"
 
 # url
-UrlType = typing.Annotated[typing.Union[AnyUrl, str], Url()]
+UrlType = Annotated[typing.Union[AnyUrl, str], Url()]
 FHIR_PRIMITIVES_MAPS[UrlType] = "url"
 
 # markdown
-MarkdownType = typing.Annotated[str, Markdown()]
+MarkdownType = Annotated[str, Markdown()]
 FHIR_PRIMITIVES_MAPS[MarkdownType] = "markdown"
 
 # xhtml
-XhtmlType = typing.Annotated[str, Xhtml()]
+XhtmlType = Annotated[str, Xhtml()]
 FHIR_PRIMITIVES_MAPS[XhtmlType] = "xhtml"
 
 # date
-DateType = typing.Annotated[datetime.date, Date()]
+DateType = Annotated[datetime.date, Date()]
 FHIR_PRIMITIVES_MAPS[DateType] = "date"
 
 # dateTime
-DateTimeType = typing.Annotated[datetime.datetime, DateTime()]
+DateTimeType = Annotated[datetime.datetime, DateTime()]
 FHIR_PRIMITIVES_MAPS[DateTimeType] = "dateTime"
 
 # instant
-InstantType = typing.Annotated[datetime.datetime, Instant()]
+InstantType = Annotated[datetime.datetime, Instant()]
 FHIR_PRIMITIVES_MAPS[InstantType] = "instant"
 
 # time
-TimeType = typing.Annotated[datetime.time, Time()]
+TimeType = Annotated[datetime.time, Time()]
 FHIR_PRIMITIVES_MAPS[TimeType] = "time"
 
 __all__ = [

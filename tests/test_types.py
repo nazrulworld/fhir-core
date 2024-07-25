@@ -5,6 +5,7 @@ import uuid
 import pytest
 from pydantic import BaseModel, Field
 from pydantic_core import ValidationError
+from typing_extensions import Annotated
 
 from fhir_core import types as fhirtypes
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
@@ -46,7 +47,7 @@ def test_string_type():
 
     assert exc_info.type is ValidationError
 
-    StringType = typing.Annotated[str, fhirtypes.String(allow_empty_str=True)]
+    StringType = Annotated[str, fhirtypes.String(allow_empty_str=True)]
 
     class MySimpleStringModel2(BaseModel):
         name: StringType = Field(..., alias="name", title="My Name")
