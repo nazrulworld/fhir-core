@@ -7,7 +7,9 @@ Build ID: 2aecd53
 Last updated: 2023-03-26T15:21:02.749+11:00
 """
 from pydantic import Field
+
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
+
 from . import fhirtypes
 
 

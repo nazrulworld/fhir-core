@@ -11,6 +11,7 @@ import typing
 from pydantic import Field
 
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
+
 from . import fhirtypes
 
 

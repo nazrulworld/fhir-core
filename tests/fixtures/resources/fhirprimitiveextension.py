@@ -6,11 +6,11 @@ __author__ = "Md Nazrul Islam<email2nazrul@gmail.com>"
 
 import typing
 
-from pydantic import Field
-from pydantic import model_validator
+from pydantic import Field, model_validator
 from pydantic_core import PydanticCustomError
 
 from fhir_core import fhirabstractmodel
+
 from . import fhirtypes
 
 

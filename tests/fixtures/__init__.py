@@ -5,7 +5,7 @@ from os.path import dirname
 
 from pydantic import BaseModel, Field
 
-from fhir_core import types as fhirtypes
+from fhir_core import types as fhir_types
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
@@ -18,34 +18,34 @@ IS_TRAVIS = "TRAVIS" in os.environ
 class FhirPrimitiveTypesModel(BaseModel):
     """ """
 
-    booleanTypeRequired: fhirtypes.BooleanType = Field(
+    booleanTypeRequired: fhir_types.BooleanType = Field(
         ..., title="Boolean Type (required)"
     )
-    booleanTypeOptional: fhirtypes.BooleanType = Field(
+    booleanTypeOptional: fhir_types.BooleanType = Field(
         None, title="Boolean Type (optional)"
     )
 
-    stringTypeRequired: fhirtypes.StringType = Field(
+    stringTypeRequired: fhir_types.StringType = Field(
         ..., title="String Type (required)"
     )
-    stringTypeOptional: fhirtypes.StringType = Field(
+    stringTypeOptional: fhir_types.StringType = Field(
         None, title="Integer Type (optional)"
     )
-    stringListTypeRequired: typing.List[fhirtypes.StringType] = Field(
+    stringListTypeRequired: typing.List[fhir_types.StringType] = Field(
         ..., title="List of String Type (required)"
     )
-    stringListTypeOptional: typing.List[typing.Union[fhirtypes.StringType, None]] = (
+    stringListTypeOptional: typing.List[typing.Union[fhir_types.StringType, None]] = (
         Field(..., title="List of String " "Type (optional)")
     )
 
-    uuidTypeRequired: fhirtypes.UuidType = Field(..., title="UUID Type (required)")
+    uuidTypeRequired: fhir_types.UuidType = Field(..., title="UUID Type (required)")
 
-    uuidListTypeOptional: typing.List[fhirtypes.UuidType] = Field(
+    uuidListTypeOptional: typing.List[fhir_types.UuidType] = Field(
         None, title="List of UUID " "Type (optional)"
     )
 
-    dateTypeRequired: fhirtypes.DateType = Field(..., title="Date Type (required)")
+    dateTypeRequired: fhir_types.DateType = Field(..., title="Date Type (required)")
 
-    dateListTypeOptional: typing.List[typing.Union[fhirtypes.DateType, None]] = Field(
+    dateListTypeOptional: typing.List[typing.Union[fhir_types.DateType, None]] = Field(
         ..., title="List of Date " "Type (optional)"
     )

@@ -812,7 +812,7 @@ class Time:
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: type[typing.Any], handler: GetCoreSchemaHandler
+        cls, source_type: typing.Any, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         """
         Return a Pydantic CoreSchema with the Time validation.

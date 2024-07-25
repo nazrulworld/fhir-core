@@ -1,13 +1,12 @@
 import typing
 
 import pytest
+from pydantic import Field, ValidationError
 
-from tests.fixtures.resources.fhirtypes import ResourceType
-from tests.fixtures.resources.resource import Resource
+from tests.fixtures.resources import fhirtypes
 from tests.fixtures.resources.domainresource import DomainResource
 from tests.fixtures.resources.fhirtypes import FHIRPrimitiveExtensionType
-from tests.fixtures import fhirtypes
-from pydantic import Field, ValidationError
+from tests.fixtures.resources.resource import Resource
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
@@ -89,3 +88,18 @@ def test_primitive_fields():
         name__ext={"extension": [{"valueString": "different name"}]},
     )
     assert obj.model_dump()["_name"]["extension"][0]["valueString"] == "different name"
+    json_str = obj.model_dump_json()
+    MyPrimitivesValueFieldsModel.model_validate_json(json_str)
+
+    # Test with comments
+    obj = MyPrimitivesValueFieldsModel(
+        postCode=1230,
+        active=True,
+        meta={"id": "001"},
+        name__ext={
+            "extension": [{"valueString": "different name"}],
+            "fhir_comments": "This is experiemental",
+        },
+    )
+    # need proper handling of exclude comments
+    serialized_data = obj.model_dump(exclude_comments=True)

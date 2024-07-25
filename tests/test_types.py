@@ -1,12 +1,13 @@
 import decimal
 import typing
 import uuid
+
 import pytest
 from pydantic import BaseModel, Field
 from pydantic_core import ValidationError
-from fhir_core.fhirabstractmodel import FHIRAbstractModel
 
 from fhir_core import types as fhirtypes
+from fhir_core.fhirabstractmodel import FHIRAbstractModel
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"

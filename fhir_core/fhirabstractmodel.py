@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Base class for all FHIR elements. """
+from __future__ import annotations as _annotations
+
 import inspect
 import logging
 import typing
@@ -39,7 +41,7 @@ FHIRErrorCodes = Literal[
 class FHIRAbstractModel(BaseModel):
     """Abstract base model class for all FHIR elements."""
 
-    __fhir_serialization_include_comment__: bool = None
+    __fhir_serialization_exclude_comment__: bool = None
     # __resource_type__: Literal['ResourceType'] = 'ResourceType'
     __resource_type__ = ...
 
@@ -185,8 +187,8 @@ class FHIRAbstractModel(BaseModel):
 
         org_config_val = None
         if exclude_comments is not None:
-            org_config_val = self.__fhir_serialization_include_comment__
-            self.__fhir_serialization_include_comment__ = exclude_comments
+            org_config_val = self.__fhir_serialization_exclude_comment__
+            self.__fhir_serialization_exclude_comment__ = exclude_comments
 
         result = BaseModel.model_dump_json(
             self,
@@ -203,7 +205,7 @@ class FHIRAbstractModel(BaseModel):
             serialize_as_any=serialize_as_any,
         )
         if exclude_comments is not None:
-            self.__fhir_serialization_include_comment__ = org_config_val
+            self.__fhir_serialization_exclude_comment__ = org_config_val
         return result
 
     def model_dump(
@@ -261,9 +263,9 @@ class FHIRAbstractModel(BaseModel):
             exclude_none = True
 
         org_config_val = None
-        if exclude_comments is False:
-            org_config_val = self.__fhir_serialization_include_comment__
-            self.__fhir_serialization_include_comment__ = True
+        if exclude_comments is not None:
+            org_config_val = self.__fhir_serialization_exclude_comment__
+            self.__fhir_serialization_exclude_comment__ = exclude_comments
 
         result = BaseModel.model_dump(
             self,
@@ -279,8 +281,8 @@ class FHIRAbstractModel(BaseModel):
             warnings=warnings,
             serialize_as_any=serialize_as_any,
         )
-        if exclude_comments is False:
-            self.__fhir_serialization_include_comment__ = org_config_val
+        if exclude_comments is not None:
+            self.__fhir_serialization_exclude_comment__ = org_config_val
         return result
 
     # Serializers
@@ -298,7 +300,6 @@ class FHIRAbstractModel(BaseModel):
         serialize: typing.Callable[[typing.Any], typing.Any],
         info: SerializationInfo,
     ) -> "TupleGenerator":
-
         if self.__class__.has_resource_base():
             yield "resourceType", self.__resource_type__
 
@@ -329,7 +330,7 @@ class FHIRAbstractModel(BaseModel):
         # looking for comments
         comments = self.__dict__.get(FHIR_COMMENTS_FIELD_NAME, None)
 
-        if comments is not None and self.__fhir_serialization_include_comment__:
+        if comments is not None and not self.__fhir_serialization_exclude_comment__:
             yield FHIR_COMMENTS_FIELD_NAME, comments
 
     @model_validator(mode="after")
