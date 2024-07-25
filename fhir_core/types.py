@@ -88,7 +88,7 @@ class FhirBase:
     @classmethod
     @lru_cache(typed=True)
     def produce_inner_schema(
-        cls, source_type: type[typing.Any], handler: GetCoreSchemaHandler
+        cls, source_type: typing.Any, handler: GetCoreSchemaHandler
     ) -> typing.Optional[core_schema.CoreSchema]:
         if isinstance(source_type, cls):
             # @TODO: find the best way to generate schema from actual class!
@@ -103,7 +103,7 @@ class FhirBase:
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: type["FhirBase"], handler: GetCoreSchemaHandler
+        cls, source_type: typing.Type["FhirBase"], handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         """
         Return a Pydantic CoreSchema with the FHIR resource validation.
@@ -168,7 +168,7 @@ class FhirBase:
     def fhir_model_validator(
         cls,
         value: typing.Union[str, bytes, dict, FHIRAbstractModel],
-        model_klass: type[FHIRAbstractModel],
+        model_klass: typing.Type[FHIRAbstractModel],
     ):
         if isinstance(value, (str, bytes)):
             value = model_klass.model_validate_json(value)
@@ -350,7 +350,7 @@ class Decimal:
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: type["Decimal"], handler: GetCoreSchemaHandler
+        cls, source_type: typing.Type["Decimal"], handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         """
         Return a Pydantic CoreSchema with Decimal validation.
@@ -540,7 +540,7 @@ class Url:
     @classmethod
     @lru_cache(typed=True)
     def produce_inner_schema(
-        cls, source_type: type[typing.Any], handler: GetCoreSchemaHandler
+        cls, source_type: typing.Any, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         if source_type is str:
             return core_schema.str_schema()
