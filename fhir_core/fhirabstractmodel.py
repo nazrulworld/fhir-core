@@ -359,6 +359,7 @@ class FHIRAbstractModel(BaseModel):
         one_of_many_fields = self.get_one_of_many_fields()
         if len(one_of_many_fields) == 0:
             return
+
         for prefix, fields in one_of_many_fields.items():
             assert (
                 self.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix
@@ -393,18 +394,17 @@ class FHIRAbstractModel(BaseModel):
             return
         _missing = object()
 
-        def _fallback():
-            return ""
-
         errors: typing.List[InitErrorDetails] = list()
+        alias_maps = self.get_alias_mapping()
 
         for name, ext in required_fields:
-            field_info = self.model_fields[name]
+            field_key = alias_maps[name]
+            field_info = self.model_fields[field_key]
             ext_field_info = self.model_fields[ext]
-            value = getattr(self, field_info.alias, _missing)
+            value = getattr(self, field_key, _missing)
             if value not in (_missing, None):
                 continue
-            ext_value = getattr(self, ext_field_info.alias, _missing)
+            ext_value = getattr(self, ext, _missing)
             missing_ext = True
             if ext_value not in (_missing, None):
                 if isinstance(ext_value, dict):
