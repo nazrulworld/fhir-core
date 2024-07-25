@@ -70,7 +70,9 @@ def test_primitive_fields():
             [("type", "type__ext")]"""
             return [("name", "name__ext")]
 
-    obj = MyPrimitivesValueFieldsModel(name="Kim Larson", postCode=1230, active=True, meta={"id": "001"})
+    obj = MyPrimitivesValueFieldsModel(
+        name="Kim Larson", postCode=1230, active=True, meta={"id": "001"}
+    )
     serialized_data = obj.model_dump()
     assert serialized_data["post-code"] == 1230
 
@@ -78,3 +80,12 @@ def test_primitive_fields():
         MyPrimitivesValueFieldsModel(postCode=1230, active=True, meta={"id": "001"})
 
     assert "None value is not allowed" in str(exception_info.value)
+
+    # test with extension
+    obj = MyPrimitivesValueFieldsModel(
+        postCode=1230,
+        active=True,
+        meta={"id": "001"},
+        name__ext={"extension": [{"valueString": "different name"}]},
+    )
+    assert obj.model_dump()["_name"]["extension"][0]["valueString"] == "different name"

@@ -52,35 +52,37 @@ class Extension(datatype.DataType):
         },
     )
 
-    # valueAge: fhirtypes.AgeType = Field(
-    #     None,
-    #     alias="valueAge",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueAge: fhirtypes.AgeType = Field(
+        None,
+        alias="valueAge",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
-    # valueAnnotation: fhirtypes.AnnotationType = Field(
-    #     None,
-    #     alias="valueAnnotation",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueAnnotation: fhirtypes.AnnotationType = Field(
+        None,
+        alias="valueAnnotation",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueAttachment: fhirtypes.AttachmentType = Field(
     #     None,
@@ -172,20 +174,21 @@ class Extension(datatype.DataType):
         },
     )
 
-    # valueCodeableConcept: fhirtypes.CodeableConceptType = Field(
-    #     None,
-    #     alias="valueCodeableConcept",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueCodeableConcept: fhirtypes.CodeableConceptType = Field(
+        None,
+        alias="valueCodeableConcept",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueCodeableReference: fhirtypes.CodeableReferenceType = Field(
     #     None,
@@ -427,20 +430,20 @@ class Extension(datatype.DataType):
         },
     )
 
-    # valueIdentifier: fhirtypes.IdentifierType = Field(
-    #     None,
-    #     alias="valueIdentifier",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     json_schema_extra={
-    #         "element_property": True,
-    #         "one_of_many": "value",
-    #         "one_of_many_required": False,
-    #     },
-    # )
+    valueIdentifier: fhirtypes.IdentifierType = Field(
+        None,
+        alias="valueIdentifier",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     valueInstant: fhirtypes.InstantType = Field(
         None,
@@ -502,20 +505,21 @@ class Extension(datatype.DataType):
         },
     )
 
-    # valueMeta: fhirtypes.MetaType = Field(
-    #     None,
-    #     alias="valueMeta",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueMeta: fhirtypes.MetaType = Field(
+        None,
+        alias="valueMeta",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueMoney: fhirtypes.MoneyType = Field(
     #     None,
@@ -592,20 +596,21 @@ class Extension(datatype.DataType):
         },
     )
 
-    # valueQuantity: fhirtypes.QuantityType = Field(
-    #     None,
-    #     alias="valueQuantity",
-    #     title="Value of extension",
-    #     description=(
-    #         "Value of extension - must be one of a constrained set of the data "
-    #         "types (see [Extensibility](extensibility.html) for a list)."
-    #     ),
-    #     # if property is element of this resource.
-    #     element_property=True,
-    #     # Choice of Data Types. i.e value[x]
-    #     one_of_many="value",
-    #     one_of_many_required=False,
-    # )
+    valueQuantity: fhirtypes.QuantityType = Field(
+        None,
+        alias="valueQuantity",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueRange: fhirtypes.RangeType = Field(
     #    None,
@@ -652,20 +657,21 @@ class Extension(datatype.DataType):
     #    one_of_many_required=False,
     # )
 
-    # valueReference: fhirtypes.ReferenceType = Field(
-    #    None,
-    #    alias="valueReference",
-    #    title="Value of extension",
-    #    description=(
-    #        "Value of extension - must be one of a constrained set of the data "
-    #        "types (see [Extensibility](extensibility.html) for a list)."
-    #    ),
-    # if property is element of this resource.
-    #    element_property=True,
-    # Choice of Data Types. i.e value[x]
-    #    one_of_many="value",
-    #    one_of_many_required=False,
-    # )
+    valueReference: fhirtypes.ReferenceType = Field(
+        None,
+        alias="valueReference",
+        title="Value of extension",
+        description=(
+            "Value of extension - must be one of a constrained set of the data "
+            "types (see [Extensibility](extensibility.html) for a list)."
+        ),
+        # if property is element of this resource.
+        json_schema_extra={
+            "element_property": True,
+            "one_of_many": "value",
+            "one_of_many_required": False,
+        },
+    )
 
     # valueRelatedArtifact: fhirtypes.RelatedArtifactType = Field(
     #    None,
@@ -877,39 +883,39 @@ class Extension(datatype.DataType):
             "valueUri",
             "valueUrl",
             "valueUuid",
-            "valueAddress",
+            # "valueAddress",
             "valueAge",
             "valueAnnotation",
-            "valueAttachment",
+            # "valueAttachment",
             "valueCodeableConcept",
-            "valueCodeableReference",
+            # "valueCodeableReference",
             "valueCoding",
-            "valueContactPoint",
-            "valueCount",
-            "valueDistance",
-            "valueDuration",
-            "valueHumanName",
+            # "valueContactPoint",
+            # "valueCount",
+            # "valueDistance",
+            # "valueDuration",
+            # "valueHumanName",
             "valueIdentifier",
-            "valueMoney",
-            "valuePeriod",
+            # "valueMoney",
+            # "valuePeriod",
             "valueQuantity",
-            "valueRange",
-            "valueRatio",
-            "valueRatioRange",
+            # "valueRange",
+            # "valueRatio",
+            # "valueRatioRange",
             "valueReference",
-            "valueSampledData",
-            "valueSignature",
-            "valueTiming",
-            "valueContactDetail",
-            "valueDataRequirement",
-            "valueExpression",
-            "valueParameterDefinition",
-            "valueRelatedArtifact",
-            "valueTriggerDefinition",
-            "valueUsageContext",
-            "valueAvailability",
-            "valueExtendedContactDetail",
-            "valueDosage",
+            # "valueSampledData",
+            # "valueSignature",
+            # "valueTiming",
+            # "valueContactDetail",
+            # "valueDataRequirement",
+            # "valueExpression",
+            # "valueParameterDefinition",
+            # "valueRelatedArtifact",
+            # "valueTriggerDefinition",
+            # "valueUsageContext",
+            # "valueAvailability",
+            # "valueExtendedContactDetail",
+            # "valueDosage",
             "valueMeta",
         ]
 
@@ -917,31 +923,31 @@ class Extension(datatype.DataType):
         """ """
         return {
             "value": [
-                "valueAddress",
+                # "valueAddress",
                 "valueAge",
                 "valueAnnotation",
-                "valueAttachment",
-                "valueAvailability",
+                # "valueAttachment",
+                # "valueAvailability",
                 "valueBase64Binary",
                 "valueBoolean",
                 "valueCanonical",
                 "valueCode",
                 "valueCodeableConcept",
-                "valueCodeableReference",
+                # "valueCodeableReference",
                 "valueCoding",
-                "valueContactDetail",
-                "valueContactPoint",
-                "valueCount",
-                "valueDataRequirement",
+                # "valueContactDetail",
+                # "valueContactPoint",
+                # "valueCount",
+                # "valueDataRequirement",
                 "valueDate",
                 "valueDateTime",
                 "valueDecimal",
-                "valueDistance",
-                "valueDosage",
-                "valueDuration",
-                "valueExpression",
-                "valueExtendedContactDetail",
-                "valueHumanName",
+                # "valueDistance",
+                # "valueDosage",
+                # "valueDuration",
+                # "valueExpression",
+                # "valueExtendedContactDetail",
+                # "valueHumanName",
                 "valueId",
                 "valueIdentifier",
                 "valueInstant",
@@ -949,27 +955,27 @@ class Extension(datatype.DataType):
                 "valueInteger64",
                 "valueMarkdown",
                 "valueMeta",
-                "valueMoney",
+                # "valueMoney",
                 "valueOid",
-                "valueParameterDefinition",
-                "valuePeriod",
+                # "valueParameterDefinition",
+                # "valuePeriod",
                 "valuePositiveInt",
                 "valueQuantity",
-                "valueRange",
-                "valueRatio",
-                "valueRatioRange",
+                # "valueRange",
+                # "valueRatio",
+                # "valueRatioRange",
                 "valueReference",
-                "valueRelatedArtifact",
-                "valueSampledData",
-                "valueSignature",
+                # "valueRelatedArtifact",
+                # "valueSampledData",
+                # "valueSignature",
                 "valueString",
                 "valueTime",
-                "valueTiming",
-                "valueTriggerDefinition",
+                # "valueTiming",
+                # "valueTriggerDefinition",
                 "valueUnsignedInt",
                 "valueUri",
                 "valueUrl",
-                "valueUsageContext",
+                # "valueUsageContext",
                 "valueUuid",
             ]
         }
