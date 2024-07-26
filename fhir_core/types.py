@@ -77,8 +77,8 @@ class FhirBase(metaclass=abc.ABCMeta):
 
     if typing.TYPE_CHECKING:
         _model_klass: str
-
-    __slots__ = ("_model_klass",)
+    else:
+        __slots__ = ("_model_klass",)
 
     @classmethod
     @lru_cache(typed=True)
@@ -100,7 +100,7 @@ class FhirBase(metaclass=abc.ABCMeta):
                 inner_schema = cls.produce_inner_schema(tp, handler)
                 if inner_schema:
                     return inner_schema
-        return
+        return None
 
     @classmethod
     def __get_pydantic_core_schema__(
@@ -178,6 +178,8 @@ class FhirBase(metaclass=abc.ABCMeta):
             value = model_klass.model_validate(value)
 
         errors: typing.List[InitErrorDetails] = list()
+        if typing.TYPE_CHECKING:
+            error_: InitErrorDetails
 
         if not isinstance(value, model_klass):
             error_type = PydanticCustomError(
@@ -185,7 +187,7 @@ class FhirBase(metaclass=abc.ABCMeta):
                 "Value is expected from the instance of {model_class}, but got type {type}",
                 {"model_class": model_klass.__name__, "type": type(value)},
             )
-            error_: InitErrorDetails = {
+            error_ = {
                 "type": error_type,
                 "loc": ("root",),
                 "input": value,
@@ -201,7 +203,7 @@ class FhirBase(metaclass=abc.ABCMeta):
                     "resource_type": value.__resource_type__,
                 },
             )
-            error_: InitErrorDetails = {
+            error_ = {
                 "type": error_type,
                 "loc": ("root",),
                 "input": value,
@@ -448,7 +450,9 @@ class PositiveInt(UnsignedInt):
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
 class PatternConstraint(GroupedMetadata):
-    pattern: re.Pattern = None
+
+    if typing.TYPE_CHECKING:
+        pattern: re.Pattern
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
         """ """
@@ -542,7 +546,7 @@ class Url:
     @lru_cache(typed=True)
     def produce_inner_schema(
         cls, source_type: typing.Any, handler: GetCoreSchemaHandler
-    ) -> core_schema.CoreSchema:
+    ) -> core_schema.CoreSchema | None:
         if source_type is str:
             return core_schema.str_schema()
         if source_type is PydanticUrl:
@@ -552,6 +556,7 @@ class Url:
                 inner_schema = cls.produce_inner_schema(tp, handler)
                 if inner_schema:
                     return inner_schema
+        return None
 
     @classmethod
     def _validate_url(  # type: ignore
@@ -570,6 +575,8 @@ class Url:
         #    if realname:
         #        email = formataddr((name, email))
         #    return schema + email
+        if isinstance(input_value, PydanticUrl):
+            return input_value
 
         if input_value in FHIR_PRIMITIVES:
             # Extensions may contain a valueUrl for a primitive FHIR type
@@ -627,6 +634,8 @@ class Url:
                 return validator(input_value)
             return cls._validate_url(input_value, validator)
 
+        if typing.TYPE_CHECKING:
+            assert inner_schema
         return core_schema.with_info_wrap_validator_function(
             _validate,
             inner_schema,
@@ -705,7 +714,7 @@ class Date:
             input_value: typing.Union[str, PydanticUrl],
             validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
             validation_info: ValidationInfo,
-        ) -> typing.Union[str, PydanticUrl]:
+        ) -> typing.Union[datetime.date, str]:
             """
             Validate a date from the provided str value.
 
@@ -725,8 +734,8 @@ class Date:
     @classmethod
     def _validate_date(
         cls,
-        input_value: typing.Union[datetime.date, str],
-        validator: typing.Callable[[typing.Union[str, datetime.date]], typing.Any],
+        input_value: typing.Any,
+        validator: typing.Callable[[typing.Any], typing.Any],
     ) -> typing.Union[datetime.date, str]:
         """ """
         if not isinstance(input_value, str):
@@ -871,7 +880,7 @@ class Time:
 # **************************************
 # ****  FHIR Primitive Types ***********
 # **************************************
-FHIR_PRIMITIVES_MAPS = {}
+FHIR_PRIMITIVES_MAPS: typing.Dict[typing.Any, str] = {}
 
 # boolean
 BooleanType = bool
@@ -964,9 +973,9 @@ def create_fhir_type(klass_name: str, model_klass: str) -> FhirBase:
     klass = type(klass_name, (FhirBase,), {"_model_klass": model_klass})
 
     if typing.TYPE_CHECKING:
-        klass = typing.cast(FhirBase, klass)
+        klass = typing.cast(typing.Type[FhirBase], klass)
 
-    return klass
+    return klass  # type: ignore
 
 
 __all__ = [

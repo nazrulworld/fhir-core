@@ -41,9 +41,9 @@ FHIRErrorCodes = Literal[
 class FHIRAbstractModel(BaseModel):
     """Abstract base model class for all FHIR elements."""
 
-    __fhir_serialization_exclude_comment__: bool = None
+    __fhir_serialization_exclude_comment__: bool = False
     # __resource_type__: Literal['ResourceType'] = 'ResourceType'
-    __resource_type__ = ...
+    __resource_type__: str = "__resource_type__"
 
     fhir_comments: typing.Union[str, typing.List[str]] = Field(
         None, alias="fhir_comments", json_schema_extra={"element_property": False}
@@ -95,11 +95,11 @@ class FHIRAbstractModel(BaseModel):
     ) -> typing.Generator[FieldInfo, None, None]:
         """ """
         for field_info in cls.model_fields.values():
-            if field_info.json_schema_extra.get("element_property", False):
+            if field_info.json_schema_extra.get("element_property", False):  # type: ignore
                 yield field_info
 
     @classmethod
-    def elements_sequence(cls):
+    def elements_sequence(cls) -> typing.List[str]:
         """returning all elements names from ``Resource`` according specification,
         with preserving original sequence order.
         """
@@ -363,10 +363,10 @@ class FHIRAbstractModel(BaseModel):
 
         for prefix, fields in one_of_many_fields.items():
             assert (
-                self.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix
+                self.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix  # type: ignore
             )
             required = (
-                self.model_fields[fields[0]].json_schema_extra["one_of_many_required"]
+                self.model_fields[fields[0]].json_schema_extra["one_of_many_required"]  # type: ignore
                 is True
             )
             found = False
@@ -414,7 +414,7 @@ class FHIRAbstractModel(BaseModel):
                     getattr(ext_value, "__resource_type__", None)
                     == "FHIRPrimitiveExtension"
                 ):
-                    if ext_value.extension and len(ext_value.extension) > 0:
+                    if ext_value.extension and len(ext_value.extension) > 0:  # type: ignore
                         missing_ext = False
                 else:
                     validate_pass = True
@@ -426,9 +426,11 @@ class FHIRAbstractModel(BaseModel):
                     #        validate_pass = False
                     if not validate_pass:
                         continue
-                    if ext_value.extension and len(ext_value.extension) > 0:
+                    if ext_value.extension and len(ext_value.extension) > 0:  # type: ignore
                         missing_ext = False
             if missing_ext:
+                if typing.TYPE_CHECKING:
+                    error_: InitErrorDetails
                 if value is _missing:
                     # 'field required'
                     error_type = PydanticCustomError(
@@ -436,9 +438,9 @@ class FHIRAbstractModel(BaseModel):
                         "Value for the field '{field_name}' is required.",
                         {"field_name": field_info.alias},
                     )
-                    error_: InitErrorDetails = {
+                    error_ = {
                         "type": error_type,
-                        "loc": (field_info.alias,),
+                        "loc": (field_info.alias,),  # type: ignore
                         "input": value,
                     }
                     errors.append(error_)
@@ -449,9 +451,9 @@ class FHIRAbstractModel(BaseModel):
                         "None value is not allowed for the field '{field_name}'.",
                         {"field_name": field_info.alias},
                     )
-                    error_: InitErrorDetails = {
+                    error_ = {
                         "type": error_type,
-                        "loc": (field_info.alias,),
+                        "loc": (field_info.alias,),  # type: ignore
                         "input": value,
                     }
                     errors.append(error_)
