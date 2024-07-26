@@ -43,7 +43,6 @@ def test_primitive_fields():
             title="Full Name",
             json_schema_extra={"element_property": True, "element_required": True},
         )
-
         name__ext: FHIRPrimitiveExtensionType = Field(
             None, alias="_name", title="Extension field for ``type``."
         )

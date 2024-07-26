@@ -1,9 +1,10 @@
+import abc
 import dataclasses
 import datetime
 import decimal
 import re
 import typing
-from functools import cached_property, lru_cache
+from functools import lru_cache
 from uuid import UUID
 
 from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
@@ -50,20 +51,19 @@ FHIR_PRIMITIVES = frozenset(
 )
 
 
-@dataclasses.dataclass
-class FhirBase:
+class FhirBase(metaclass=abc.ABCMeta):
     """The base type aka validator for FHIR resource model.
 
     ```py
     from fhir.resources.core.fhirabstractmodel import FHIRAbstractModel
-    from fhir.resources.core.types import FhirBase
+    from fhir.resources.core.types import create_fhirabstractmodel
     from pydantic import Field
 
     class Patient(FHIRAbstractModel):
         __resource_type__ = "Patient"
         name: str = Field(..., title="Patient name")
 
-    PatientType = FhirBase(model_klass='fhir.resources.patient.Patient')
+    PatientType = create_fhir_type('PatientType', 'fhir.resources.patient.Patient')
 
     class CarePlan(FHIRAbstractModel):
         __resource_type__ = "CarePlan"
@@ -75,16 +75,16 @@ class FhirBase:
     ```
     """
 
-    _model_klass: str = None
+    if typing.TYPE_CHECKING:
+        _model_klass: str
 
-    def __init__(self, model_klass: str):
-        """ """
-        self._model_klass = model_klass
+    __slots__ = ("_model_klass",)
 
-    @cached_property
-    def model_klass(self) -> typing.Type[FHIRAbstractModel]:
+    @classmethod
+    @lru_cache(typed=True)
+    def get_model_klass(cls) -> typing.Type[FHIRAbstractModel]:
         """ """
-        return import_string(self._model_klass)
+        return import_string(cls._model_klass)
 
     @classmethod
     @lru_cache(typed=True)
@@ -150,7 +150,7 @@ class FhirBase:
                 FHIRAbstractModel: The parsed FHIR resource.
 
             """
-            model_klass = source_type.model_klass
+            model_klass = source_type.get_model_klass()
             if typing.TYPE_CHECKING:
                 model_klass = typing.cast(typing.Type[FHIRAbstractModel], model_klass)
             return validator(cls.fhir_model_validator(input_value, model_klass))
@@ -229,7 +229,7 @@ class String(GroupedMetadata):
     be trimmed to nothing, which would be treated as an invalid element value. Therefore strings SHOULD always
     contain non-whitespace content
     This datatype can be bound to a ValueSet
-    Regex: ^[\s\S]+$ (see notes below)
+    Regex: ^[\\s\\S]+$ (see notes below)
 
     ```py
     from pydantic import BaseModel
@@ -957,8 +957,20 @@ FHIR_PRIMITIVES_MAPS[InstantType] = "instant"
 TimeType = Annotated[datetime.time, Time()]
 FHIR_PRIMITIVES_MAPS[TimeType] = "time"
 
+
+# factory function
+def create_fhir_type(klass_name: str, model_klass: str) -> FhirBase:
+    """ """
+    klass = type(klass_name, (FhirBase,), {"_model_klass": model_klass})
+
+    if typing.TYPE_CHECKING:
+        klass = typing.cast(FhirBase, klass)
+
+    return klass
+
+
 __all__ = [
-    "FhirBase",
+    "create_fhir_type",
     "BooleanType",
     "StringType",
     "Base64BinaryType",

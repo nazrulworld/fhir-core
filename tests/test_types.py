@@ -19,8 +19,8 @@ class MyFhirPatientModel(FHIRAbstractModel):
     name: fhirtypes.StringType = Field(..., title="Name")
 
 
-MyFhirPatientModelType = fhirtypes.FhirBase(
-    model_klass="tests.test_types.MyFhirPatientModel"
+MyFhirPatientModelType = fhirtypes.create_fhir_type(
+    "MyFhirPatientModelType", "tests.test_types.MyFhirPatientModel"
 )
 
 
