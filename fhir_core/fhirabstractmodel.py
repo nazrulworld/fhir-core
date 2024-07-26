@@ -5,13 +5,16 @@ from __future__ import annotations as _annotations
 import inspect
 import logging
 import typing
+import warnings
 from collections import OrderedDict
 from functools import lru_cache
 
+import typing_extensions
 from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    PydanticDeprecatedSince20,
     SerializationInfo,
     model_serializer,
     model_validator,
@@ -141,18 +144,9 @@ class FHIRAbstractModel(BaseModel):
         self,
         *,
         indent: int | None = None,
-        include: IncEx = None,
-        exclude: IncEx = None,
-        context: dict[str, typing.Any] | None = None,
-        by_alias: bool = True,
-        exclude_unset: bool = False,
-        exclude_defaults: bool = False,
-        exclude_none: bool = True,
-        round_trip: bool = False,
-        warnings: bool | Literal["none", "warn", "error"] = True,
-        serialize_as_any: bool = False,
-        # Custom
+        # FHIR custom
         exclude_comments: bool = False,
+        **pydantic_kwargs,
     ) -> str:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump_json
 
@@ -160,18 +154,10 @@ class FHIRAbstractModel(BaseModel):
 
         Args:
             indent: Indentation to use in the JSON output. If None is passed, the output will be compact.
-            include: Field(s) to include in the JSON output.
-            exclude: Field(s) to exclude from the JSON output.
-            context: Additional context to pass to the serializer.
-            by_alias: Whether to serialize using field aliases.
-            exclude_unset: Whether to exclude fields that have not been explicitly set.
-            exclude_defaults: Whether to exclude fields that are set to their default value.
-            exclude_none: Whether to exclude fields that have a value of `None`.
-            round_trip: If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
-            exclude_comments: FHIR comment
+            exclude_comments: If the FHIR comment should be excluded.
+                    By default, FHIR comments are included.
+            pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
+                    Normally you don't need to use other params.
 
         Returns:
             A JSON string representation of the model.
@@ -179,9 +165,10 @@ class FHIRAbstractModel(BaseModel):
         """Fully overridden method but codes are copied from BaseMode and business logic added
         in according to support ``fhir_comments``filter and other FHIR specific requirments.
         """
+        by_alias = pydantic_kwargs.pop("by_alias", None)
         if by_alias is None:
             by_alias = True
-
+        exclude_none = pydantic_kwargs.pop("exclude_none", None)
         if exclude_none is None:
             exclude_none = True
 
@@ -193,16 +180,9 @@ class FHIRAbstractModel(BaseModel):
         result = BaseModel.model_dump_json(
             self,
             indent=indent,
-            include=include,
-            exclude=exclude,
-            context=context,
             by_alias=by_alias,
-            exclude_unset=exclude_unset,
-            exclude_defaults=exclude_defaults,
             exclude_none=exclude_none,
-            round_trip=round_trip,
-            warnings=warnings,
-            serialize_as_any=serialize_as_any,
+            **pydantic_kwargs,
         )
         if exclude_comments is not None:
             self.__fhir_serialization_exclude_comment__ = org_config_val
@@ -211,44 +191,24 @@ class FHIRAbstractModel(BaseModel):
     def model_dump(
         self,
         *,
-        mode: Literal["json", "python"] | str = "python",
-        include: IncEx = None,
-        exclude: IncEx = None,
-        context: dict[str, typing.Any] | None = None,
-        by_alias: bool = True,
-        exclude_unset: bool = False,
-        exclude_defaults: bool = False,
-        exclude_none: bool = True,
-        round_trip: bool = False,
-        warnings: bool | Literal["none", "warn", "error"] = True,
-        serialize_as_any: bool = False,
-        # extra
+        # our custom
         exclude_comments: bool = False,
-    ) -> dict[str, typing.Any]:
+        **pydantic_kwargs,
+    ) -> typing.Dict[str, typing.Any]:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump
 
         Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
         Args:
-            mode: The mode in which `to_python` should run.
-                If mode is 'json', the output will only contain JSON serializable types.
-                If mode is 'python', the output may contain non-JSON-serializable Python objects.
-            include: A set of fields to include in the output.
-            exclude: A set of fields to exclude from the output.
-            context: Additional context to pass to the serializer.
-            by_alias: Whether to use the field's alias in the dictionary key if defined.
-            exclude_unset: Whether to exclude fields that have not been explicitly set.
-            exclude_defaults: Whether to exclude fields that are set to their default value.
-            exclude_none: Whether to exclude fields that have a value of `None`.
-            round_trip: If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
+            exclude_comments: If the FHIR comment should be excluded.
+                    By default, FHIR comments are included.
+            pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
+                    Normally you don't need to use other params.
 
         Returns:
             A dictionary representation of the model.
 
-        if len(pydantic_extra) > 0:
+        if len(pydantic_kwargs) > 0:
             logger.warning(
                 f"{self.__class__.__name__}.dict method accepts only"
                 "´by_alias´, ´exclude_none´, ´exclude_comments` as parameters"
@@ -256,9 +216,14 @@ class FHIRAbstractModel(BaseModel):
                 "You should not provide any extra argument."
         )
         """
+        by_alias = pydantic_kwargs.pop("by_alias", None)
         if by_alias is None:
             by_alias = True
+        mode = pydantic_kwargs.pop("mode", None)
+        if mode is None:
+            mode = "python"
 
+        exclude_none = pydantic_kwargs.pop("exclude_none", None)
         if exclude_none is None:
             exclude_none = True
 
@@ -270,20 +235,48 @@ class FHIRAbstractModel(BaseModel):
         result = BaseModel.model_dump(
             self,
             mode=mode,
-            include=include,
-            exclude=exclude,
-            context=context,
             by_alias=by_alias,
-            exclude_unset=exclude_unset,
-            exclude_defaults=exclude_defaults,
             exclude_none=exclude_none,
-            round_trip=round_trip,
-            warnings=warnings,
-            serialize_as_any=serialize_as_any,
+            **pydantic_kwargs,
         )
         if exclude_comments is not None:
             self.__fhir_serialization_exclude_comment__ = org_config_val
         return result
+
+    @typing_extensions.deprecated(
+        "The `dict` method is deprecated; use `model_dump` instead.", category=None
+    )
+    def dict(  # noqa: D102
+        self,
+        *,
+        # FHIR custom
+        exclude_comments: bool = False,
+        **pydantic_kwargs,
+    ) -> typing.Dict[str, typing.Any]:
+        warnings.warn(
+            "The `dict` method is deprecated; use `model_dump` instead.",
+            category=PydanticDeprecatedSince20,
+        )
+        return self.model_dump(exclude_comments=exclude_comments, **pydantic_kwargs)
+
+    @typing_extensions.deprecated(
+        "The `json` method is deprecated; use `model_dump_json` instead.", category=None
+    )
+    def json(  # noqa: D102
+        self,
+        *,
+        indent: int | None = None,
+        # FHIR custom
+        exclude_comments: bool = False,
+        **pydantic_kwargs,
+    ) -> str:
+        warnings.warn(
+            "The `json` method is deprecated; use `model_dump_json` instead.",
+            category=PydanticDeprecatedSince20,
+        )
+        return self.model_dump_json(
+            indent=indent, exclude_comments=exclude_comments, **pydantic_kwargs
+        )
 
     # Serializers
     @model_serializer(mode="wrap", when_used="always", return_type=OrderedDict)
