@@ -49,8 +49,8 @@ install:
   - pip install codecov
   - sleep 1
 script:
-  - mypy fhir_core
-  - black --check-untyped-defs --check --verbose fhir_core
+  - mypy --check-untyped-defs fhir_core
+  - black --check --verbose fhir_core
   - pytest -s --cov=tests -s --tb=native -v --cov-report term-missing --cov-append tests
 after_success:
   - codecov

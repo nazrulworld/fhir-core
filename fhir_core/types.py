@@ -1,3 +1,5 @@
+from __future__ import annotations as _annotations
+
 import abc
 import dataclasses
 import datetime
