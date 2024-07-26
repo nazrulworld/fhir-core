@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0 (unreleased)
-------------------
+0.1.0b1 (unreleased)
+--------------------
 
-- project initialized.
+- The first beta release! and this release is not stable enough to use in production.

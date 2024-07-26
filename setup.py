@@ -39,7 +39,7 @@ test_requirements = [
     "types-requests",
     "setuptools==65.6.3;python_version>='3.7'",
     "lxml",
-    "PyYAML>=5.4.1"
+    "PyYAML>=5.4.1",
 ]
 if PY_VERSION_10_OR_LATER:
     test_requirements.append("importlib-metadata>=5.2.0")
@@ -89,24 +89,18 @@ setup(
     name="fhir_core",
     packages=find_namespace_packages(
         include=["fhir_core"],
-        exclude=[
-            "ez_setup",
-            "tests"
-        ],
+        exclude=["ez_setup", "tests"],
     ),
     package_data={"fhir_core": ["py.typed"]},
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
     extras_require={
-        "test": (
-            test_requirements
-            + setup_requirements
-        ),
+        "test": (test_requirements + setup_requirements),
         "dev": (test_requirements + development_requirements),
     },
     url="https://github.com/nazrulworld/fhir-core",
-    version="0.1.0.dev0",
+    version="0.1.0b1.dev0",
     zip_safe=False,
     python_requires=">=3.8",
     project_urls={
