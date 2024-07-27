@@ -52,7 +52,7 @@ FHIR_PRIMITIVES = frozenset(
         "time",
     ]
 )
-FHIR_TYPES_MAPS = {}
+FHIR_TYPES_MAPS: typing.Dict[str, str] = {}
 
 
 class FhirBase(metaclass=abc.ABCMeta):
@@ -225,7 +225,11 @@ class FhirBase(metaclass=abc.ABCMeta):
 
 
 class FhirElementOrResourceBase(FhirBase):
-    """Special type of validator for FHIR resource model."""
+    """Special type of validator for FHIR Resource & Element model.
+    There are many cases that value type is declared as ResourceType
+    but expect any of FHIR resource that derived from Base Resource.
+    Fx. domainresource.DomainResource.contained: typing.List[fhirtypes.ResourceType]
+    """
 
     @classmethod
     def fhir_model_validator(
@@ -246,14 +250,54 @@ class FhirElementOrResourceBase(FhirBase):
             # @TODO: need to parse json?
             pass
 
+        errors: typing.List[InitErrorDetails] = list()
+        if typing.TYPE_CHECKING:
+            error_: InitErrorDetails
+
         if model_klass.__name__ == "Resource":
             if not _model_klass.has_resource_base():
-                raise ValueError
+                error_type = PydanticCustomError(
+                    "model_validation_format",
+                    "Provided FHIR resource {model_class} should be derived from / based on Resource.",
+                    {"model_class": _model_klass.__name__},
+                )
+                error_ = {
+                    "type": error_type,
+                    "loc": ("root",),
+                    "input": _model_klass,
+                }
+                errors.append(error_)
+
         elif model_klass.__name__ == "Element":
             if _model_klass.has_resource_base():
-                raise ValueError
+                error_type = PydanticCustomError(
+                    "model_validation_format",
+                    "Provided FHIR resource {model_class} should be derived from / based on Element.",
+                    {"model_class": _model_klass.__name__},
+                )
+                error_ = {
+                    "type": error_type,
+                    "loc": ("root",),
+                    "input": _model_klass,
+                }
+                errors.append(error_)
         else:
-            raise ValueError
+            error_type = PydanticCustomError(
+                "model_validation_format",
+                "Only Element or Resource model is allowed to use this validator.",
+                {},
+            )
+            error_ = {
+                "type": error_type,
+                "loc": ("root",),
+                "input": model_klass,
+            }
+            errors.append(error_)
+
+        if len(errors) > 0:
+            raise ValidationError.from_exception_data(cls.__name__, errors)
+        else:
+            del errors
 
         return FhirBase.fhir_model_validator(value, _model_klass)
 
