@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b3 (unreleased)
+0.1.0b3 (2024-07-28)
 --------------------
 
 - Fixes the function that is checking is_primitive.
