@@ -1,4 +1,5 @@
 import datetime
+import decimal
 import typing
 import uuid
 from functools import lru_cache
@@ -18,6 +19,7 @@ PY_PRIMITIVES = frozenset(
         datetime.datetime,
         datetime.date,
         datetime.time,
+        decimal.Decimal,
         uuid.UUID,
     ]
 )

@@ -116,3 +116,20 @@ def test_model_dump_serialization():
         Account.model_validate_json(obj.model_dump_json()).model_dump()
         == serialized_data
     )
+
+
+def test_general_resource_validation():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.json"
+    obj = ActivityDefinition.model_validate_json(fileanme.read_bytes())
+    serialized_data = obj.model_dump()
+    assert (
+        ActivityDefinition.model_validate(serialized_data).model_dump()
+        == serialized_data
+    )
+    assert (
+        ActivityDefinition.model_validate_json(obj.model_dump_json()).model_dump()
+        == serialized_data
+    )

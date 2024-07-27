@@ -5,7 +5,9 @@ History
 0.1.0b3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixes the function that is checking is_primitive.
+
+- Fixes validator for Resource & Element types.
 
 
 0.1.0b2 (2024-07-27)

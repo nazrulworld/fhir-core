@@ -9,6 +9,7 @@ import typing
 from functools import lru_cache
 from uuid import UUID
 
+import typing_extensions
 from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
 from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
@@ -51,6 +52,7 @@ FHIR_PRIMITIVES = frozenset(
         "time",
     ]
 )
+FHIR_TYPES_MAPS = {}
 
 
 class FhirBase(metaclass=abc.ABCMeta):
@@ -220,6 +222,40 @@ class FhirBase(metaclass=abc.ABCMeta):
 
     def __hash__(self) -> int:
         return hash(self._model_klass)
+
+
+class FhirElementOrResourceBase(FhirBase):
+    """Special type of validator for FHIR resource model."""
+
+    @classmethod
+    def fhir_model_validator(
+        cls,
+        value: typing.Union[str, bytes, dict, FHIRAbstractModel],
+        model_klass: typing.Type[FHIRAbstractModel],
+    ):
+
+        _model_klass = model_klass
+        if isinstance(value, FHIRAbstractModel):
+            _model_klass = value.__class__
+        elif isinstance(value, dict) and "resourceType" in value:
+            global FHIR_TYPES_MAPS
+            _model_klass = import_string(
+                FHIR_TYPES_MAPS[value["resourceType"] + "Type"]
+            )
+        elif isinstance(value, (str, bytes)):
+            # @TODO: need to parse json?
+            pass
+
+        if model_klass.__name__ == "Resource":
+            if not _model_klass.has_resource_base():
+                raise ValueError
+        elif model_klass.__name__ == "Element":
+            if _model_klass.has_resource_base():
+                raise ValueError
+        else:
+            raise ValueError
+
+        return FhirBase.fhir_model_validator(value, _model_klass)
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
@@ -452,7 +488,6 @@ class PositiveInt(UnsignedInt):
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
 class PatternConstraint(GroupedMetadata):
-
     if typing.TYPE_CHECKING:
         pattern: re.Pattern
 
@@ -970,18 +1005,35 @@ FHIR_PRIMITIVES_MAPS[TimeType] = "time"
 
 
 # factory function
-def create_fhir_type(klass_name: str, model_klass: str) -> FhirBase:
+def _create_fhir_type(
+    klass_name: str, model_klass: str, base_class: typing_extensions.Type[FhirBase]
+) -> FhirBase:
     """ """
-    klass = type(klass_name, (FhirBase,), {"_model_klass": model_klass})
+    klass = type(klass_name, (base_class,), {"_model_klass": model_klass})
 
     if typing.TYPE_CHECKING:
         klass = typing.cast(typing.Type[FhirBase], klass)
 
+    global FHIR_TYPES_MAPS
+    if klass_name not in FHIR_TYPES_MAPS:
+        FHIR_TYPES_MAPS[klass_name] = model_klass
+
     return klass  # type: ignore
+
+
+def create_fhir_type(klass_name: str, model_klass: str) -> FhirBase:
+    """ """
+    return _create_fhir_type(klass_name, model_klass, FhirBase)
+
+
+def create_fhir_element_or_resource_type(klass_name: str, model_klass: str) -> FhirBase:
+    """ """
+    return _create_fhir_type(klass_name, model_klass, FhirElementOrResourceBase)
 
 
 __all__ = [
     "create_fhir_type",
+    "create_fhir_element_or_resource_type",
     "BooleanType",
     "StringType",
     "Base64BinaryType",

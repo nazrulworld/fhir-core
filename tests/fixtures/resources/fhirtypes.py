@@ -22,6 +22,7 @@ from fhir_core.types import (
     UrlType,
     UuidType,
     XhtmlType,
+    create_fhir_element_or_resource_type,
     create_fhir_type,
 )
 
@@ -1337,7 +1338,7 @@ DurationType = create_fhir_type(
     "DurationType", "tests.fixtures.resources.duration.Duration"
 )
 
-ElementType = create_fhir_type(
+ElementType = create_fhir_element_or_resource_type(
     "ElementType", "tests.fixtures.resources.element.Element"
 )
 
@@ -3105,7 +3106,7 @@ ResearchSubjectProgressType = create_fhir_type(
     "tests.fixtures.resources.researchsubject.ResearchSubjectProgress",
 )
 
-ResourceType = create_fhir_type(
+ResourceType = create_fhir_element_or_resource_type(
     "ResourceType", "tests.fixtures.resources.resource.Resource"
 )
 
