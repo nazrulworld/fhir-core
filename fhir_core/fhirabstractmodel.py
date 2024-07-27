@@ -312,7 +312,7 @@ class FHIRAbstractModel(BaseModel):
                 ext_key = f"{field_key}__ext"
                 ext_val = self.__dict__.get(ext_key, None)
                 if ext_val is not None:
-                    ext_val = serialize(ext_val)
+                    ext_val = self._serialize_non_primitive_value(ext_val, serialize, info)
                 if ext_val is not None:
                     dict_key_ = (
                         info.by_alias and self.model_fields[ext_key].alias or ext_key

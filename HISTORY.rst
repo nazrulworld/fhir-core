@@ -5,7 +5,7 @@ History
 0.1.0b4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixes extension serialization.
 
 
 0.1.0b3 (2024-07-28)
