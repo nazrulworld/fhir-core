@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b4 (unreleased)
+0.1.0b4 (2024-07-28)
 --------------------
 
 - Fixes extension serialization.
