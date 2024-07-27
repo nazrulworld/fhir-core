@@ -31,8 +31,9 @@ class Meta(datatype.DataType):
         alias="lastUpdated",
         title="When the resource version last changed",
         description="When the resource last changed - e.g. when the version changed.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     lastUpdated__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_lastUpdated", title="Extension field for ``lastUpdated``."
@@ -49,9 +50,9 @@ class Meta(datatype.DataType):
             "[StructureDefinition.url](structuredefinition-"
             "definitions.html#StructureDefinition.url)."
         ),
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
+            # note: Listed Resource Type(s) should be allowed as Reference.
             "enum_reference_types": ["StructureDefinition"],
         },
     )
@@ -67,8 +68,9 @@ class Meta(datatype.DataType):
             "Security labels applied to this resource. These tags connect specific "
             "resources to the overall security policy and infrastructure."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     source: fhirtypes.UriType = Field(
@@ -82,8 +84,9 @@ class Meta(datatype.DataType):
             " resource. The source may identify another FHIR server, document, "
             "message, database, etc."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     source__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_source", title="Extension field for ``source``."
@@ -99,8 +102,9 @@ class Meta(datatype.DataType):
             "applications are not required to consider the tags when interpreting "
             "the meaning of a resource."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     versionId: fhirtypes.IdType = Field(
@@ -112,8 +116,9 @@ class Meta(datatype.DataType):
             "of the URL. This value changes when the resource is created, updated, "
             "or deleted."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     versionId__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_versionId", title="Extension field for ``versionId``."

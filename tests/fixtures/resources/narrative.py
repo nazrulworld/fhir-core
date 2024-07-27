@@ -6,6 +6,7 @@ Version: 5.0.0
 Build ID: 2aecd53
 Last updated: 2023-03-26T15:21:02.749+11:00
 """
+import typing
 
 from pydantic import Field
 
@@ -30,8 +31,10 @@ class Narrative(datatype.DataType):
         alias="div",
         title="Limited xhtml content",
         description="The actual narrative content, a stripped down version of XHTML.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True, "element_required": True},
+        json_schema_extra={
+            "element_property": True,
+            "element_required": True,
+        },
     )
     div__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_div", title="Extension field for ``div``."
@@ -46,14 +49,13 @@ class Narrative(datatype.DataType):
             "just the defined data or the extensions too), or whether a human "
             "authored it and it may contain additional data."
         ),
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
             "element_required": True,
+            # note: Enum values can be used in validation,
+            # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["generated", "extensions", "additional", "empty"],
         },
-        # note: Enum values can be used in validation,
-        # but use in your own responsibilities, read official FHIR documentation.
     )
     status__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_status", title="Extension field for ``status``."
@@ -67,6 +69,13 @@ class Narrative(datatype.DataType):
         """
         return ["id", "extension", "status", "div"]
 
-    def get_required_fields(self):
-        """ """
-        return [("div", "div__ext"), ("status", "status__ext")]
+    def get_required_fields(self) -> typing.List[typing.Tuple[str, str]]:
+        """https://www.hl7.org/fhir/extensibility.html#Special-Case
+        In some cases, implementers might find that they do not have appropriate data for
+        an element with minimum cardinality = 1. In this case, the element must be present,
+        but unless the resource or a profile on it has made the actual value of the primitive
+        data type mandatory, it is possible to provide an extension that explains why
+        the primitive value is not present.
+        """
+        required_fields = [("div", "div__ext"), ("status", "status__ext")]
+        return required_fields

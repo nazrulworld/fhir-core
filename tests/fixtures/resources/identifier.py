@@ -28,12 +28,11 @@ class Identifier(datatype.DataType):
         alias="assigner",
         title="Organization that issued id (may be just text)",
         description="Organization that issued/manages the identifier.",
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
+            # note: Listed Resource Type(s) should be allowed as Reference.
             "enum_reference_types": ["Organization"],
         },
-        # note: Listed Resource Type(s) should be allowed as Reference.
     )
 
     period: fhirtypes.PeriodType = Field(
@@ -41,8 +40,9 @@ class Identifier(datatype.DataType):
         alias="period",
         title="Time period when id is/was valid for use",
         description="Time period during which identifier is/was valid for use.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     system: fhirtypes.UriType = Field(
@@ -53,8 +53,9 @@ class Identifier(datatype.DataType):
             "Establishes the namespace for the value - that is, an absolute URL "
             "that describes a set values that are unique."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     system__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_system", title="Extension field for ``system``."
@@ -68,8 +69,9 @@ class Identifier(datatype.DataType):
             "A coded type for the identifier that can be used to determine which "
             "identifier to use for a specific purpose."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     use: fhirtypes.CodeType = Field(
@@ -77,13 +79,12 @@ class Identifier(datatype.DataType):
         alias="use",
         title="usual | official | temp | secondary | old (If known)",
         description="The purpose of this identifier.",
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
+            # note: Enum values can be used in validation,
+            # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["usual", "official", "temp", "secondary", "old"],
         },
-        # note: Enum values can be used in validation,
-        # but use in your own responsibilities, read official FHIR documentation.
     )
     use__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_use", title="Extension field for ``use``."
@@ -97,8 +98,9 @@ class Identifier(datatype.DataType):
             "The portion of the identifier typically relevant to the user and which"
             " is unique within the context of the system."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     value__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_value", title="Extension field for ``value``."

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Profile: http://hl7.org/fhir/StructureDefinition/Age
+Profile: http://hl7.org/fhir/StructureDefinition/Duration
 Release: R5
 Version: 5.0.0
 Build ID: 2aecd53
@@ -11,20 +11,20 @@ from pydantic import Field
 from . import quantity
 
 
-class Age(quantity.Quantity):
+class Duration(quantity.Quantity):
     """Disclaimer: Any field name ends with ``__ext`` doesn't part of
     Resource StructureDefinition, instead used to enable Extensibility feature
     for FHIR Primitive Data Types.
 
-    A duration of time during which an organism (or a process) has existed.
+    A length of time.
     """
 
-    __resource_type__ = "Age"
+    __resource_type__ = "Duration"
 
     @classmethod
     def elements_sequence(cls):
         """returning all elements names from
-        ``Age`` according specification,
+        ``Duration`` according specification,
         with preserving original sequence order.
         """
         return ["id", "extension", "value", "comparator", "unit", "system", "code"]

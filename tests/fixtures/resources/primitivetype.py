@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Profile: http://hl7.org/fhir/StructureDefinition/Age
+Profile: http://hl7.org/fhir/StructureDefinition/PrimitiveType
 Release: R5
 Version: 5.0.0
 Build ID: 2aecd53
@@ -8,23 +8,24 @@ Last updated: 2023-03-26T15:21:02.749+11:00
 """
 from pydantic import Field
 
-from . import quantity
+from . import datatype
 
 
-class Age(quantity.Quantity):
+class PrimitiveType(datatype.DataType):
     """Disclaimer: Any field name ends with ``__ext`` doesn't part of
     Resource StructureDefinition, instead used to enable Extensibility feature
     for FHIR Primitive Data Types.
 
-    A duration of time during which an organism (or a process) has existed.
+    Parent type for DataTypes with a simple value.
+    The base type for all re-useable types defined that have a simple property.
     """
 
-    __resource_type__ = "Age"
+    __resource_type__ = "PrimitiveType"
 
     @classmethod
     def elements_sequence(cls):
         """returning all elements names from
-        ``Age`` according specification,
+        ``PrimitiveType`` according specification,
         with preserving original sequence order.
         """
-        return ["id", "extension", "value", "comparator", "unit", "system", "code"]
+        return ["id", "extension"]

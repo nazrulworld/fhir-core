@@ -3,6 +3,7 @@ import typing
 import pytest
 from pydantic import Field, ValidationError
 
+from tests.fixtures import STATIC_PATH
 from tests.fixtures.resources import fhirtypes
 from tests.fixtures.resources.domainresource import DomainResource
 from tests.fixtures.resources.fhirtypes import FHIRPrimitiveExtensionType
@@ -34,7 +35,6 @@ def test_primitive_fields():
     """ """
 
     class MyPrimitivesValueFieldsModel(DomainResource):
-
         __resource_type__ = "MyPrimitivesValueFieldsModel"
 
         name: fhirtypes.StringType = Field(
@@ -102,3 +102,17 @@ def test_primitive_fields():
     )
     # need proper handling of exclude comments
     serialized_data = obj.model_dump(exclude_comments=True)
+
+
+def test_model_dump_serialization():
+    """ """
+    from tests.fixtures.resources.account import Account
+
+    fileanme = STATIC_PATH / "account-example.json"
+    obj = Account.model_validate_json(fileanme.read_bytes())
+    serialized_data = obj.model_dump()
+    assert Account.model_validate(serialized_data).model_dump() == serialized_data
+    assert (
+        Account.model_validate_json(obj.model_dump_json()).model_dump()
+        == serialized_data
+    )

@@ -458,7 +458,7 @@ class PatternConstraint(GroupedMetadata):
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
         """ """
-        yield pydantic_general_metadata(pattern=self.pattern)
+        yield pydantic_general_metadata(pattern=self.pattern.pattern)
 
 
 class Uri(PatternConstraint):

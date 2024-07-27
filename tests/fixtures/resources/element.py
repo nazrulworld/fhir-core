@@ -10,12 +10,10 @@ import typing
 
 from pydantic import Field
 
-from fhir_core.fhirabstractmodel import FHIRAbstractModel
-
-from . import fhirtypes
+from . import base, fhirtypes
 
 
-class Element(FHIRAbstractModel):
+class Element(base.Base):
     """Disclaimer: Any field name ends with ``__ext`` doesn't part of
     Resource StructureDefinition, instead used to enable Extensibility feature
     for FHIR Primitive Data Types.
@@ -38,8 +36,9 @@ class Element(FHIRAbstractModel):
             "an extension, there is a set of requirements that SHALL be met as part"
             " of the definition of the extension."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     id: fhirtypes.StringType = Field(
@@ -50,8 +49,9 @@ class Element(FHIRAbstractModel):
             "Unique id for the element within a resource (for internal references)."
             " This may be any string value that does not contain spaces."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     @classmethod

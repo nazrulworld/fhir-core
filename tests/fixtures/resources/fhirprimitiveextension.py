@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""see: https://www.hl7.org/fhir/extensibility.html
-Extensibility feature for FHIR Primitive Data Types.
-"""
-__author__ = "Md Nazrul Islam<email2nazrul@gmail.com>"
-
 import typing
 
 from pydantic import Field, model_validator
@@ -13,9 +7,13 @@ from fhir_core import fhirabstractmodel
 
 from . import fhirtypes
 
+__author__ = "Md Nazrul Islam"
+__email__ = "email2nazrul@gmail.com"
+
 
 class FHIRPrimitiveExtension(fhirabstractmodel.FHIRAbstractModel):
-    """"""
+    """@see: https://www.hl7.org/fhir/extensibility.html
+    Extensibility feature for FHIR Primitive Data Types."""
 
     __resource_type__ = "FHIRPrimitiveExtension"
 

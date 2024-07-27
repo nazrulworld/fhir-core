@@ -32,8 +32,9 @@ class Period(datatype.DataType):
             "start may be in the past, and the end date in the future, which means "
             "that period is expected/planned to end at that time."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     end__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_end", title="Extension field for ``end``."
@@ -44,8 +45,9 @@ class Period(datatype.DataType):
         alias="start",
         title="Starting time with inclusive boundary",
         description="The start of the period. The boundary is inclusive.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     start__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_start", title="Extension field for ``start``."

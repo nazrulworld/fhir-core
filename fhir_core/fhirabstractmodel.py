@@ -303,7 +303,7 @@ class FHIRAbstractModel(BaseModel):
             dict_key = info.by_alias and field_info.alias or field_key
             value = self.__dict__.get(field_key, None)
             if not is_primitive and value is not None:
-                value = serialize(value)
+                value = self._serialize_non_primitive_value(value, serialize, info)
             if value is not None or (info.exclude_none is False and value is None):
                 yield dict_key, value
 
@@ -324,6 +324,35 @@ class FHIRAbstractModel(BaseModel):
 
         if comments is not None and not self.__fhir_serialization_exclude_comment__:
             yield FHIR_COMMENTS_FIELD_NAME, comments
+
+    def _serialize_non_primitive_value(
+        self,
+        value: typing.Any,
+        serialize: typing.Callable[[typing.Any], typing.Any],
+        info: SerializationInfo,
+    ) -> typing.Any:
+        """ """
+        if isinstance(value, list):
+            if len(value) == 0:
+                return value
+            container = list()
+            for val in value:
+                container.append(
+                    self._serialize_non_primitive_value(val, serialize, info)
+                )
+            return container
+
+        if value is None:
+            return value
+        if isinstance(value, FHIRAbstractModel):
+            return value.model_dump(
+                exclude_comments=self.__fhir_serialization_exclude_comment__,
+                mode=info.mode,
+                by_alias=info.by_alias,
+                exclude_none=info.exclude_none,
+            )
+        else:
+            return serialize(value)
 
     @model_validator(mode="after")
     def validate_after_model_construction(self) -> Self:

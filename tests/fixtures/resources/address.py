@@ -39,8 +39,9 @@ class Address(datatype.DataType):
             "The name of the city, town, suburb, village or other community or "
             "delivery center."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     city__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_city", title="Extension field for ``city``."
@@ -51,8 +52,9 @@ class Address(datatype.DataType):
         alias="country",
         title="Country (e.g. may be ISO 3166 2 or 3 letter code)",
         description="Country - a nation as commonly understood or generally accepted.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     country__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_country", title="Extension field for ``country``."
@@ -63,8 +65,9 @@ class Address(datatype.DataType):
         alias="district",
         title="District name (aka county)",
         description="The name of the administrative area (county).",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     district__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_district", title="Extension field for ``district``."
@@ -79,8 +82,9 @@ class Address(datatype.DataType):
             "name, street direction,  P.O. Box number, delivery hints, and similar "
             "address information."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     line__ext: typing.List[typing.Union[fhirtypes.FHIRPrimitiveExtensionType, None]] = (
         Field(None, alias="_line", title="Extension field for ``line``.")
@@ -91,8 +95,9 @@ class Address(datatype.DataType):
         alias="period",
         title="Time period when address was/is in use",
         description=None,
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
 
     postalCode: fhirtypes.StringType = Field(
@@ -100,8 +105,9 @@ class Address(datatype.DataType):
         alias="postalCode",
         title="Postal code for area",
         description="A postal code designating a region defined by the postal service.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     postalCode__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_postalCode", title="Extension field for ``postalCode``."
@@ -116,8 +122,9 @@ class Address(datatype.DataType):
             "organized country. A code may be used if codes are in common use (e.g."
             " US 2 letter state codes)."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     state__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_state", title="Extension field for ``state``."
@@ -132,8 +139,9 @@ class Address(datatype.DataType):
             "postal label. This may be provided instead of or as well as the "
             "specific parts."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+        },
     )
     text__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_text", title="Extension field for ``text``."
@@ -148,13 +156,12 @@ class Address(datatype.DataType):
             "mailing addresses (e.g. PO Boxes and care-of addresses). Most "
             "addresses are both."
         ),
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
+            # note: Enum values can be used in validation,
+            # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["postal", "physical", "both"],
         },
-        # note: Enum values can be used in validation,
-        # but use in your own responsibilities, read official FHIR documentation.
     )
     type__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_type", title="Extension field for ``type``."
@@ -165,13 +172,12 @@ class Address(datatype.DataType):
         alias="use",
         title="home | work | temp | old | billing - purpose of this address",
         description="The purpose of this address.",
-        # if property is element of this resource.
         json_schema_extra={
             "element_property": True,
+            # note: Enum values can be used in validation,
+            # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["home", "work", "temp", "old", "billing"],
         },
-        # note: Enum values can be used in validation,
-        # but use in your own responsibilities, read official FHIR documentation.
     )
     use__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
         None, alias="_use", title="Extension field for ``use``."

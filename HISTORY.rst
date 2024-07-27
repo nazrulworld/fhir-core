@@ -5,7 +5,11 @@ History
 0.1.0b2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+Bugfixes
+
+- Fixes pattern as string for some of primitives types. fx UriType.
+
+- Fixes model serializer.
 
 
 0.1.0b1 (2024-07-26)
