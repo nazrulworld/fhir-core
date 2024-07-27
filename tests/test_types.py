@@ -136,3 +136,12 @@ def test_date_type():
     # test with year and month
     model = MySimpleDateModel(birthday="2016-09")
     isinstance(model.birthday, str)
+
+
+def test_uri_type():
+    """ """
+
+    class MySimpleDateModel(BaseModel):
+        minRules: fhirtypes.UriType = Field(..., alias="minRules", title="Min Rules")
+
+    assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"

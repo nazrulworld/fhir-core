@@ -20,14 +20,13 @@ from pydantic import (
     model_validator,
 )
 from pydantic.fields import FieldInfo
-from pydantic.main import IncEx
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
 from .utils import is_primitive_type
 
 if typing.TYPE_CHECKING:
-    from pydantic.main import Model, TupleGenerator
+    from pydantic.main import TupleGenerator
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"

@@ -1,6 +1,3 @@
-from typing_extensions import Annotated as _Annotated
-from typing_extensions import List
-
 from fhir_core.types import *
 
 __author__ = "Md Nazrul Islam"
