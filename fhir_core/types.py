@@ -343,16 +343,13 @@ class String(GroupedMetadata):
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
-class Base64Binary(GroupedMetadata):
-    """A stream of bytes, base64 encoded (RFC 4648 )"""
+class Base64Binary:
+    """A stream of bytes, base64 encoded (RFC 4648 )
+    Just a symbolic class, no need to further check with regex as value is already decoded.
+    """
 
     __visit_name__ = "base64Binary"
-
-    def __iter__(self) -> typing.Iterator[BaseMetadata]:
-        """Just a symbolic, no need to check with regex."""
-        # regex = r"^(\s*([0-9a-zA-Z+=]){4}\s*)+$"
-        # yield pydantic_general_metadata(pattern=regex)
-        yield None
+    regex = r"^(\s*([0-9a-zA-Z+=]){4}\s*)+$"
 
     @staticmethod
     def to_string(value):
