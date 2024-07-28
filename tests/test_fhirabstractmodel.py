@@ -3,6 +3,8 @@ import typing
 import pytest
 from pydantic import Field, ValidationError
 
+from fhir_core.fhirabstractmodel import FHIRAbstractModel
+from fhir_core.types import Base64BinaryType
 from tests.fixtures import STATIC_PATH
 from tests.fixtures.resources import fhirtypes
 from tests.fixtures.resources.domainresource import DomainResource
@@ -131,5 +133,39 @@ def test_general_resource_validation():
     )
     assert (
         ActivityDefinition.model_validate_json(obj.model_dump_json()).model_dump()
+        == serialized_data
+    )
+
+
+def test_base64binary_validation():
+    """ """
+
+    class Base64BinaryModel(FHIRAbstractModel):
+        base64BinaryListTypeOptionalList: typing.Optional[
+            typing.List[Base64BinaryType]
+        ] = Field(None, alias="base64BinaryListTypeOptionalList")
+        base64Binary: Base64BinaryType = Field(None, alias="base64Binary")
+
+        @classmethod
+        def elements_sequence(cls):
+            return ["base64BinaryListTypeOptionalList", "base64Binary"]
+
+    obj = Base64BinaryModel(
+        base64BinaryListTypeOptionalList=[b"aGVs"], base64Binary=b"aGVs\n"
+    )
+    obj.model_dump()
+    assert (
+        Base64BinaryModel.model_validate(obj.model_dump()).base64Binary
+        == obj.base64Binary
+    )
+
+    from tests.fixtures.resources.auditevent import AuditEvent
+
+    fileanme = STATIC_PATH / "audit-event-example-search.json"
+    obj = AuditEvent.model_validate_json(fileanme.read_bytes())
+    serialized_data = obj.model_dump()
+    assert AuditEvent.model_validate(serialized_data).model_dump() == serialized_data
+    assert (
+        AuditEvent.model_validate_json(obj.model_dump_json()).model_dump()
         == serialized_data
     )

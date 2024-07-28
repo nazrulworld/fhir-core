@@ -20,6 +20,7 @@ from pydantic import (
     model_validator,
 )
 from pydantic.fields import FieldInfo
+from pydantic.types import Base64Encoder, EncodedBytes
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
@@ -304,6 +305,8 @@ class FHIRAbstractModel(BaseModel):
             value = self.__dict__.get(field_key, None)
             if not is_primitive and value is not None:
                 value = self._serialize_non_primitive_value(value, serialize, info)
+            else:
+                value = self._serialize_primitive_value(value, field_info)
             if value is not None or (info.exclude_none is False and value is None):
                 yield dict_key, value
 
@@ -355,6 +358,39 @@ class FHIRAbstractModel(BaseModel):
             )
         else:
             return serialize(value)
+
+    def _serialize_primitive_value(
+        self,
+        value: typing.Any,
+        field_info: FieldInfo,
+    ) -> typing.Any:
+        """ """
+
+        def _get_encoder():
+            """ """
+            for enc in field_info.metadata:
+                # handle base64 output
+                if isinstance(enc, EncodedBytes):
+                    return enc
+            if "Base64Binary" in str(field_info.annotation):
+                return Base64Encoder
+
+        if isinstance(value, list):
+            if len(value) == 0:
+                return value
+            container = list()
+            for val in value:
+                container.append(self._serialize_primitive_value(val, field_info))
+            return container
+
+        if value is None:
+            return value
+        if isinstance(value, (bytes, bytearray)):
+            _enc_klass = _get_encoder()
+            if _enc_klass:
+                return _enc_klass.encode(value)
+
+        return value
 
     @model_validator(mode="after")
     def validate_after_model_construction(self) -> Self:

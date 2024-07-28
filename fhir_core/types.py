@@ -349,9 +349,10 @@ class Base64Binary(GroupedMetadata):
     __visit_name__ = "base64Binary"
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
-        """ """
-        regex = r"^(\s*([0-9a-zA-Z+=]){4}\s*)+$"
-        yield pydantic_general_metadata(pattern=regex)
+        """Just a symbolic, no need to check with regex."""
+        # regex = r"^(\s*([0-9a-zA-Z+=]){4}\s*)+$"
+        # yield pydantic_general_metadata(pattern=regex)
+        yield None
 
     @staticmethod
     def to_string(value):

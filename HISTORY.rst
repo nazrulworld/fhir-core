@@ -5,7 +5,9 @@ History
 0.1.0b5 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixes the function that is checking is_primitive, as missing bytes and bytesarray are added.
+
+- Encoding is handled for Base64Binary type.
 
 
 0.1.0b4 (2024-07-28)

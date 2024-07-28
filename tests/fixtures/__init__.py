@@ -49,3 +49,9 @@ class FhirPrimitiveTypesModel(BaseModel):
     dateListTypeOptional: typing.List[typing.Union[fhir_types.DateType, None]] = Field(
         ..., title="List of Date " "Type (optional)"
     )
+    base64BinaryTypeRequired: fhir_types.Base64BinaryType = Field(
+        ..., title="Binary Type (required)"
+    )
+    base64BinaryListTypeOptionalList: typing.Optional[
+        typing.List[fhir_types.Base64BinaryType]
+    ] = Field()

@@ -15,6 +15,8 @@ PY_PRIMITIVES = frozenset(
         str,
         int,
         bool,
+        bytes,
+        bytearray,
         float,
         datetime.datetime,
         datetime.date,
