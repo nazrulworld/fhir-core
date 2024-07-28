@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b5 (unreleased)
+0.1.0b5 (2024-07-28)
 --------------------
 
 - Fixes the function that is checking is_primitive, as missing bytes and bytesarray are added.
