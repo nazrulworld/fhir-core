@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b6 (unreleased)
+0.1.0b6 (2024-07-30)
 --------------------
 
 - Core configurations for types ``Id`` & ``String`` are coming from constraint module.
