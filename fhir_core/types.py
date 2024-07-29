@@ -21,6 +21,7 @@ from pydantic_core import ValidationError, core_schema
 from pydantic_core.core_schema import ValidationInfo
 from typing_extensions import Annotated
 
+from .constraints import TYPES_ID_MAX_LENGTH, TYPES_STRING_ALLOW_EMPTY_STR
 from .fhirabstractmodel import FHIRAbstractModel
 
 __author__ = "Md Nazrul Islam"
@@ -330,7 +331,7 @@ class String(GroupedMetadata):
     ```
     """
 
-    allow_empty_str: bool = False
+    allow_empty_str = TYPES_STRING_ALLOW_EMPTY_STR
     __visit_name__ = "string"
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
@@ -357,6 +358,10 @@ class Base64Binary:
         assert isinstance(value, bytes)
         return value.decode()
 
+    def __hash__(self) -> int:
+        """ """
+        return hash(self.__class__)
+
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
 class Code(GroupedMetadata):
@@ -381,6 +386,9 @@ class Code(GroupedMetadata):
         assert isinstance(value, str)
         return value
 
+    def __hash__(self) -> int:
+        return hash(self.__class__)
+
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
 class Id(GroupedMetadata):
@@ -390,8 +398,7 @@ class Id(GroupedMetadata):
     (This might be an integer, an un-prefixed OID, UUID or any other identifier
     pattern that meets these constraints.)
 
-    But it is possible to change the default behaviour by using configure_constraints()
-    method!
+    But it is possible to change the default behaviour by patching constraint.TYPES_ID_MAX_LENGTH value!
 
     There are a lots of discussion about ``Resource.Id`` length of value.
         1. https://bit.ly/360HksL
@@ -402,7 +409,7 @@ class Id(GroupedMetadata):
 
     pattern = r"^[A-Za-z0-9\-.]+$"
     min_length = 1
-    max_length = 64
+    max_length = TYPES_ID_MAX_LENGTH
     __visit_name__ = "id"
 
     def __iter__(self) -> typing.Iterator[BaseMetadata]:
@@ -966,7 +973,7 @@ BooleanType = bool
 FHIR_PRIMITIVES_MAPS[BooleanType] = "boolean"
 
 # string
-StringType = Annotated[str, String(allow_empty_str=False)]
+StringType = Annotated[str, String()]
 FHIR_PRIMITIVES_MAPS[StringType] = "string"
 
 # base64Binary

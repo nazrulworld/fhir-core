@@ -1,4 +1,5 @@
 import decimal
+import importlib
 import typing
 import uuid
 
@@ -46,14 +47,20 @@ def test_string_type():
         MySimpleStringModel(name="")
 
     assert exc_info.type is ValidationError
+    from fhir_core import constraints
 
-    StringType = Annotated[str, fhirtypes.String(allow_empty_str=True)]
+    constraints.TYPES_STRING_ALLOW_EMPTY_STR = True
+    importlib.reload(fhirtypes)
+    StringType = Annotated[str, fhirtypes.String()]
 
     class MySimpleStringModel2(BaseModel):
         name: StringType = Field(..., alias="name", title="My Name")
 
     model = MySimpleStringModel2(name="")
     assert model.name == ""
+
+    constraints.TYPES_STRING_ALLOW_EMPTY_STR = False
+    importlib.reload(fhirtypes)
 
     class MySimpleStringModel3(BaseModel):
         names: typing.List[fhirtypes.StringType] = Field(

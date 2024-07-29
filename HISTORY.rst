@@ -5,7 +5,9 @@ History
 0.1.0b6 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Core configurations for types ``Id`` & ``String`` are coming from constraint module.
+
+- Default maximum char length ``Id`` is now 255.
 
 
 0.1.0b5 (2024-07-28)
