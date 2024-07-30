@@ -1075,7 +1075,9 @@ def create_fhir_type(klass_name: str, model_klass: str) -> typing.Type[FhirBase]
     return _create_fhir_type(klass_name, model_klass, FhirBase)
 
 
-def create_fhir_element_or_resource_type(klass_name: str, model_klass: str) -> typing.Type[FhirBase]:
+def create_fhir_element_or_resource_type(
+    klass_name: str, model_klass: str
+) -> typing.Type[FhirBase]:
     """ """
     return _create_fhir_type(klass_name, model_klass, FhirElementOrResourceBase)
 
