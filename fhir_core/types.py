@@ -1056,7 +1056,7 @@ FHIR_PRIMITIVES_MAPS[TimeType] = "time"
 # factory function
 def _create_fhir_type(
     klass_name: str, model_klass: str, base_class: typing_extensions.Type[FhirBase]
-) -> FhirBase:
+) -> typing.Type[FhirBase]:
     """ """
     klass = type(klass_name, (base_class,), {"_model_klass": model_klass})
 
@@ -1070,12 +1070,12 @@ def _create_fhir_type(
     return klass  # type: ignore
 
 
-def create_fhir_type(klass_name: str, model_klass: str) -> FhirBase:
+def create_fhir_type(klass_name: str, model_klass: str) -> typing.Type[FhirBase]:
     """ """
     return _create_fhir_type(klass_name, model_klass, FhirBase)
 
 
-def create_fhir_element_or_resource_type(klass_name: str, model_klass: str) -> FhirBase:
+def create_fhir_element_or_resource_type(klass_name: str, model_klass: str) -> typing.Type[FhirBase]:
     """ """
     return _create_fhir_type(klass_name, model_klass, FhirElementOrResourceBase)
 
