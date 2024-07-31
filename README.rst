@@ -30,7 +30,10 @@ FHIR® Core
         :target: https://www.hl7.org/implement/standards/product_brief.cfm?product_id=449
         :alt: HL7® FHIR®
 
-Powered by Pydantic v2
+**Powered by Pydantic V2**. This library is developed for the support of the another libray `fhir.resources <https://github.com/nazrulworld/fhir.resources/>`_ but
+you are more than welcome to use it for your own purpose. It provides an abstract base class for any FHIR resource model and `Primitive Datatypes <https://build.fhir.org/datatypes.html>`_
+along with factories to create FHIR resource model and other complex datatypes.
+
 
 Installation
 ------------
@@ -38,9 +41,46 @@ Installation
 Just a simple ``pip install fhir-core``. But if you want development
 version, just clone from https://github.com/nazrulworld/fhir-core and ``pip install -e .[dev]``.
 
+Usages
+------
+
+**Example: 1**: This example creates an  Organization class with some of its attributes (id, active, name, address)::
+
+    >>> from typing import List
+    >>> from pydantic import Field
+    >>> from fhir_core.fhirabstractmodel import FHIRAbstractModel
+    >>> from fhir_core.types import IdType, BooleanType, StringType
+    >>> data = {
+    ...     "id": "f001",
+    ...     "active": True,
+    ...     "name": "Acme Corporation",
+    ...     "address": ["Road 10": "Acme corporation", "2390", "USA"}]
+    ... }
+    >>> class Organization(FHIRAbstractModel):
+    ...     __resource_type__ = "Organization"
+    ...     id: IdType = Field(None, title="Id", alias="id", json_schema_extra={"element_property": True})
+    ...     active: BooleanType = Field(None, title="Active", alias="active", json_schema_extra={"element_property": True})
+    ...     name: StringType = Field(None, title="Name", alias="name", json_schema_extra={"element_property": True})
+    ...     address: ListType[StringType] = Field(None, title="Address lines", alias="address", json_schema_extra={"element_property": True})
+    ...
+    ...     @classmethod
+            def elements_sequence(cls):
+                return ["id", "active", "name", "address"]
+    ...
+    >>> org = Organization.model_validate(data)
+    >>> org.active is True
+    True
+    >>> org_json_str = org.model_dump_json()
+    >>> Organization.model_validate_json(org_json_str).model_dump() == org.model_dump()
+    True
+
+**Complex examples**
+
+    1. https://github.com/nazrulworld/fhir-core/blob/main/tests/fixtures/resources/extension.py
+    2. https://github.com/nazrulworld/fhir-core/blob/main/tests/fixtures/resources/fhirtypes.py
+    3. https://github.com/nazrulworld/fhir-core/blob/main/tests/fixtures/resources/codesystem.py
+
 .. _`pydantic`: https://pydantic-docs.helpmanual.io/
-.. _`orjson`: https://pypi.org/project/orjson/
-.. _`dealing-strategy-R4-R4B`: https://confluence.hl7.org/display/FHIR/Strategies+for+dealing+with+R4+and+R4B
 .. _`FHIR`: https://www.hl7.org/implement/standards/product_brief.cfm
 
 © Copyright HL7® logo, FHIR® logo and the flaming fire are registered trademarks
