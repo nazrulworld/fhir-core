@@ -12,7 +12,7 @@ FHIR® Core
 .. image:: https://img.shields.io/travis/com/nazrulworld/fhir-core.svg
         :target: https://app.travis-ci.com/github/nazrulworld/fhir-core
 
-.. image:: https://ci.appveyor.com/api/projects/status/0qu5vyue1jwxb4km?svg=true
+.. image:: https://ci.appveyor.com/api/projects/status/1av308hpof6c9u5q?svg=true
         :target: https://ci.appveyor.com/project/nazrulworld/fhir-core
         :alt: Windows Build
 
