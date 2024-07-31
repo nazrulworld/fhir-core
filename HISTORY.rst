@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b7 (unreleased)
+0.1.0b7 (2024-07-31)
 --------------------
 
 - typing hint added for the function ´´create_fhir_type´´ and ´´create_fhir_element_or_resource_type´´.
