@@ -1,6 +1,3 @@
-from pydantic import BaseModel, Field
-
-from fhir_core import types as fhirtypes
 from fhir_core import utils
 from tests.fixtures import FhirPrimitiveTypesModel
 

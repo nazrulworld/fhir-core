@@ -8,19 +8,19 @@ from pydantic import BaseModel, Field
 from pydantic_core import ValidationError
 from typing_extensions import Annotated
 
-from fhir_core import types as fhirtypes
+from fhir_core import types as fhir_types
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
-
+from tests.fixtures.resources import fhirtypes
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
 
 class MyFhirPatientModel(FHIRAbstractModel):
     __resource_type__ = "MyFhirPatientModel"
-    name: fhirtypes.StringType = Field(..., title="Name")
+    name: fhir_types.StringType = Field(..., title="Name")
 
 
-MyFhirPatientModelType = fhirtypes.create_fhir_type(
+MyFhirPatientModelType = fhir_types.create_fhir_type(
     "MyFhirPatientModelType", "tests.test_types.MyFhirPatientModel"
 )
 
@@ -37,7 +37,7 @@ def test_string_type():
     """ """
 
     class MySimpleStringModel(BaseModel):
-        name: fhirtypes.StringType = Field(..., alias="name", title="My Name")
+        name: fhir_types.StringType = Field(..., alias="name", title="My Name")
 
     model = MySimpleStringModel(name="Joe Bussen")
     assert model.name == "Joe Bussen"
@@ -50,8 +50,10 @@ def test_string_type():
     from fhir_core import constraints
 
     constraints.TYPES_STRING_ALLOW_EMPTY_STR = True
+
+    importlib.reload(fhir_types)
     importlib.reload(fhirtypes)
-    StringType = Annotated[str, fhirtypes.String()]
+    StringType = Annotated[str, fhir_types.String()]
 
     class MySimpleStringModel2(BaseModel):
         name: StringType = Field(..., alias="name", title="My Name")
@@ -60,10 +62,11 @@ def test_string_type():
     assert model.name == ""
 
     constraints.TYPES_STRING_ALLOW_EMPTY_STR = False
+    importlib.reload(fhir_types)
     importlib.reload(fhirtypes)
 
     class MySimpleStringModel3(BaseModel):
-        names: typing.List[fhirtypes.StringType] = Field(
+        names: typing.List[fhir_types.StringType] = Field(
             ..., alias="names", title="My Name"
         )
 
@@ -88,7 +91,7 @@ def test_bool_type():
     """ """
 
     class MySimpleBooleanModel(BaseModel):
-        isTrue: fhirtypes.BooleanType = Field(..., alias="isTrue", title="Is True")
+        isTrue: fhir_types.BooleanType = Field(..., alias="isTrue", title="Is True")
 
     assert MySimpleBooleanModel(isTrue="true").isTrue is True
     assert MySimpleBooleanModel(isTrue="false").isTrue is False
@@ -103,7 +106,7 @@ def test_uuid():
     """ """
 
     class MySimpleUUIDModel(BaseModel):
-        myUUID: fhirtypes.UuidType = Field(..., alias="myUUID", title="UUID")
+        myUUID: fhir_types.UuidType = Field(..., alias="myUUID", title="UUID")
 
     model = MySimpleUUIDModel(myUUID="8c7f56df-b047-47c4-9391-7733e00fe512")
     assert isinstance(model.myUUID, uuid.UUID)
@@ -123,7 +126,7 @@ def test_decimal_type():
     """ """
 
     class MySimpleDecimalModel(BaseModel):
-        point: fhirtypes.DecimalType = Field(
+        point: fhir_types.DecimalType = Field(
             ..., alias="point", title="My Decimal Point"
         )
 
@@ -135,7 +138,7 @@ def test_date_type():
     """ """
 
     class MySimpleDateModel(BaseModel):
-        birthday: fhirtypes.DateType = Field(..., alias="birthday", title="Birthday")
+        birthday: fhir_types.DateType = Field(..., alias="birthday", title="Birthday")
 
     # Test with only year
     model = MySimpleDateModel(birthday="2016")
@@ -149,6 +152,6 @@ def test_uri_type():
     """ """
 
     class MySimpleDateModel(BaseModel):
-        minRules: fhirtypes.UriType = Field(..., alias="minRules", title="Min Rules")
+        minRules: fhir_types.UriType = Field(..., alias="minRules", title="Min Rules")
 
     assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"

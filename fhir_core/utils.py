@@ -7,6 +7,19 @@ from typing import get_args, get_origin
 
 from pydantic.fields import FieldInfo
 
+try:
+    import yaml
+
+    HAS_YAML_SUPPORT = True
+except ImportError:
+    HAS_YAML_SUPPORT = False
+
+try:
+    import lxml
+
+    HAS_XML_SUPPORT = True
+except ImportError:
+    HAS_XML_SUPPORT = False
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
@@ -46,3 +59,6 @@ def _is_primitive_type(annotation: typing.Any) -> typing.Union[bool, None]:
 def is_primitive_type(field: FieldInfo) -> bool:
     """ """
     return _is_primitive_type(field.annotation) is not None
+
+
+__all__ = ["is_primitive_type", "HAS_XML_SUPPORT", "HAS_YAML_SUPPORT"]

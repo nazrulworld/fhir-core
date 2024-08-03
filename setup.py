@@ -34,12 +34,12 @@ test_requirements = [
     "isort" + (PY_VERSION_10_OR_LATER and ">=5.11.4" or "==4.3.21"),
     "black",
     "mypy",
+    "PyYAML>=6.0.1",
     "types-PyYAML",
     "types-simplejson",
     "types-requests",
     "setuptools==65.6.3;python_version>='3.7'",
-    "lxml",
-    "PyYAML>=5.4.1",
+    "lxml"
 ]
 if PY_VERSION_10_OR_LATER:
     test_requirements.append("importlib-metadata>=5.2.0")
