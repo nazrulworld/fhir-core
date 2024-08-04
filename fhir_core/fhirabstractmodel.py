@@ -24,7 +24,10 @@ from pydantic.types import Base64Encoder, EncodedBytes
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
-from .utils import is_primitive_type
+from .utils import HAS_YAML_SUPPORT, is_primitive_type
+
+if HAS_YAML_SUPPORT:
+    from .yaml_utils import yaml_dumps, yaml_loads
 
 if typing.TYPE_CHECKING:
     from pydantic.main import TupleGenerator
@@ -188,6 +191,39 @@ class FHIRAbstractModel(BaseModel):
             self.__fhir_serialization_exclude_comment__ = org_config_val
         return result
 
+    def model_dump_yaml(
+        self,
+        *,
+        # YAML
+        indent: int | None = None,
+        # FHIR custom
+        exclude_comments: bool = False,
+        **pydantic_kwargs,
+    ) -> str:
+        """
+        Generates a YAML representation of the model using PyYAML.
+
+        Args:
+            indent: Indentation to use in the YAML output. If None is passed, the output will be compact.
+            exclude_comments: If the FHIR comment should be excluded.
+                    By default, FHIR comments are included.
+            pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
+                    Normally you don't need to use other params.
+
+        Returns:
+            A YAML string representation of the model.
+        """
+        """Fully overridden method but codes are copied from BaseMode and business logic added
+        in according to support ``fhir_comments``filter and other FHIR specific requirments.
+        """
+        if not HAS_YAML_SUPPORT:
+            raise ModuleNotFoundError(
+                "You need to install ``PyYAML`` package to use this method. "
+            )
+        result = self.model_dump(exclude_comments=exclude_comments, **pydantic_kwargs)
+
+        return yaml_dumps(result, indent=indent, return_bytes=False, sort_keys=False)
+
     def model_dump(
         self,
         *,
@@ -277,6 +313,36 @@ class FHIRAbstractModel(BaseModel):
         return self.model_dump_json(
             indent=indent, exclude_comments=exclude_comments, **pydantic_kwargs
         )
+
+    @classmethod
+    def model_validate_yaml(
+        cls,
+        yaml_data: str | bytes | bytearray,
+        *,
+        strict: bool | None = None,
+        context: typing.Any | None = None,
+    ) -> Self:
+        """Usage docs: https://pypi.org/project/fhir.resources/#YAML
+
+        Validate the given YAML data against the Pydantic model.
+
+        Args:
+            yaml_data: The YAML data to validate.
+            strict: Whether to enforce types strictly.
+            context: Extra variables to pass to the validator.
+
+        Returns:
+            The validated Pydantic model.
+
+        Raises:
+            ValueError: If `yaml_data` is not a YAML string.
+        """
+        if not HAS_YAML_SUPPORT:
+            raise ModuleNotFoundError(
+                "You need to install ``PyYAML`` package to use this method. "
+            )
+        data = yaml_loads(yaml_data)
+        return cls.model_validate(data, strict=strict, context=context)
 
     # Serializers
     @model_serializer(mode="wrap", when_used="always", return_type=OrderedDict)

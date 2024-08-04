@@ -11,6 +11,7 @@ from typing_extensions import Annotated
 from fhir_core import types as fhir_types
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
 from tests.fixtures.resources import fhirtypes
+
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 

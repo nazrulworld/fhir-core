@@ -169,3 +169,27 @@ def test_base64binary_validation():
         AuditEvent.model_validate_json(obj.model_dump_json()).model_dump()
         == serialized_data
     )
+
+
+def test_model_from_yaml():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+    obj = ActivityDefinition.model_validate_yaml(fileanme.read_bytes())
+    obj2 = ActivityDefinition.model_validate_json(
+        (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
+    )
+    assert obj.model_dump() == obj2.model_dump()
+
+
+def test_model_dump_yaml():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+
+    obj = ActivityDefinition.model_validate_json(
+        (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
+    )
+    assert obj.model_dump_yaml() == fileanme.read_text()

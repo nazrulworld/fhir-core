@@ -2,6 +2,7 @@ from collections import OrderedDict
 from datetime import datetime
 from decimal import Decimal
 
+from pydantic_core._pydantic_core import Url
 from yaml import Node, ScalarNode, YAMLError, dump, load
 from yaml.representer import Representer as BaseRepresenter
 from yaml.representer import SafeRepresenter
@@ -32,6 +33,11 @@ class Representer(SafeRepresenter):
         value = data.isoformat(sep="T")
         return self.represent_scalar("tag:yaml.org,2002:timestamp", value)
 
+    def represent_url(self, data: Url) -> Node:
+        """!!python/object/new:pydantic_core._pydantic_core.Url"""
+        coerced = str(data)
+        return self.represent_str(coerced)
+
 
 BaseRepresenter.add_representer(
     Decimal, Representer.represent_decimal  # type: ignore[arg-type]
@@ -41,6 +47,9 @@ BaseRepresenter.add_representer(
 BaseRepresenter.add_representer(OrderedDict, SafeRepresenter.represent_dict)
 BaseRepresenter.add_representer(
     datetime, Representer.represent_datetime  # type: ignore[arg-type]
+)
+BaseRepresenter.add_representer(
+    Url, Representer.represent_url  # type: ignore[arg-type]
 )
 
 
