@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b8 (unreleased)
+0.1.0b8 (2024-08-04)
 --------------------
 
 - YAML dump & validate options are added into FHIRAbstractModel.
