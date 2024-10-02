@@ -176,6 +176,8 @@ class FhirBase(metaclass=abc.ABCMeta):
         value: typing.Union[str, bytes, dict, FHIRAbstractModel],
         model_klass: typing.Type[FHIRAbstractModel],
     ):
+        if value is None:
+            return value
         if isinstance(value, (str, bytes)):
             value = model_klass.model_validate_json(value)
 
