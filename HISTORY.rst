@@ -5,7 +5,9 @@ History
 0.1.0b9 (unreleased)
 --------------------
 
-- Issue: https://github.com/nazrulworld/fhir.resources/issues/164#issuecomment-2338404044
+Fixes
+
+- Issue: AttributeError: 'NoneType' object has no attribute '__resource_type__' https://github.com/nazrulworld/fhir.resources/issues/164#issuecomment-2338404044
 
 
 0.1.0b8 (2024-08-04)
