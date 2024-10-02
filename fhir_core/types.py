@@ -1085,6 +1085,7 @@ def create_fhir_element_or_resource_type(
 
 
 __all__ = [
+    "FhirBase",
     "create_fhir_type",
     "create_fhir_element_or_resource_type",
     "BooleanType",
