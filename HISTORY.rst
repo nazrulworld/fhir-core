@@ -5,6 +5,8 @@ History
 0.1.1 (unreleased)
 ---------------------
 
+- Version policy updated, now `.bx` suffix has been removed.
+
 Fixes
 
 - Business logic for None type validation against FHIR Model validator as None value is acceptable! Instead, you should make Pydantic field optional.
