@@ -1,3 +1,4 @@
+from __future__ import annotations as annotations_
 import os
 import pathlib
 import typing
@@ -21,7 +22,7 @@ class FhirPrimitiveTypesModel(BaseModel):
     booleanTypeRequired: fhir_types.BooleanType = Field(
         ..., title="Boolean Type (required)"
     )
-    booleanTypeOptional: fhir_types.BooleanType = Field(
+    booleanTypeOptional: fhir_types.BooleanType | None = Field(
         None, title="Boolean Type (optional)"
     )
 
@@ -36,6 +37,10 @@ class FhirPrimitiveTypesModel(BaseModel):
     )
     stringListTypeOptional: typing.List[typing.Union[fhir_types.StringType, None]] = (
         Field(..., title="List of String " "Type (optional)")
+    )
+
+    stringListTypeOptional2: typing.List[fhir_types.StringType | None] | None = (
+        Field(None, title="List of String " "Type (optional)")
     )
 
     uuidTypeRequired: fhir_types.UuidType = Field(..., title="UUID Type (required)")

@@ -4,6 +4,8 @@ from tests.fixtures import FhirPrimitiveTypesModel
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
+from tests.fixtures.resources.fhirtypes import AccountRelatedAccountType
+
 
 def test_check_primitive_type():
     """ """
@@ -76,3 +78,15 @@ def test_check_primitive_type():
         )
         is True
     )
+
+    assert (
+        utils.is_primitive_type(
+            FhirPrimitiveTypesModel.model_fields["stringListTypeOptional2"]
+        )
+        is True
+    )
+
+def test_non_primitive_type():
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    assert (utils.is_primitive_type(ActivityDefinition.model_fields["observationResultRequirement__ext"]) is False)

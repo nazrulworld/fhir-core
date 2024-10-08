@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0b10 (unreleased)
+0.1.1 (unreleased)
 ---------------------
 
 Fixes
