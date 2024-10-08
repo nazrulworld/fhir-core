@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-"""Base class for all FHIR elements. """
 from __future__ import annotations as _annotations
+
+"""Base class for all FHIR elements. """
 
 import inspect
 import logging

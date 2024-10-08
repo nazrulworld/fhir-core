@@ -177,7 +177,9 @@ class FhirBase(metaclass=abc.ABCMeta):
         model_klass: typing.Type[FHIRAbstractModel],
     ):
         if value is None:
-            raise ValueError("'None' value is not acceptable as any kind of FHIR model value.")
+            raise ValueError(
+                "'None' value is not acceptable as any kind of FHIR model value."
+            )
         if isinstance(value, (str, bytes)):
             value = model_klass.model_validate_json(value)
 
