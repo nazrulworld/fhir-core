@@ -2,8 +2,8 @@
 History
 =======
 
-0.1.1 (unreleased)
----------------------
+0.1.1 (2024-10-09)
+------------------
 
 - Version policy updated, now `.bx` suffix has been removed.
 
