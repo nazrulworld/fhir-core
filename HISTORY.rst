@@ -5,7 +5,9 @@ History
 0.1.0b10 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+Fixes
+
+- Business logic for None type validation against FHIR Model validator as None value is acceptable! Instead, you should make Pydantic field optional.
 
 
 0.1.0b9 (2024-10-02)

@@ -51,7 +51,7 @@ class FHIRAbstractModel(BaseModel):
     # __resource_type__: Literal['ResourceType'] = 'ResourceType'
     __resource_type__: str = "__resource_type__"
 
-    fhir_comments: typing.Union[str, typing.List[str]] = Field(
+    fhir_comments: typing.Union[str, typing.List[str]] | None = Field(
         None, alias="fhir_comments", json_schema_extra={"element_property": False}
     )
 
