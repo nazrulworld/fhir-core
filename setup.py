@@ -8,6 +8,7 @@ import platform
 from setuptools import find_namespace_packages, setup
 
 PY_VERSION_TUPLE = platform.python_version_tuple()
+PY_VERSION_9_OR_EARLIER = PY_VERSION_TUPLE[0] == "3" and int(PY_VERSION_TUPLE[1]) <= 9
 PY_VERSION_10_OR_LATER = PY_VERSION_TUPLE[0] == "3" and int(PY_VERSION_TUPLE[1]) >= 10
 PY_VERSION_11_OR_LATER = PY_VERSION_10_OR_LATER and int(PY_VERSION_TUPLE[1]) >= 11
 
@@ -18,6 +19,8 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = ["pydantic>=2.7.4,<3.0"]
+if PY_VERSION_9_OR_EARLIER:
+    requirements.append("eval_type_backport")
 
 setup_requirements = ["pytest-runner"]
 
@@ -39,7 +42,7 @@ test_requirements = [
     "types-simplejson",
     "types-requests",
     "setuptools==65.6.3;python_version>='3.7'",
-    "lxml"
+    "lxml",
 ]
 if PY_VERSION_10_OR_LATER:
     test_requirements.append("importlib-metadata>=5.2.0")
