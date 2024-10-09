@@ -556,24 +556,11 @@ class FHIRAbstractModel(BaseModel):
             if missing_ext:
                 if typing.TYPE_CHECKING:
                     error_: InitErrorDetails
-                if value is _missing:
+                if value in (_missing, None):
                     # 'field required'
                     error_type = PydanticCustomError(
                         "model_field_validation_format",
                         "Value for the field '{field_name}' is required.",
-                        {"field_name": field_info.alias},
-                    )
-                    error_ = {
-                        "type": error_type,
-                        "loc": (field_info.alias,),  # type: ignore
-                        "input": value,
-                    }
-                    errors.append(error_)
-                else:
-                    # 'none is not an allowed value'
-                    error_type = PydanticCustomError(
-                        "model_field_validation_format",
-                        "None value is not allowed for the field '{field_name}'.",
                         {"field_name": field_info.alias},
                     )
                     error_ = {

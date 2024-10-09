@@ -5,7 +5,7 @@ History
 0.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve validation error message.
 
 
 0.1.1 (2024-10-09)

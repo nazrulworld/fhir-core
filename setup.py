@@ -20,7 +20,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = ["pydantic>=2.7.4,<3.0"]
 if PY_VERSION_9_OR_EARLIER:
-    requirements.append("eval_type_backport")
+    requirements.append("eval-type-backport")
 
 setup_requirements = ["pytest-runner"]
 
