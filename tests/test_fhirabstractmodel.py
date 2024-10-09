@@ -79,7 +79,7 @@ def test_primitive_fields():
     with pytest.raises(ValidationError) as exception_info:
         MyPrimitivesValueFieldsModel(postCode=1230, active=True, meta={"id": "001"})
 
-    assert "None value is not allowed" in str(exception_info.value)
+    assert "Value for the field 'name' is required" in str(exception_info.value)
 
     # test with extension
     obj = MyPrimitivesValueFieldsModel(
