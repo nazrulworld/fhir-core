@@ -5,7 +5,7 @@ History
 0.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improves missing value validation message, as error type is now ``model_field_validation.missing``.
 
 
 0.1.2 (2024-10-09)

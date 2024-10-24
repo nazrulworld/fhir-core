@@ -41,6 +41,7 @@ FHIR_COMMENTS_FIELD_NAME = "fhir_comments"
 FHIRErrorCodes = Literal[
     "fhir-validation-missing-resource-type",
     "fhir-validation-wrong-resource-type",
+    "model_field_validation.missing",
 ]
 
 
@@ -559,7 +560,7 @@ class FHIRAbstractModel(BaseModel):
                 if value in (_missing, None):
                     # 'field required'
                     error_type = PydanticCustomError(
-                        "model_field_validation_format",
+                        "model_field_validation.missing",
                         "Value for the field '{field_name}' is required.",
                         {"field_name": field_info.alias},
                     )
