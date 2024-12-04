@@ -86,7 +86,61 @@ def test_check_primitive_type():
         is True
     )
 
+
 def test_non_primitive_type():
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    assert (utils.is_primitive_type(ActivityDefinition.model_fields["observationResultRequirement__ext"]) is False)
+    assert (
+        utils.is_primitive_type(
+            ActivityDefinition.model_fields["observationResultRequirement__ext"]
+        )
+        is False
+    )
+
+
+def test_primitive_fhir_type_name():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+    from tests.fixtures.resources.identifier import Identifier
+
+    assert utils.get_fhir_type_name(Identifier.model_fields["use"]) == "code"
+    assert utils.get_fhir_type_name(Identifier.model_fields["value"]) == "string"
+
+    assert (
+        utils.get_fhir_type_name(ActivityDefinition.model_fields["approvalDate"])
+        == "date"
+    )
+    assert (
+        utils.get_fhir_type_name(ActivityDefinition.model_fields["asNeededBoolean"])
+        == "boolean"
+    )
+
+    from tests.fixtures.resources.narrative import Narrative
+
+    assert utils.get_fhir_type_name(Narrative.model_fields["div"]) == "xhtml"
+
+
+def test_fhir_complex_data_type_name():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    assert (
+        utils.get_fhir_type_name(ActivityDefinition.model_fields["author"])
+        == "ContactDetail"
+    )
+    assert (
+        utils.get_fhir_type_name(ActivityDefinition.model_fields["code"])
+        == "CodeableConcept"
+    )
+
+
+def test_fhir_resource_type_name():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+    from tests.fixtures.resources.element import Element
+
+    assert (
+        utils.get_fhir_type_name(ActivityDefinition.model_fields["dynamicValue"])
+        == "ActivityDefinitionDynamicValue"
+    )
+    assert utils.get_fhir_type_name(Element.model_fields["extension"]) == "Extension"
