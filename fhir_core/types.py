@@ -669,7 +669,6 @@ class Url:
         #    if realname:
         #        email = formataddr((name, email))
         #    return schema + email
-
         if isinstance(input_value, AnyUrl):
             return input_value
 
@@ -732,7 +731,10 @@ class Url:
 
         if typing.TYPE_CHECKING:
             assert inner_schema
-        return core_schema.with_info_wrap_validator_function(_validate, inner_schema)
+        return core_schema.with_info_wrap_validator_function(
+            _validate,
+            inner_schema
+        )
 
     @classmethod
     def to_string(cls, value):
