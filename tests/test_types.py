@@ -156,3 +156,17 @@ def test_uri_type():
         minRules: fhir_types.UriType = Field(..., alias="minRules", title="Min Rules")
 
     assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"
+
+
+def test_url_type():
+    """ """
+
+    class MySimpleDateModel(BaseModel):
+        base_url: fhir_types.UrlType = Field(..., alias="base_url", title="Base URL")
+
+    model = MySimpleDateModel(base_url="https://example.com")
+    dumped = model.model_dump()["base_url"]
+
+    assert isinstance(dumped, str)
+    assert dumped == "https://example.com"
+    assert not dumped.endswith("/")

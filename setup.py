@@ -18,7 +18,10 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["pydantic>=2.7.4,<3.0"]
+requirements = [
+    "pydantic>=2.7.4,<3.0",
+    "pydantic-string-url"
+    ]
 if PY_VERSION_9_OR_EARLIER:
     requirements.append("eval-type-backport")
 
@@ -46,8 +49,6 @@ test_requirements = [
 ]
 if PY_VERSION_10_OR_LATER:
     test_requirements.append("importlib-metadata>=5.2.0")
-if PY_VERSION_11_OR_LATER:
-    test_requirements.append("typed-ast>=1.5.4")
 
 development_requirements = [
     "Jinja2==2.11.1",
