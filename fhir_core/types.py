@@ -11,14 +11,16 @@ from uuid import UUID
 
 import typing_extensions
 from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
-from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
+from pydantic import Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
 from pydantic.types import UUID4
 from pydantic_core import InitErrorDetails, PydanticCustomError
-from pydantic_core import Url as PydanticUrl
 from pydantic_core import ValidationError, core_schema
 from pydantic_core.core_schema import ValidationInfo
+
+from pydantic_string_url import AnyUrl
+
 from typing_extensions import Annotated
 
 from .constraints import (
@@ -618,8 +620,10 @@ class Url:
     ) -> core_schema.CoreSchema | None:
         if source_type is str:
             return core_schema.str_schema()
-        if source_type is PydanticUrl:
-            return core_schema.url_schema()
+        if source_type is AnyUrl:
+            # See `pydantic_string_url.AnyUrl`.
+            return core_schema.no_info_after_validator_function(
+                AnyUrl._validate, handler(str))
         if typing.get_origin(source_type) is not None:
             for tp in typing.get_args(source_type):
                 inner_schema = cls.produce_inner_schema(tp, handler)
@@ -630,9 +634,9 @@ class Url:
     @classmethod
     def _validate_url(  # type: ignore
         cls,
-        input_value: typing.Union[str, PydanticUrl],
-        validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
-    ) -> typing.Union[str, PydanticUrl]:
+        input_value: typing.Union[str, AnyUrl],
+        validator: typing.Callable[[typing.Union[str, AnyUrl]], typing.Any],
+    ) -> typing.Union[str, AnyUrl]:
         """ """
         # todo: check with 'mailto:', 'mllp:', 'llp:'
         # todo: validate email?
@@ -644,7 +648,7 @@ class Url:
         #    if realname:
         #        email = formataddr((name, email))
         #    return schema + email
-        if isinstance(input_value, PydanticUrl):
+        if isinstance(input_value, AnyUrl):
             return input_value
 
         if input_value in FHIR_PRIMITIVES:
@@ -686,10 +690,10 @@ class Url:
         inner_schema = cls.produce_inner_schema(source_type, handler)
 
         def _validate(
-            input_value: typing.Union[str, PydanticUrl],
-            validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+            input_value: typing.Union[str, AnyUrl],
+            validator: typing.Callable[[typing.Union[str, AnyUrl]], typing.Any],
             validation_info: ValidationInfo,
-        ) -> typing.Union[str, PydanticUrl]:
+        ) -> typing.Union[str, AnyUrl]:
             """
             Validate a URL from the provided str value.
 
@@ -699,21 +703,22 @@ class Url:
                 URL or str
 
             """
-            if isinstance(input_value, PydanticUrl):
+            if isinstance(input_value, AnyUrl):
                 return validator(input_value)
-            return cls._validate_url(input_value, validator)
+            result = cls._validate_url(input_value, validator)
+            return result
 
         if typing.TYPE_CHECKING:
             assert inner_schema
         return core_schema.with_info_wrap_validator_function(
             _validate,
-            inner_schema,
+            inner_schema
         )
 
     @classmethod
     def to_string(cls, value):
         """ """
-        if isinstance(value, PydanticUrl):
+        if isinstance(value, AnyUrl):
             value = str(value)
         if isinstance(value, bytes):
             value = value.decode()
@@ -780,8 +785,8 @@ class Date:
         # inner_schema = cls.produce_inner_schema(source_type, handler)
 
         def _validate(
-            input_value: typing.Union[str, PydanticUrl],
-            validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+            input_value: typing.Union[str, AnyUrl],
+            validator: typing.Callable[[typing.Union[str, AnyUrl]], typing.Any],
             validation_info: ValidationInfo,
         ) -> typing.Union[datetime.date, str]:
             """
@@ -908,10 +913,10 @@ class Time:
         # inner_schema = cls.produce_inner_schema(source_type, handler)
 
         def _validate(
-            input_value: typing.Union[str, PydanticUrl],
-            validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+            input_value: typing.Union[str, AnyUrl],
+            validator: typing.Callable[[typing.Union[str, AnyUrl]], typing.Any],
             validation_info: ValidationInfo,
-        ) -> typing.Union[str, PydanticUrl]:
+        ) -> typing.Union[str, AnyUrl]:
             """
             Validate a MAC Address from the provided str value.
 

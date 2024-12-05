@@ -5,7 +5,12 @@ History
 0.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Replace Pydantic V2's `Url` type with `AnyUrl` from
+  https://github.com/patrsc/pydantic-string-url/. The rationale being that URL
+  attributes on FHIR resources can (most of the times) passed on to HTTP
+  libraries without having to coerce or cast into `str`.
+
+  https://github.com/nazrulworld/fhir.resources/issues/164
 
 
 0.1.3 (2024-10-24)
