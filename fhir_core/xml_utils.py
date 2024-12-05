@@ -581,10 +581,9 @@ class Node:
                 node.children.append(etree.Comment(cm))
 
     @staticmethod
-    def add_fhir_element(parent, field, value, ext=None, ext_field=None):
+    def add_fhir_element(parent: "Node", field: FieldInfo, value: typing.Any, ext=None, ext_field=None):
         """"""
         child = Node.create(field.alias)
-        field_type = field.type_
         if is_primitive_type(field):
             if isinstance(value, list):
                 if ext and not isinstance(ext, list):
@@ -613,7 +612,7 @@ class Node:
                         ext_field=ext_field,
                     )
             elif value is not None:
-                child.value = xml_represent(field.type_, value)
+                child.value = xml_represent(field, value)
                 if ext is not None:
                     Node.inject_comments(
                         parent, ext.__dict__.get("fhir_comments", None)
@@ -658,30 +657,19 @@ class Node:
                 )
             return
         # we see it's instance of 'FHIRAbstractModel'
-        if getattr(field_type, "__resource_type__", None) is None:
-            type_str = str(field_type)
-            if (
-                type_str.startswith(("typing.Union[", "typing.Optional["))
-                and "fhirtypes.FHIRPrimitiveExtensionType" in type_str
-            ):
-                for cls in field_type.__args__:
-                    if cls.__name__ == "FHIRPrimitiveExtensionType":
-                        field_type = cls
-            else:
-                raise NotImplementedError
-
         parent_child = None
-        if get_fhir_type_name(field_type) == "Resource":
+        fhir_type_name = get_fhir_type_name(field)
+        if fhir_type_name == "Resource":
             # special case
             parent_child = child
             child = Node.create(value.resource_type)
             parent_child.children.append(child)
 
-        if get_fhir_type_name(field_type) == "FHIRPrimitiveExtension":
+        if fhir_type_name == "FHIRPrimitiveExtension":
             # this is a special primitive extension
             del child
             # xxx: handle comments (add comment to main element, parent in this case)
-            field = value.__class__.__fields__["extension"]
+            field = value.model_fields["extension"]
             value = value.__dict__.get(field.name, None)
             if not value:
                 return
@@ -699,16 +687,16 @@ class Node:
 
         alias_maps = value.__class__.get_alias_mapping()
         for prop_name in value.__class__.elements_sequence():
-            field_ = value.__class__.__fields__[alias_maps[prop_name]]
+            field_ = value.__class__.model_fields[alias_maps[prop_name]]
             val = value.__dict__.get(field_.name)
             if (
-                field_type.fhir_type_name() == "Extension"
+                fhir_type_name == "Extension"
                 and field_.alias in ("url", "id")
                 and val
             ):
                 child.add_attribute(field_.alias, val)
                 continue
-            if get_fhir_type_name(field_.type_) == "xhtml" and val:
+            if get_fhir_type_name(field_) == "xhtml" and val:
                 # xxx: fhir-xhtml.xsd validation
                 xhtml_element = etree.fromstring(val)
                 if not (
@@ -725,7 +713,7 @@ class Node:
                 ext_key = f"{field_.name}__ext"
                 value_ext = value.__dict__.get(ext_key, None)
                 if value_ext:
-                    value_ext_field = value.__class__.__fields__[ext_key]
+                    value_ext_field = value.__class__.model_fields[ext_key]
 
             if value_ext is None and val is None:
                 continue
@@ -745,17 +733,17 @@ class Node:
     @classmethod
     def from_fhir_obj(cls, model: "FHIRAbstractModel"):
         """ """
-        resource_node = cls(model.resource_type, namespaces=[Namespace(None, ROOT_NS)])
+        resource_node = cls(model.get_resource_type(), namespaces=[Namespace(None, ROOT_NS)])
         alias_maps = model.__class__.get_alias_mapping()
         for prop_name in model.__class__.elements_sequence():
-            field = model.__class__.__fields__[alias_maps[prop_name]]
+            field = model.__class__.model_fields[alias_maps[prop_name]]
             value = model.__dict__.get(field.name, None)
             value_ext, value_ext_field = None, None
             if is_primitive_type(field):
                 ext_key = f"{field.name}__ext"
                 value_ext = model.__dict__.get(ext_key, None)
                 if value_ext:
-                    value_ext_field = model.__class__.__fields__[ext_key]
+                    value_ext_field = model.__class__.model_fields[ext_key]
 
             if value_ext is None and value is None:
                 continue
@@ -884,11 +872,11 @@ class Node:
 
     @staticmethod
     def get_fhir_value(
-        obj: typing.Union["Node", etree._Element], field: "ModelField"
+        obj: typing.Union["Node", etree._Element], field: "FieldInfo"
     ) -> typing.Any:
         """ """
         if is_primitive_type(field):
-            if get_fhir_type_name(field.type_) == "xhtml":
+            if get_fhir_type_name(field) == "xhtml":
                 if isinstance(obj, etree._Element):
                     value = etree.tostring(obj)
                 else:
@@ -909,7 +897,6 @@ class Node:
         """ """
         if klass.get_resource_type() == "Resource" and len(self.children) > 0:
             # tiny hack to get FHIR release
-            f_release = klass.__fields__["id"].type_.__fhir_release__
             child = self.children[0]
             klass_ = get_fhir_root_module(f_release).get_fhir_model_class(child.name)
             return child.to_fhir(klass_)

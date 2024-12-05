@@ -73,6 +73,7 @@ def test_primitive_fields():
     obj = MyPrimitivesValueFieldsModel(
         name="Kim Larson", postCode=1230, active=True, meta={"id": "001"}
     )
+
     serialized_data = obj.model_dump()
     assert serialized_data["post-code"] == 1230
 
