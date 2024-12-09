@@ -5,7 +5,7 @@ History
 0.1.4 (unreleased)
 ------------------
 
-- Remove dependency on `typed-ast` as it is needed and won't work in later Python versions.
+- Remove dependency on `typed-ast` as it is not needed and won't work in later Python versions.
 
 
 0.1.3 (2024-10-24)
