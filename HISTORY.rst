@@ -5,7 +5,7 @@ History
 0.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix typo in test case.
 
 
 0.1.3 (2024-10-24)
