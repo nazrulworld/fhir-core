@@ -4,16 +4,16 @@ import logging
 import typing
 from collections import OrderedDict, deque
 from copy import copy
+from functools import lru_cache
 from pathlib import Path
+from types import ModuleType
 
 from lxml import etree  # type: ignore
 from lxml.etree import QName  # type: ignore
-from pydantic.v1.fields import SHAPE_LIST, SHAPE_SINGLETON
 
-from .utils import get_fhir_type_name, is_primitive_type
+from .utils import get_fhir_type_name, is_list_type, is_primitive_type
 
 if typing.TYPE_CHECKING:
-    from pydantic import Field
     from pydantic.fields import FieldInfo
 
     from .fhirabstractmodel import FHIRAbstractModel
@@ -32,13 +32,6 @@ TupleStrKeyVal = typing.Tuple[str, StrBytes]
 ROOT_NS = "http://hl7.org/fhir"
 XHTML_NS = "http://www.w3.org/1999/xhtml"
 EMPTY_VALUE = None
-FHIR_ROOT_MODULES: typing.Dict[str, typing.Any] = {
-    "R5": None,
-    "R4": None,
-    "R4B": None,
-    "STU3": None,
-    "DSTU2": None,
-}
 LOG = logging.getLogger(__name__)
 
 
@@ -53,33 +46,19 @@ def xml_represent(type_, val):
         return val
     if type_ is bool:
         return val is True and "true" or "false"
-    try:
-        return type_.to_string(val)
-    except AttributeError:
-        klass = normalize_fhir_type_class(type_)
-        return klass.to_string(val)
+    breakpoint()
+    # try:
+    #    return type_.to_string(val)
+    # except AttributeError:
+    #    klass = normalize_fhir_type_class(type_)
+    #    return klass.to_string(val)
 
 
-def get_fhir_model_class(field, check=True):
+@lru_cache(maxsize=None, typed=True)
+def get_fhir_root_module(klass_module: str):
     """ """
-    if check:
-        if is_primitive_type(field):
-            raise ValueError
-
-    mod = get_fhir_root_module(field.type_.__fhir_release__)
-    return mod.get_fhir_model_class(get_fhir_type_name(field.type_))
-
-
-def get_fhir_root_module(fhir_release: str):
-    """ """
-    global FHIR_ROOT_MODULES
-    if FHIR_ROOT_MODULES[fhir_release] is None:
-        mod_name = "fhir.resources"
-        if fhir_release != "R5":
-            mod_name += f".{fhir_release}"
-        FHIR_ROOT_MODULES[fhir_release] = importlib.import_module(mod_name)
-
-    return FHIR_ROOT_MODULES[fhir_release]
+    mod_ = ".".join(klass_module.split(".")[:-1])
+    return importlib.import_module(mod_)
 
 
 class SimpleNodeStorage:
@@ -581,7 +560,9 @@ class Node:
                 node.children.append(etree.Comment(cm))
 
     @staticmethod
-    def add_fhir_element(parent: "Node", field: FieldInfo, value: typing.Any, ext=None, ext_field=None):
+    def add_fhir_element(
+        parent: "Node", field: FieldInfo, value: typing.Any, ext=None, ext_field=None
+    ):
         """"""
         child = Node.create(field.alias)
         if is_primitive_type(field):
@@ -670,7 +651,7 @@ class Node:
             del child
             # xxx: handle comments (add comment to main element, parent in this case)
             field = value.model_fields["extension"]
-            value = value.__dict__.get(field.name, None)
+            value = value.__dict__.get(field.alias, None)
             if not value:
                 return
             Node.add_fhir_element(
@@ -688,12 +669,8 @@ class Node:
         alias_maps = value.__class__.get_alias_mapping()
         for prop_name in value.__class__.elements_sequence():
             field_ = value.__class__.model_fields[alias_maps[prop_name]]
-            val = value.__dict__.get(field_.name)
-            if (
-                fhir_type_name == "Extension"
-                and field_.alias in ("url", "id")
-                and val
-            ):
+            val = value.__dict__.get(field_.alias)
+            if fhir_type_name == "Extension" and field_.alias in ("url", "id") and val:
                 child.add_attribute(field_.alias, val)
                 continue
             if get_fhir_type_name(field_) == "xhtml" and val:
@@ -733,14 +710,18 @@ class Node:
     @classmethod
     def from_fhir_obj(cls, model: "FHIRAbstractModel"):
         """ """
-        resource_node = cls(model.get_resource_type(), namespaces=[Namespace(None, ROOT_NS)])
+        resource_node = cls(
+            model.get_resource_type(), namespaces=[Namespace(None, ROOT_NS)]
+        )
         alias_maps = model.__class__.get_alias_mapping()
         for prop_name in model.__class__.elements_sequence():
             field = model.__class__.model_fields[alias_maps[prop_name]]
-            value = model.__dict__.get(field.name, None)
+            if typing.TYPE_CHECKING:
+                assert field.alias
+            value = model.__dict__.get(field.alias, None)
             value_ext, value_ext_field = None, None
             if is_primitive_type(field):
-                ext_key = f"{field.name}__ext"
+                ext_key = f"{field.alias}__ext"
                 value_ext = model.__dict__.get(ext_key, None)
                 if value_ext:
                     value_ext_field = model.__class__.model_fields[ext_key]
@@ -872,7 +853,9 @@ class Node:
 
     @staticmethod
     def get_fhir_value(
-        obj: typing.Union["Node", etree._Element], field: "FieldInfo"
+        obj: typing.Union["Node", etree._Element],
+        field: "FieldInfo",
+        root_mod: ModuleType,
     ) -> typing.Any:
         """ """
         if is_primitive_type(field):
@@ -887,21 +870,22 @@ class Node:
             value = obj.value
 
         else:
-            klass_ = get_fhir_model_class(field, False)
+            klass_ = root_mod.get_fhir_model_class(get_fhir_type_name(field))
             # field.shape
-            value = obj.to_fhir(klass_)
+            value = obj.to_fhir(klass_, root_mod)
 
         return value
 
-    def to_fhir(self, klass: typing.Type["FHIRAbstractModel"]) -> "FHIRAbstractModel":
+    def to_fhir(
+        self, klass: typing.Type["FHIRAbstractModel"], root_mod: ModuleType = None
+    ) -> "FHIRAbstractModel":
         """ """
+        root_mod = root_mod or get_fhir_root_module(klass.__module__)
         if klass.get_resource_type() == "Resource" and len(self.children) > 0:
             # tiny hack to get FHIR release
             child = self.children[0]
-            klass_ = get_fhir_root_module(f_release).get_fhir_model_class(child.name)
-            return child.to_fhir(klass_)
-
-        fhir_release = klass.__fields__["id"].type_.__fhir_release__
+            klass_ = root_mod.get_fhir_model_class(child.name)
+            return child.to_fhir(klass_, root_mod)
 
         params: typing.Dict[str, typing.Any] = {
             "resource_type": klass.get_resource_type()
@@ -927,15 +911,10 @@ class Node:
                 field_name = child.name
             # important!
             field_name = alias_maps[field_name]
-            field = klass.__fields__[field_name]
-            if field.shape == SHAPE_LIST:
-                is_list = True
-            elif field.shape == SHAPE_SINGLETON:
-                is_list = False
-            else:
-                raise NotImplementedError
+            field = klass.model_fields[field_name]
+            is_list = is_list_type(field)
 
-            value = Node.get_fhir_value(child, field)
+            value = Node.get_fhir_value(child, field, root_mod)
 
             if is_list:
                 if field_name not in params:
@@ -951,12 +930,11 @@ class Node:
                 and (len(child.children) > 0 or len(child.comments) > 0)
             ):
                 ext_field_name = f"{field_name}__ext"
-
-                primitive_ext_klass = get_fhir_root_module(
-                    fhir_release
-                ).get_fhir_model_class("FHIRPrimitiveExtension")
-                ext_klass = get_fhir_model_class(
-                    primitive_ext_klass.__fields__["extension"], False
+                primitive_ext_klass = root_mod.get_fhir_model_class(
+                    "FHIRPrimitiveExtension"
+                )
+                ext_klass = root_mod.get_fhir_model_class(
+                    get_fhir_type_name(primitive_ext_klass.model_fields["extension"])
                 )
                 primitive_ext_params = {}
                 if len(child.comments) > 0:
@@ -970,7 +948,7 @@ class Node:
                     primitive_ext_params["extension"] = list()
                     for child_ in child.children:
                         primitive_ext_params["extension"].append(
-                            child_.to_fhir(ext_klass)
+                            child_.to_fhir(ext_klass, root_mod)
                         )
 
                 primitive_ext = primitive_ext_klass(**primitive_ext_params)

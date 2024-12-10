@@ -32,6 +32,27 @@ def is_primitive_type(field: FieldInfo) -> bool:
     return _is_primitive_type(field.annotation) is not None
 
 
+def _is_list_type(annotation: typing.Any) -> typing.Union[bool, None]:
+    """ """
+    origin = get_origin(annotation)
+    if origin is None:
+        return annotation is list
+    if origin is list:
+        return True
+    args = get_args(annotation)
+    for arg in args:
+        val = _is_list_type(arg)
+        if val is not None:
+            return val
+    return None
+
+
+@lru_cache(maxsize=1024, typed=True)
+def is_list_type(field: FieldInfo) -> bool:
+    """ """
+    return _is_list_type(field.annotation) is True
+
+
 def _get_fhir_type(annotation: typing.Any, field: FieldInfo):
     """ """
 
@@ -78,4 +99,4 @@ def get_fhir_type_name(field: FieldInfo):
     raise ValueError
 
 
-__all__ = ["is_primitive_type", "get_fhir_type_name"]
+__all__ = ["is_primitive_type", "get_fhir_type_name", "is_list_type"]

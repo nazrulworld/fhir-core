@@ -143,4 +143,12 @@ def test_fhir_resource_type_name():
         utils.get_fhir_type_name(ActivityDefinition.model_fields["dynamicValue"])
         == "ActivityDefinitionDynamicValue"
     )
+
     assert utils.get_fhir_type_name(Element.model_fields["extension"]) == "Extension"
+
+def test_is_list_type():
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+    from tests.fixtures.resources.element import Element
+    assert utils.is_list_type(ActivityDefinition.model_fields["dosage"]) is True
+    assert utils.is_list_type(ActivityDefinition.model_fields["doNotPerform"]) is False
+    assert utils.is_list_type(Element.model_fields["extension"]) is True

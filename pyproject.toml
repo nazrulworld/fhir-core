@@ -25,6 +25,6 @@ exclude = '''
 '''
 [tool.mypy]
 disable_error_code = "import-untyped"
-
+no_implicit_optional = false
 [tool.pytest.ini_options]
 minversion = "7.0"
