@@ -492,14 +492,22 @@ class Integer(GroupedMetadata):
         return str(value)
 
 
-class Integer64(Integer):
+class Integer64(GroupedMetadata):
     """A signed integer in the range
     -9,223,372,036,854,775,808 to +9,223,372,036,854,775,807 (64-bit).
     This type is defined to allow for record/time counters that can get very large"""
 
-    min_length: int = -9223372036854775808
+    pattern = re.compile(r"^[0]|[-+]?[1-9][0-9]*$")
+
+    min_length: int = -9223372036854775807
     max_length: int = 9223372036854775807
     __visit_name__ = "integer64"
+
+    def __iter__(self) -> typing.Iterator[BaseMetadata]:
+        """ """
+        yield Le(self.max_length)
+
+        yield Ge(self.min_length)
 
 
 class UnsignedInt(Integer):
