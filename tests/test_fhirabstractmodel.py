@@ -194,3 +194,15 @@ def test_model_dump_yaml():
         (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
     )
     assert obj.model_dump_yaml() == filename.read_text()
+
+
+def test_model_attachment_max_size():
+    """ """
+    from tests.fixtures.resources.attachment import Attachment
+    import sys
+    filename = STATIC_PATH / "attachment-example.json"
+
+    attachment = Attachment.model_validate_json(
+        filename.read_bytes()
+    )
+    assert attachment.size == sys.maxsize, "Attachment.size should be sys.maxsize"

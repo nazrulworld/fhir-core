@@ -156,3 +156,39 @@ def test_uri_type():
         minRules: fhir_types.UriType = Field(..., alias="minRules", title="Min Rules")
 
     assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"
+
+
+def test_fhir_type_integer64():
+    from pydantic import BaseModel
+    from fhir_core.types import Integer64Type
+    import sys
+    from fhir_core.types import Integer64  # noqa
+
+    # Input should be less than or equal to 2147483647 [type=less_than_equal, input_value='9223372036854775807', input_type=str]
+    class MyModel(BaseModel):
+        size: Integer64Type
+
+    Integer64.max_length == sys.maxsize
+    Integer64.min_length == sys.maxsize * -1
+
+    import sys
+    assert MyModel(size=f"{sys.maxsize}"), "Should not raise an exception"
+    assert MyModel(size=f"{sys.maxsize}").size == sys.maxsize, f"Should be {sys.maxsize}"
+    assert MyModel(size=sys.maxsize).size == sys.maxsize, f"Should be {sys.maxsize}"
+
+    _ = MyModel(size=0)
+    assert _.size == 0, "Should be zero"
+
+    _.size = sys.maxsize
+    assert _.size == sys.maxsize, "Should be sys.maxsize"
+
+    _.size = sys.maxsize * -1
+    assert _.size == sys.maxsize * -1, "Should be negative sys.maxsize"
+
+    with pytest.raises(ValidationError):
+        MyModel(size=sys.maxsize + 1)
+
+    with pytest.raises(ValidationError):
+        _ = (sys.maxsize + 1) * -1
+        print(_)
+        MyModel(size=_)
