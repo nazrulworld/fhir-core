@@ -24,7 +24,8 @@ from pydantic.types import Base64Encoder, EncodedBytes
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
-from .utils import HAS_YAML_SUPPORT, is_primitive_type
+from .constraints import HAS_YAML_SUPPORT
+from .utils import is_primitive_type
 
 if HAS_YAML_SUPPORT:
     from .yaml_utils import yaml_dumps, yaml_loads

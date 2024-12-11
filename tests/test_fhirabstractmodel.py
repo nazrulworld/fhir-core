@@ -73,6 +73,7 @@ def test_primitive_fields():
     obj = MyPrimitivesValueFieldsModel(
         name="Kim Larson", postCode=1230, active=True, meta={"id": "001"}
     )
+
     serialized_data = obj.model_dump()
     assert serialized_data["post-code"] == 1230
 
@@ -110,8 +111,8 @@ def test_model_dump_serialization():
     """ """
     from tests.fixtures.resources.account import Account
 
-    fileanme = STATIC_PATH / "account-example.json"
-    obj = Account.model_validate_json(fileanme.read_bytes())
+    filename = STATIC_PATH / "account-example.json"
+    obj = Account.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert Account.model_validate(serialized_data).model_dump() == serialized_data
     assert (
@@ -124,8 +125,8 @@ def test_general_resource_validation():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.json"
-    obj = ActivityDefinition.model_validate_json(fileanme.read_bytes())
+    filename = STATIC_PATH / "activitydefinition-medicationorder-example.json"
+    obj = ActivityDefinition.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert (
         ActivityDefinition.model_validate(serialized_data).model_dump()
@@ -161,8 +162,8 @@ def test_base64binary_validation():
 
     from tests.fixtures.resources.auditevent import AuditEvent
 
-    fileanme = STATIC_PATH / "audit-event-example-search.json"
-    obj = AuditEvent.model_validate_json(fileanme.read_bytes())
+    filename = STATIC_PATH / "audit-event-example-search.json"
+    obj = AuditEvent.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert AuditEvent.model_validate(serialized_data).model_dump() == serialized_data
     assert (
@@ -175,8 +176,8 @@ def test_model_from_yaml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
-    obj = ActivityDefinition.model_validate_yaml(fileanme.read_bytes())
+    filename = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+    obj = ActivityDefinition.model_validate_yaml(filename.read_bytes())
     obj2 = ActivityDefinition.model_validate_json(
         (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
     )
@@ -187,9 +188,9 @@ def test_model_dump_yaml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    fileanme = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+    filename = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
 
     obj = ActivityDefinition.model_validate_json(
         (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
     )
-    assert obj.model_dump_yaml() == fileanme.read_text()
+    assert obj.model_dump_yaml() == filename.read_text()
