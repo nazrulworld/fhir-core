@@ -46,8 +46,6 @@ test_requirements = [
 ]
 if PY_VERSION_10_OR_LATER:
     test_requirements.append("importlib-metadata>=5.2.0")
-if PY_VERSION_11_OR_LATER:
-    test_requirements.append("typed-ast>=1.5.4")
 
 development_requirements = [
     "Jinja2==2.11.1",

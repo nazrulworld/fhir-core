@@ -5,8 +5,9 @@ History
 0.1.4 (unreleased)
 ------------------
 
-- Fix typo in test case.
+- Remove dependency on `typed-ast` as it is not needed and won't work in later Python versions.
 
+- Fix typo in test case.
 
 0.1.3 (2024-10-24)
 ------------------
