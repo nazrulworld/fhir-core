@@ -803,7 +803,21 @@ class Date:
                 Date or str.
 
             """
-            return cls._validate_date(input_value, validator)
+            validated_value = cls._validate_date(input_value, validator)
+            if (
+                cls.__name__ == DateTime.__name__
+                and isinstance(validated_value, datetime.datetime)
+                and isinstance(input_value, str)
+            ):
+                if "T" in input_value and validated_value.tzinfo is None:
+                    # a datetime with time MUST have a timezone
+                    raise ValueError(
+                        "Datetime must be timezone aware if it has a time component."
+                    )
+                if "T" not in input_value and validated_value.time():
+                    # a datetime without time MUST NOT have a time component
+                    validated_value = validated_value.date().isoformat()
+            return validated_value
 
         return core_schema.with_info_wrap_validator_function(
             _validate,
