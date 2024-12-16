@@ -434,6 +434,14 @@ class FHIRAbstractModel(BaseModel):
     ) -> typing.Any:
         """ """
 
+        import decimal
+
+        class DecimalEncoder:
+            @classmethod
+            def encode(cls, dec_value: decimal.Decimal) -> float:
+                """Encodes a Decimal as float."""
+                return float(dec_value)
+
         def _get_encoder():
             """ """
             for enc in field_info.metadata:
@@ -442,6 +450,8 @@ class FHIRAbstractModel(BaseModel):
                     return enc
             if "Base64Binary" in str(field_info.annotation):
                 return Base64Encoder
+            if "Decimal" in str(field_info.annotation):
+                return DecimalEncoder
 
         if isinstance(value, list):
             if len(value) == 0:
@@ -453,7 +463,7 @@ class FHIRAbstractModel(BaseModel):
 
         if value is None:
             return value
-        if isinstance(value, (bytes, bytearray)):
+        if isinstance(value, (bytes, bytearray, decimal.Decimal)):
             _enc_klass = _get_encoder()
             if _enc_klass:
                 return _enc_klass.encode(value)
