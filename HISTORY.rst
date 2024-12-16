@@ -9,6 +9,8 @@ History
 
 - Fix typo in test case.
 
+- Raising 'ValueError' has been suspended inside Fhir Model Validation 'fhir_model_validator()', if None value is provided.
+
 0.1.3 (2024-10-24)
 ------------------
 

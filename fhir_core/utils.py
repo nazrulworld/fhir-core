@@ -4,6 +4,7 @@ from typing import get_args, get_origin
 
 from pydantic._internal._validators import import_string
 from pydantic.fields import FieldInfo
+from pydantic.types import Base64Encoder, EncodedBytes
 
 from .constraints import FHIR_PRIMITIVES_MAPS, FHIR_TYPES_MAPS, PY_PRIMITIVES
 
@@ -99,4 +100,20 @@ def get_fhir_type_name(field: FieldInfo):
     raise ValueError
 
 
-__all__ = ["is_primitive_type", "get_fhir_type_name", "is_list_type"]
+@lru_cache(maxsize=1024, typed=True)
+def get_base64_encoder(field_info: FieldInfo) -> typing.Any:
+    """ """
+    for enc in field_info.metadata:
+        # handle base64 output
+        if isinstance(enc, EncodedBytes):
+            return enc
+    if "Base64Binary" in str(field_info.annotation):
+        return Base64Encoder
+
+
+__all__ = [
+    "is_primitive_type",
+    "get_fhir_type_name",
+    "is_list_type",
+    "get_base64_encoder",
+]

@@ -4,8 +4,6 @@ from tests.fixtures import FhirPrimitiveTypesModel
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
-from tests.fixtures.resources.fhirtypes import AccountRelatedAccountType
-
 
 def test_check_primitive_type():
     """ """

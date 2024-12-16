@@ -25,7 +25,7 @@ from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
 from .constraints import HAS_YAML_SUPPORT
-from .utils import is_primitive_type
+from .utils import get_base64_encoder, is_primitive_type
 
 if HAS_YAML_SUPPORT:
     from .yaml_utils import yaml_dumps, yaml_loads
@@ -433,16 +433,6 @@ class FHIRAbstractModel(BaseModel):
         field_info: FieldInfo,
     ) -> typing.Any:
         """ """
-
-        def _get_encoder():
-            """ """
-            for enc in field_info.metadata:
-                # handle base64 output
-                if isinstance(enc, EncodedBytes):
-                    return enc
-            if "Base64Binary" in str(field_info.annotation):
-                return Base64Encoder
-
         if isinstance(value, list):
             if len(value) == 0:
                 return value
@@ -454,7 +444,7 @@ class FHIRAbstractModel(BaseModel):
         if value is None:
             return value
         if isinstance(value, (bytes, bytearray)):
-            _enc_klass = _get_encoder()
+            _enc_klass = get_base64_encoder(field_info)
             if _enc_klass:
                 return _enc_klass.encode(value)
 

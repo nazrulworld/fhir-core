@@ -26,43 +26,61 @@ class FhirPrimitiveTypesModel(BaseModel):
     """ """
 
     booleanTypeRequired: fhir_types.BooleanType = Field(
-        ..., title="Boolean Type (required)"
+        default=None, title="Boolean Type (required)"
     )
     booleanTypeOptional: fhir_types.BooleanType | None = Field(
-        None, title="Boolean Type (optional)"
+        default=None, title="Boolean Type (optional)"
     )
 
     stringTypeRequired: fhir_types.StringType = Field(
-        ..., title="String Type (required)"
+        default=None, title="String Type (required)"
     )
-    stringTypeOptional: fhir_types.StringType = Field(
-        None, title="Integer Type (optional)"
+    stringTypeOptional: fhir_types.StringType | None = Field(
+        default=None, title="Integer Type (optional)"
     )
     stringListTypeRequired: typing.List[fhir_types.StringType] = Field(
-        ..., title="List of String Type (required)"
+        default=None, title="List of String Type (required)"
     )
-    stringListTypeOptional: typing.List[typing.Union[fhir_types.StringType, None]] = (
-        Field(..., title="List of String " "Type (optional)")
-    )
+    stringListTypeOptional: (
+        typing.List[typing.Union[fhir_types.StringType, None]] | None
+    ) = Field(default=None, title="List of String " "Type (optional)")
 
     stringListTypeOptional2: typing.List[fhir_types.StringType | None] | None = Field(
-        None, title="List of String " "Type (optional)"
+        default=None, title="List of String " "Type (optional)"
     )
 
     uuidTypeRequired: fhir_types.UuidType = Field(..., title="UUID Type (required)")
 
-    uuidListTypeOptional: typing.List[fhir_types.UuidType] = Field(
+    uuidListTypeOptional: typing.List[fhir_types.UuidType] | None = Field(
         None, title="List of UUID " "Type (optional)"
     )
 
-    dateTypeRequired: fhir_types.DateType = Field(..., title="Date Type (required)")
+    dateTypeRequired: fhir_types.DateType = Field(
+        default=None, title="Date Type (required)"
+    )
 
-    dateListTypeOptional: typing.List[typing.Union[fhir_types.DateType, None]] = Field(
-        ..., title="List of Date " "Type (optional)"
-    )
+    dateListTypeOptional: (
+        typing.List[typing.Union[fhir_types.DateType, None]] | None
+    ) = Field(default=None, title="List of Date " "Type (optional)")
     base64BinaryTypeRequired: fhir_types.Base64BinaryType = Field(
-        ..., title="Binary Type (required)"
+        default=None, title="Binary Type (required)"
     )
-    base64BinaryListTypeOptionalList: typing.Optional[
-        typing.List[fhir_types.Base64BinaryType]
-    ] = Field()
+    urlTypeNotRequired: fhir_types.UrlType | None = Field(
+        None, title="Url Type (not required)"
+    )
+    urlTypeNotRequiredList: typing.List[fhir_types.UrlType] | None = Field(
+        default=None, title="Urls Type (not required)"
+    )
+
+    dateTypeNotRequired: fhir_types.DateType | None = Field(
+        default=None, title="Date Type (not required)"
+    )
+    dateListNotRequired: typing.List[fhir_types.DateType] | None = Field(
+        default=None, title="List of Date " "Type (not required)"
+    )
+    dateTimeNotRequired: fhir_types.DateTimeType | None = Field(
+        default=None, title="DateTime Type (not required)"
+    )
+    dateTimeListNotRequired: typing.List[fhir_types.DateTimeType] | None = Field(
+        default=None, title="List of DateTime " "Type (not required)"
+    )

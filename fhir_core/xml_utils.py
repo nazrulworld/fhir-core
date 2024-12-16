@@ -4,19 +4,24 @@ import decimal
 import importlib
 import logging
 import typing
+import uuid
 from collections import OrderedDict, deque
 from copy import copy
-from distutils.command.install import value
 from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
-from pydantic.fields import FieldInfo
-from .constraints import FHIR_PRIMITIVES
 
 from lxml import etree  # type: ignore
 from lxml.etree import QName  # type: ignore
+from pydantic.fields import FieldInfo
+from pydantic_core._pydantic_core import Url
 
-from .utils import get_fhir_type_name, is_list_type, is_primitive_type
+from .utils import (
+    get_base64_encoder,
+    get_fhir_type_name,
+    is_list_type,
+    is_primitive_type,
+)
 
 if typing.TYPE_CHECKING:
     from .fhirabstractmodel import FHIRAbstractModel
@@ -70,15 +75,22 @@ def xml_represent(type_, val):
             val = float(val)
         return str(val)
     if type_name in "base64Binary":
-
-        NotImplementedError
+        encoder = get_base64_encoder(type_)
+        if encoder is not None:
+            val = encoder.encode(val)
+        if isinstance(val, bytes):
+            val = val.decode("utf-8")
+        return val
 
     if type_name == "date":
-        """1905-08-23"""
+        """ """
         if isinstance(val, str):
             return val
-        if isinstance(val, (datetime.date, datetime.datetime)):
-            return val.strftime("%Y-%m-%d")
+        if isinstance(val, datetime.datetime):
+            val = val.date()
+        if isinstance(val, datetime.date):
+            val = val.isoformat()
+        return val
 
     if type_name == "dateTime":
         if isinstance(val, str):
@@ -87,19 +99,28 @@ def xml_represent(type_, val):
             return val.isoformat()
 
     if type_name == "time":
-        breakpoint()
+        if isinstance(val, datetime.time):
+            val = val.isoformat()
+        return val
+
     if type_name == "instant":
-        return val.isoformat()
+        if isinstance(val, datetime.datetime):
+            val = val.isoformat()
+        return val
 
     if type_name == "url":
-        NotImplementedError
+        if isinstance(val, Url):
+            val = str(val)
+        return val
 
     if type_name == "uuid":
-        """f isinstance(value, UUID):
-            value = f"urn:uuid:{value}"
-        assert isinstance(value, str)"""
-        NotImplementedError
-    breakpoint()
+        """ """
+        if isinstance(val, uuid.UUID):
+            val = f"urn:uuid:{str(val)}"
+        if not val.startswith("urn:uuid:"):
+            val = f"urn:uuid:{val}"
+        return val
+
     raise NotImplementedError
 
 

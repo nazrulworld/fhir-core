@@ -4,6 +4,7 @@ import abc
 import dataclasses
 import datetime
 import decimal
+import logging
 import re
 import typing
 from functools import lru_cache
@@ -34,6 +35,7 @@ __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
 FHIR_DATE_PARTS = re.compile(r"(?P<year>\d{4})(-(?P<month>\d{2}))?(-(?P<day>\d{2}))?$")
+LOGGER = logging.getLogger(__name__)
 
 
 class FhirBase(metaclass=abc.ABCMeta):
@@ -157,9 +159,9 @@ class FhirBase(metaclass=abc.ABCMeta):
         model_klass: typing.Type[FHIRAbstractModel],
     ):
         if value is None:
-            raise ValueError(
-                "'None' value is not acceptable as any kind of FHIR model value."
-            )
+            LOGGER.debug("None value is provided for %s", model_klass)
+            return value
+
         if isinstance(value, (str, bytes)):
             value = model_klass.model_validate_json(value)
 
