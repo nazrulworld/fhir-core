@@ -60,7 +60,7 @@ setup(
     author_email="email2nazrul@gmail.com",
     # Get more from https://pypi.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
@@ -101,7 +101,7 @@ setup(
         "dev": (test_requirements + development_requirements),
     },
     url="https://github.com/nazrulworld/fhir-core",
-    version="0.1.4.dev0",
+    version="1.0.0.dev0",
     zip_safe=False,
     python_requires=">=3.8",
     project_urls={

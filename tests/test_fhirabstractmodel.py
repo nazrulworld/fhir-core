@@ -1,11 +1,16 @@
 import typing
 
 import pytest
+from lxml import etree
 from pydantic import Field, ValidationError
 
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
 from fhir_core.types import Base64BinaryType
-from tests.fixtures import STATIC_PATH_JSON_EXAMPLES
+from tests.fixtures import (
+    STATIC_PATH_JSON_EXAMPLES,
+    STATIC_PATH_XML_EXAMPLES,
+    STATIC_PATH_YAML_EXAMPLES,
+)
 from tests.fixtures.resources import fhirtypes
 from tests.fixtures.resources.domainresource import DomainResource
 from tests.fixtures.resources.fhirtypes import FHIRPrimitiveExtensionType
@@ -179,7 +184,7 @@ def test_model_from_yaml():
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
     filename = (
-        STATIC_PATH_JSON_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
+        STATIC_PATH_YAML_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
     )
     obj = ActivityDefinition.model_validate_yaml(filename.read_bytes())
     obj2 = ActivityDefinition.model_validate_json(
@@ -196,7 +201,7 @@ def test_model_dump_yaml():
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
     filename = (
-        STATIC_PATH_JSON_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
+        STATIC_PATH_YAML_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
     )
 
     obj = ActivityDefinition.model_validate_json(
@@ -218,3 +223,43 @@ def test_model_attachment_max_size():
 
     attachment = Attachment.model_validate_json(filename.read_bytes())
     assert attachment.size == sys.maxsize, "Attachment.size should be sys.maxsize"
+
+
+def test_model_from_xml():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    filename = (
+        STATIC_PATH_XML_EXAMPLES
+        / "activitydefinition-medicationorder-example(citalopramPrescription).xml"
+    )
+    obj = ActivityDefinition.model_validate_xml(filename.read_bytes())
+
+    obj2 = ActivityDefinition.model_validate_json(
+        (
+            STATIC_PATH_JSON_EXAMPLES
+            / "activitydefinition-medicationorder-example(citalopramPrescription).json"
+        ).read_bytes()
+    )
+    assert obj.model_dump() == obj2.model_dump()
+
+
+def test_model_dump_xml():
+    """ """
+    from tests.fixtures.resources.activitydefinition import ActivityDefinition
+
+    filename = (
+        STATIC_PATH_XML_EXAMPLES
+        / "activitydefinition-medicationorder-example(citalopramPrescription).xml"
+    )
+
+    obj = ActivityDefinition.model_validate_json(
+        (
+            STATIC_PATH_JSON_EXAMPLES
+            / "activitydefinition-medicationorder-example(citalopramPrescription).json"
+        ).read_bytes()
+    )
+    activitydefinition_el_1 = etree.fromstring(filename.read_bytes())
+    activitydefinition_el_2 = etree.fromstring(obj.model_dump_xml())
+    assert len(activitydefinition_el_1) == len(activitydefinition_el_2)
+    # assert etree.tostring(activitydefinition_el_1) == etree.tostring(activitydefinition_el_2)

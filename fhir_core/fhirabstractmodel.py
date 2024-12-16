@@ -20,15 +20,16 @@ from pydantic import (
     model_validator,
 )
 from pydantic.fields import FieldInfo
-from pydantic.types import Base64Encoder, EncodedBytes
 from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
-from .constraints import HAS_YAML_SUPPORT
+from .constraints import HAS_XML_SUPPORT, HAS_YAML_SUPPORT
 from .utils import get_base64_encoder, is_primitive_type
 
 if HAS_YAML_SUPPORT:
     from .yaml_utils import yaml_dumps, yaml_loads
+if HAS_XML_SUPPORT:
+    from .xml_utils import xml_dumps, xml_loads
 
 if typing.TYPE_CHECKING:
     from pydantic.main import TupleGenerator
@@ -226,6 +227,41 @@ class FHIRAbstractModel(BaseModel):
 
         return yaml_dumps(result, indent=indent, return_bytes=False, sort_keys=False)
 
+    def model_dump_xml(
+        self,
+        *,
+        # XML
+        pretty_print: bool = False,
+        xml_declaration=True,
+        # FHIR custom
+        exclude_comments: bool = False,
+        **pydantic_kwargs,
+    ) -> str:
+        """
+        Generates a YAML representation of the model using PyYAML.
+
+        Args:
+            pretty_print: .
+            exclude_comments: If the FHIR comment should be excluded.
+                    By default, FHIR comments are included.
+            xml_declaration:
+            pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
+                    Normally you don't need to use other params.
+
+        Returns:
+            A XML string representation of the model.
+        """
+        if not HAS_XML_SUPPORT:
+            raise ModuleNotFoundError(
+                "You need to install ``lxml`` package to use this method. "
+            )
+        return xml_dumps(
+            self,
+            pretty_print=pretty_print,
+            xml_declaration=xml_declaration,
+            with_comments=exclude_comments is False,
+        )
+
     def model_dump(
         self,
         *,
@@ -345,6 +381,39 @@ class FHIRAbstractModel(BaseModel):
             )
         data = yaml_loads(yaml_data)
         return cls.model_validate(data, strict=strict, context=context)
+
+    @classmethod
+    def model_validate_xml(
+        cls,
+        xml_data: str | bytes | bytearray,
+        *,
+        strict: bool | None = None,
+        context: typing.Any | None = None,
+    ) -> Self:
+        """Usage docs: https://pypi.org/project/fhir.resources/#XML
+
+        Validate the given XML data against the Pydantic model.
+
+        Args:
+            xml_data: The YAML data to validate.
+            strict: Whether to enforce types strictly.
+            context: Extra variables to pass to the validator.
+
+        Returns:
+            The validated Pydantic model.
+
+        Raises:
+            ValueError: If `xml_data` is not valid XML.
+        """
+        if not HAS_XML_SUPPORT:
+            raise ModuleNotFoundError(
+                "You need to install ``lxml`` package to use this method. "
+            )
+
+        me = xml_loads(cls, xml_data)
+        if typing.TYPE_CHECKING:
+            me = typing.cast(Self, me)
+        return me
 
     # Serializers
     @model_serializer(mode="wrap", when_used="always", return_type=OrderedDict)

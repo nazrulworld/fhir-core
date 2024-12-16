@@ -1,4 +1,6 @@
-# _*_ coding: utf-8 _*_
+from __future__ import annotations as _annotations
+
+"""XML Utilities"""
 import datetime
 import decimal
 import importlib
@@ -713,7 +715,7 @@ class Node:
         if fhir_type_name == "Resource":
             # special case
             parent_child = child
-            child = Node.create(value.resource_type)
+            child = Node.create(value.get_resource_type())
             parent_child.children.append(child)
 
         if fhir_type_name == "FHIRPrimitiveExtension":
@@ -1079,7 +1081,9 @@ def xml_dumps(
 
 
 def xml_loads(
-    cls: typing.Type["FHIRAbstractModel"], b: bytes, xmlparser: etree.XMLParser = None
+    cls: typing.Type["FHIRAbstractModel"],
+    b: str | bytes | bytearray,
+    xmlparser: etree.XMLParser = None,
 ) -> "FHIRAbstractModel":
     """ """
     root = etree.fromstring(b, parser=xmlparser)

@@ -2,8 +2,10 @@
 History
 =======
 
-0.1.4 (unreleased)
+1.0.0 (unreleased)
 ------------------
+
+- **XML serialization/deserialization support has been added**.
 
 - Remove dependency on `typed-ast` as it is not needed and won't work in later Python versions.
 

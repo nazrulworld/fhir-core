@@ -1,3 +1,5 @@
+from __future__ import annotations as _annotations
+
 from typing import TYPE_CHECKING, cast
 
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
