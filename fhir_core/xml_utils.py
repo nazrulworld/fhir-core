@@ -1,13 +1,17 @@
 # _*_ coding: utf-8 _*_
+import datetime
+import decimal
 import importlib
 import logging
 import typing
 from collections import OrderedDict, deque
 from copy import copy
+from distutils.command.install import value
 from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
 from pydantic.fields import FieldInfo
+from .constraints import FHIR_PRIMITIVES
 
 from lxml import etree  # type: ignore
 from lxml.etree import QName  # type: ignore
@@ -43,14 +47,60 @@ def xml_represent(type_, val):
     """XML  Representation"""
     if val is None:
         return val
-    if type_ is bool:
+    type_name = get_fhir_type_name(type_)
+    if type_name == "boolean":
         return val is True and "true" or "false"
+
+    if type_name in (
+        "string",
+        "code",
+        "id",
+        "markdown",
+        "xhtml",
+        "oid",
+        "canonical",
+        "uri",
+    ):
+        if isinstance(val, bytes):
+            val = val.decode("utf-8")
+        return val
+
+    if type_name in ("decimal", "integer", "integer64", "unsignedInt", "positiveInt"):
+        if isinstance(val, decimal.Decimal):
+            val = float(val)
+        return str(val)
+    if type_name in "base64Binary":
+
+        NotImplementedError
+
+    if type_name == "date":
+        """1905-08-23"""
+        if isinstance(val, str):
+            return val
+        if isinstance(val, (datetime.date, datetime.datetime)):
+            return val.strftime("%Y-%m-%d")
+
+    if type_name == "dateTime":
+        if isinstance(val, str):
+            return val
+        if isinstance(val, datetime.datetime):
+            return val.isoformat()
+
+    if type_name == "time":
+        breakpoint()
+    if type_name == "instant":
+        return val.isoformat()
+
+    if type_name == "url":
+        NotImplementedError
+
+    if type_name == "uuid":
+        """f isinstance(value, UUID):
+            value = f"urn:uuid:{value}"
+        assert isinstance(value, str)"""
+        NotImplementedError
     breakpoint()
-    # try:
-    #    return type_.to_string(val)
-    # except AttributeError:
-    #    klass = normalize_fhir_type_class(type_)
-    #    return klass.to_string(val)
+    raise NotImplementedError
 
 
 @lru_cache(maxsize=None, typed=True)
@@ -686,7 +736,7 @@ class Node:
 
             value_ext, value_ext_field = None, None
             if is_primitive_type(field_):
-                ext_key = f"{field_.name}__ext"
+                ext_key = f"{alias_maps[field_.alias]}__ext"
                 value_ext = value.__dict__.get(ext_key, None)
                 if value_ext:
                     value_ext_field = value.__class__.model_fields[ext_key]
@@ -858,7 +908,8 @@ class Node:
     ) -> typing.Any:
         """ """
         if is_primitive_type(field):
-            if get_fhir_type_name(field) == "xhtml":
+            type_name = get_fhir_type_name(field)
+            if type_name == "xhtml":
                 if isinstance(obj, etree._Element):
                     value = etree.tostring(obj)
                 else:
@@ -867,6 +918,10 @@ class Node:
                 return value
 
             value = obj.value
+
+            if type_name == "uuid":
+                if value.startswith("urn:uuid:"):
+                    value = value[len("urn:uuid:") :]
 
         else:
             klass_ = root_mod.get_fhir_model_class(get_fhir_type_name(field))
