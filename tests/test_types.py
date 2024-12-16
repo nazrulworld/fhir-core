@@ -197,3 +197,17 @@ def test_fhir_type_integer64():
         _ = (sys.maxsize + 1) * -1
         print(_)
         MyModel(size=_)
+
+
+def test_fhir_type_quantity():
+
+    from pydantic import BaseModel
+    from tests.fixtures.resources.quantity import Quantity
+
+    class MyModel(BaseModel):
+        size: Quantity
+
+    _ = MyModel(size={"value": 10.101, "unit": "kg"})
+    assert float(_.size.value) == 10.101, "Should be 10.101"
+    serialized = _.model_dump_json()
+    assert '"10.101"' not in serialized, f"Decimal values should not have quotes {serialized}"
