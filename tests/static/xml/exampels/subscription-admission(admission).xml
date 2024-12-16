@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><Subscription xmlns="http://hl7.org/fhir">
+  <id value="admission"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <name value="AdmissionExample"/>
+  <status value="active"/>
+  <topic value="http://example.org/R5/SubscriptionTopic/admission"/>
+  <end value="2019-08-07T11:15:18Z"/>
+  <managingEntity>
+    <reference value="Organization/1"/>
+  </managingEntity>
+  <reason value="subscription for beginning of a clinical encounter for patient 123"/>
+  <filterBy>
+    <filterParameter value="patient"/>
+    <value value="Patient/123"/>
+  </filterBy>
+  <channelType>
+    <code value="rest-hook"/>
+  </channelType>
+  <endpoint value="https://example.org/Endpoints/P123"/>
+  <parameter>
+    <name value="Authorization"/>
+    <value value="Bearer secret-token-abc-123"/>
+  </parameter>
+  <heartbeatPeriod value="60"/>
+  <timeout value="5"/>
+  <contentType value="application/fhir+json"/>
+  <content value="id-only"/>
+  <maxCount value="100"/>
+</Subscription>

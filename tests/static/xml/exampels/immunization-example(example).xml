@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><Immunization xmlns="http://hl7.org/fhir">
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <system value="urn:ietf:rfc:3986"/>
+    <value value="urn:oid:1.3.6.1.4.1.21367.2005.3.7.1234"/>
+  </identifier>
+  <status value="completed"/>
+  <vaccineCode>
+    <coding>
+      <system value="urn:oid:1.2.36.1.2001.1005.17"/>
+      <code value="FLUVAX"/>
+    </coding>
+    <text value="Fluvax"/>
+  </vaccineCode>
+  <administeredProduct>
+    <concept>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.6.69"/>
+        <code value="70461-0321-03"/>
+      </coding>
+      <text value="Flucelvax (Influenza, injectable, MDCK, preservative free, quadrivalent)"/>
+    </concept>
+  </administeredProduct>
+  <manufacturer>
+    <reference>
+      <reference value="Organization/hl7"/>
+    </reference>
+  </manufacturer>
+  <lotNumber value="AAJN11K"/>
+  <expirationDate value="2015-02-15"/>
+  <patient>
+    <reference value="Patient/example"/>
+  </patient>
+  <encounter>
+    <reference value="Encounter/example"/>
+  </encounter>
+  <occurrenceDateTime value="2013-01-10"/>
+  <primarySource value="true"/>
+  <location>
+    <reference value="Location/1"/>
+  </location>
+  <site>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActSite"/>
+      <code value="LA"/>
+      <display value="left arm"/>
+    </coding>
+  </site>
+  <route>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration"/>
+      <code value="IM"/>
+      <display value="Injection, intramuscular"/>
+    </coding>
+  </route>
+  <doseQuantity>
+    <value value="5"/>
+    <system value="http://unitsofmeasure.org"/>
+    <code value="mg"/>
+  </doseQuantity>
+  <performer>
+    <function>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v2-0443"/>
+        <code value="OP"/>
+      </coding>
+    </function>
+    <actor>
+      <reference value="Practitioner/example"/>
+    </actor>
+  </performer>
+  <performer>
+    <function>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v2-0443"/>
+        <code value="AP"/>
+      </coding>
+    </function>
+    <actor>
+      <reference value="Practitioner/example"/>
+    </actor>
+  </performer>
+  <note>
+    <text value="Notes on adminstration of vaccine"/>
+  </note>
+  <reason>
+    <concept>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="429060002"/>
+      </coding>
+    </concept>
+  </reason>
+  <isSubpotent value="true"/>
+  <programEligibility>
+    <program>
+      <text value="VFC"/>
+    </program>
+    <programStatus>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/immunization-program-eligibility"/>
+        <code value="uninsured"/>
+      </coding>
+    </programStatus>
+  </programEligibility>
+  <fundingSource>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/immunization-funding-source"/>
+      <code value="private"/>
+    </coding>
+  </fundingSource>
+</Immunization>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><Device xmlns="http://hl7.org/fhir">
+  <id value="example-udi1"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <type>
+      <coding>
+        <system value="http://acme.com/devices/pacemakers/octane/serial"/>
+      </coding>
+    </type>
+    <value value="1234-5678-90AB-CDEF"/>
+  </identifier>
+  <identifier>
+    <type>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+        <code value="SNO"/>
+      </coding>
+    </type>
+    <value value="10987654d321"/>
+  </identifier>
+  <udiCarrier>
+    <deviceIdentifier value="00844588003288"/>
+    <issuer value="http://hl7.org/fhir/NamingSystem/gs1"/>
+    <jurisdiction value="http://hl7.org/fhir/NamingSystem/fda-udi"/>
+    <carrierAIDC value="XWQyMDExMDg1NzY3NDAwMjAxNzE3MTQxMTIwMTBOWUZVTDAx4oaUMjExOTI4MzfihpQ3MTNBMUIyQzNENEU1RjZH"/>
+    <carrierHRF value="{01}00844588003288{17}141120{10}7654321D{21}10987654d321"/>
+    <entryType value="barcode"/>
+  </udiCarrier>
+  <status value="active"/>
+  <manufacturer value="Acme Devices, Inc"/>
+  <expirationDate value="2014-11-20"/>
+  <lotNumber value="7654321D"/>
+  <name>
+    <value value="PM/Octane 2014"/>
+    <type>
+      <coding>
+        <system value="http://hl7.org/fhir/device-nametype"/>
+        <code value="user-friendly-name"/>
+      </coding>
+    </type>
+  </name>
+  <!--  note: optional text value added here for a prettier generated narrative  -->
+  <type>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="468063009"/>
+      <display value="Coated femoral stem prosthesis, modular"/>
+    </coding>
+    <text value="Coated femoral stem prosthesis, modular"/>
+  </type>
+  <!--  <association>
+	  <status> 
+	     <coding>
+		   <system value="http://terminology.hl7.org/CodeSystem/device-association-status" />
+           <code value="attached"/>
+		 </coding>
+	  </status>
+      <humanSubject>
+		<reference value="Patient/example"/>
+	  </humanSubject>
+	</association>  -->
+  <!--  note: optional text value added here for a prettier generated narrative  -->
+  <safety>
+    <coding>
+      <system value="urn:oid:2.16.840.1.113883.3.26.1.1"/>
+      <code value="mr-unsafe"/>
+      <display value="MR Unsafe"/>
+    </coding>
+    <text value="MR Unsafe"/>
+  </safety>
+</Device>

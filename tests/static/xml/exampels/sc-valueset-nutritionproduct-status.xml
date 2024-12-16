@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ConceptMap xmlns="http://hl7.org/fhir">
+  <id value="sc-nutritionproduct-status"/>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: ConceptMap sc-nutritionproduct-status</b>
+      </p>
+      <a name="sc-nutritionproduct-status"> </a>
+      <a name="hcsc-nutritionproduct-status"> </a>
+      <a name="sc-nutritionproduct-status-en-US"> </a>
+      <p>Mapping from 
+        <a href="valueset-nutritionproduct-status.html">Nutrition Product Status</a> to 
+        <a href="valueset-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <br/>
+      <p>
+        <b>Group 1 </b>Mapping from 
+        <a href="codesystem-nutritionproduct-status.html">Nutrition Product Status</a> to 
+        <a href="codesystem-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <table class="grid">
+        <tr>
+          <td>
+            <b>Source Code</b>
+          </td>
+          <td>
+            <b>Relationship</b>
+          </td>
+          <td>
+            <b>Target Code</b>
+          </td>
+        </tr>
+        <tr>
+          <td>entered-in-error</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>error</td>
+        </tr>
+        <tr>
+          <td>active</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>active</td>
+        </tr>
+        <tr>
+          <td>inactive</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>inactive</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <url value="http://hl7.org/fhir/ConceptMap/sc-nutritionproduct-status"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="NutritionProductStatusCanonicalMap"/>
+  <title value="Canonical Mapping for &quot;Nutrition Product Status&quot;"/>
+  <status value="draft"/>
+  <experimental value="false"/>
+  <date value="2020-12-28T05:55:11+00:00"/>
+  <publisher value="HL7 (FHIR Project)"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://hl7.org/fhir"/>
+    </telecom>
+    <telecom>
+      <system value="email"/>
+      <value value="fhir@lists.hl7.org"/>
+    </telecom>
+  </contact>
+  <description value="Canonical Mapping for &quot;Codes identifying the lifecycle stage of a product.&quot;"/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <sourceScopeCanonical value="http://hl7.org/fhir/ValueSet/nutritionproduct-status"/>
+  <targetScopeCanonical value="http://hl7.org/fhir/ValueSet/resource-status"/>
+  <group>
+    <source value="http://hl7.org/fhir/nutritionproduct-status"/>
+    <target value="http://hl7.org/fhir/resource-status"/>
+    <element>
+      <code value="entered-in-error"/>
+      <target>
+        <code value="error"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="active"/>
+      <target>
+        <code value="active"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="inactive"/>
+      <target>
+        <code value="inactive"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+  </group>
+</ConceptMap>

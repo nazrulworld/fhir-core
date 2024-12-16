@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="summary"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: CodeSystem summary</b>
+      </p>
+      <a name="summary"> </a>
+      <a name="hcsummary"> </a>
+      <a name="summary-en-US"> </a>
+      <p>This case-sensitive code system 
+        <code>http://hl7.org/fhir/CodeSystem/summary</code> defines codes, but no codes are represented here
+      </p>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="vocab"/>
+  </extension>
+  <url value="http://hl7.org/fhir/CodeSystem/summary"/>
+  <identifier>
+    <system value="urn:ietf:rfc:3986"/>
+    <value value="urn:oid:2.16.840.1.113883.4.642.4.1821"/>
+  </identifier>
+  <version value="6.0.0-ballot2"/>
+  <name value="CodeSystemSummaryExampleACMEBodySites"/>
+  <title value="Code system summary example for ACME body sites"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <publisher value="HL7 International / Terminology Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/Vocab"/>
+    </telecom>
+  </contact>
+  <description value="This is an example code system summary for the ACME codes for body site."/>
+  <useContext>
+    <code>
+      <system value="http://example.org/CodeSystem/contexttype"/>
+      <code value="species"/>
+    </code>
+    <valueCodeableConcept>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="337915000"/>
+        <display value="Homo sapiens (organism)"/>
+      </coding>
+    </valueCodeableConcept>
+  </useContext>
+  <jurisdiction>
+    <coding>
+      <system value="urn:iso:std:iso:3166"/>
+      <code value="CA"/>
+    </coding>
+  </jurisdiction>
+  <caseSensitive value="true"/>
+  <content value="not-present"/>
+  <count value="92"/>
+</CodeSystem>

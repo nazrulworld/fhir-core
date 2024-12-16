@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><DeviceAlert xmlns="http://hl7.org/fhir">
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <system value="http://goodcare.org/DeviceAlert/id"/>
+    <value value="345675"/>
+  </identifier>
+  <status value="completed"/>
+  <condition>
+    <code>
+      <coding>
+        <system value="urn:iso:std:iso:11073:10101"/>
+        <code value="196688"/>
+      </coding>
+    </code>
+    <presence value="true"/>
+  </condition>
+  <type value="physiological"/>
+  <subject>
+    <reference value="Patient/pat1"/>
+  </subject>
+  <source>
+    <reference value="Device/example"/>
+  </source>
+</DeviceAlert>

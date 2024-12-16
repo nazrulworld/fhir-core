@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><Device xmlns="http://hl7.org/fhir">
+  <id value="ihe-pcd"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <type>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+        <code value="SNO"/>
+      </coding>
+      <text value="Serial Number"/>
+    </type>
+    <value value="AMID-123-456"/>
+  </identifier>
+  <manufacturer value="Acme Devices, Inc"/>
+  <lotNumber value="12345"/>
+  <name>
+    <value value="Acme Patient Monitor"/>
+    <type>
+      <coding>
+        <system value="http://hl7.org/fhir/device-nametype"/>
+        <code value="user-friendly-name"/>
+      </coding>
+    </type>
+  </name>
+  <modelNumber value="A.1.1"/>
+  <type>
+    <text value="Vital Signs Monitor"/>
+  </type>
+</Device>

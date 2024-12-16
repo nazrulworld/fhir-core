@@ -7,6 +7,7 @@ from copy import copy
 from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
+from pydantic.fields import FieldInfo
 
 from lxml import etree  # type: ignore
 from lxml.etree import QName  # type: ignore
@@ -14,8 +15,6 @@ from lxml.etree import QName  # type: ignore
 from .utils import get_fhir_type_name, is_list_type, is_primitive_type
 
 if typing.TYPE_CHECKING:
-    from pydantic.fields import FieldInfo
-
     from .fhirabstractmodel import FHIRAbstractModel
 
 __author__ = "Md Nazrul Islam"

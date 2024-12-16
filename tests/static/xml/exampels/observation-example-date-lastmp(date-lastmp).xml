@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><Observation xmlns="http://hl7.org/fhir">
+  <id value="date-lastmp"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <status value="final"/>
+  <category>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+      <code value="survey"/>
+      <display value="Survey"/>
+    </coding>
+    <text value="AOE"/>
+  </category>
+  <code>
+    <coding>
+      <system value="http://loinc.org"/>
+      <code value="8665-2"/>
+      <display value="Last menstrual period start date"/>
+    </coding>
+    <text value="Last menstrual period start date"/>
+  </code>
+  <subject>
+    <reference value="Patient/pat2"/>
+  </subject>
+  <effectiveDateTime value="2016-01-24"/>
+  <valueDateTime value="2016-12-30"/>
+</Observation>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><Medication xmlns="http://hl7.org/fhir">
+  <id value="med0311"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Substance>
+      <id value="sub03"/>
+      <instance value="false"/>
+      <code>
+        <concept>
+          <coding>
+            <system value="http://snomed.info/sct"/>
+            <code value="116602009"/>
+            <display value="Prednisone (substance)"/>
+          </coding>
+        </concept>
+      </code>
+    </Substance>
+  </contained>
+  <code>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="373994007"/>
+      <display value="Prednisone 5 mg oral tablet"/>
+    </coding>
+  </code>
+  <doseForm>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="385055001"/>
+      <display value="Tablet (basic dose form)"/>
+    </coding>
+  </doseForm>
+  <ingredient>
+    <item>
+      <reference>
+        <reference value="#sub03"/>
+      </reference>
+    </item>
+    <strengthRatio>
+      <numerator>
+        <value value="5"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mg"/>
+      </numerator>
+      <denominator>
+        <value value="1"/>
+        <system value="http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm"/>
+        <code value="TAB"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+</Medication>

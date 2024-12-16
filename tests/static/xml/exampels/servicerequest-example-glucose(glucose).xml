@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><ServiceRequest xmlns="http://hl7.org/fhir">
+  <id value="glucose"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <status value="active"/>
+  <intent value="original-order"/>
+  <subject>
+    <reference value="Patient/dicom"/>
+  </subject>
+  <occurrenceDateTime value="2013-05-08T09:33:27+07:00"/>
+  <asNeeded value="true"/>
+  <asNeededFor/>
+  <requester>
+    <reference value="Practitioner/example"/>
+    <display value="Dr. Adam Careful"/>
+  </requester>
+  <reason>
+    <concept>
+      <text value="Glucose monitoring"/>
+    </concept>
+  </reason>
+</ServiceRequest>

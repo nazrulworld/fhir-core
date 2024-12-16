@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><Encounter xmlns="http://hl7.org/fhir">
+  <id value="f202"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <use value="temp"/>
+    <!--  0..1 The use of this identifier  -->
+    <value value="Encounter_Roel_20130128"/>
+  </identifier>
+  <status value="completed"/>
+  <!-- Encounter has finished -->
+  <class>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+      <code value="AMB"/>
+      <!--  outpatient encounter for chemotherapy  -->
+      <display value="ambulatory"/>
+    </coding>
+  </class>
+  <priority>
+    <!-- Urgent priority, because of complications -->
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="103391001"/>
+      <display value="Urgent"/>
+    </coding>
+  </priority>
+  <type>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="367336001"/>
+      <display value="Chemotherapy"/>
+    </coding>
+  </type>
+  <subject>
+    <reference value="Patient/f201"/>
+    <display value="Roel"/>
+  </subject>
+  <serviceProvider>
+    <reference value="Organization/f201"/>
+  </serviceProvider>
+  <participant>
+    <actor>
+      <reference value="Practitioner/f201"/>
+    </actor>
+  </participant>
+  <length>
+    <value value="56"/>
+    <unit value="minutes"/>
+    <system value="http://unitsofmeasure.org"/>
+    <code value="min"/>
+  </length>
+  <reason>
+    <value>
+      <concept>
+        <text value="The patient is treated for a tumor."/>
+      </concept>
+    </value>
+  </reason>
+  <diagnosis>
+    <condition>
+      <concept>
+        <text value="Complications from Roel's TPF chemotherapy on January 28th, 2013"/>
+      </concept>
+    </condition>
+    <use>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/diagnosis-role"/>
+        <code value="AD"/>
+        <display value="Admission diagnosis"/>
+      </coding>
+    </use>
+  </diagnosis>
+  <!--  Example of a principal diagnosis with role=CC and rank=1 -->
+  <diagnosis>
+    <condition>
+      <concept>
+        <text value="The patient is treated for a tumor"/>
+      </concept>
+    </condition>
+    <use>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/diagnosis-role"/>
+        <code value="CC"/>
+        <display value="Chief complaint"/>
+      </coding>
+    </use>
+  </diagnosis>
+</Encounter>

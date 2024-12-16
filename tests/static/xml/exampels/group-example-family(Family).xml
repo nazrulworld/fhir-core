@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><Group xmlns="http://hl7.org/fhir">
+  <id value="Family"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <type value="person"/>
+  <membership value="enumerated"/>
+  <code>
+    <coding>
+      <system value="http://hl7.org/fhir/ValueSet/group-code"/>
+      <code value="family"/>
+    </coding>
+  </code>
+  <member>
+    <entity>
+      <reference value="Patient/xcda"/>
+    </entity>
+    <involvement>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v3-RoleCode"/>
+        <code value="FTH"/>
+      </coding>
+    </involvement>
+  </member>
+  <member>
+    <entity>
+      <reference value="Patient/pat3"/>
+    </entity>
+    <involvement>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v3-RoleCode"/>
+        <code value="SON"/>
+      </coding>
+    </involvement>
+  </member>
+  <member>
+    <entity>
+      <reference value="Patient/pat4"/>
+    </entity>
+    <involvement>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/v3-RoleCode"/>
+        <code value="DAUINLAW"/>
+      </coding>
+    </involvement>
+  </member>
+  <member>
+    <entity>
+      <reference value="Patient/pat1"/>
+    </entity>
+    <involvement>
+      <coding>
+        <system value="http://hl7.org/fhir/group-involvement"/>
+        <code value="pet"/>
+      </coding>
+    </involvement>
+  </member>
+</Group>

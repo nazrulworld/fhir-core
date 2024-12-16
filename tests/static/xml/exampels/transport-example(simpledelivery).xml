@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><Transport xmlns="http://hl7.org/fhir">
+  <id value="simpledelivery"/>
+  <!-- 
+business identifier - in this case the same as the request id
+ -->
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <value value="Transport1234"/>
+  </identifier>
+  <basedOn>
+    <reference value="SupplyRequest/simpleorder"/>
+  </basedOn>
+  <partOf>
+    <display value="Central Supply Restock"/>
+  </partOf>
+  <status value="completed"/>
+  <requestedLocation>
+    <reference value="Transport/location-hospitalLab"/>
+    <display value="Requested location for item at City Hospital Lab"/>
+  </requestedLocation>
+  <currentLocation>
+    <reference value="Transport/location-labA"/>
+    <display value="Current location for item at Lab A"/>
+  </currentLocation>
+</Transport>

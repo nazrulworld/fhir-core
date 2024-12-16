@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><ConceptMap xmlns="http://hl7.org/fhir">
+  <id value="example-priority"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: ConceptMap example-priority</b>
+      </p>
+      <a name="example-priority"> </a>
+      <a name="hcexample-priority"> </a>
+      <a name="example-priority-en-US"> </a>
+      <p>Mapping from http://snomed.info/sct?fhir_vs to (not specified)</p>
+      <br/>
+      <p>
+        <b>Group 1 </b>Mapping from 
+        <code>http://snomed.info./sct</code> to 
+        <a href="http://terminology.hl7.org/6.1.0/CodeSystem-icd10.html">ICD-10</a>
+      </p>
+      <table class="grid">
+        <tr>
+          <td colspan="2">
+            <b>Source Concept Details</b>
+          </td>
+          <td>
+            <b>Relationship</b>
+          </td>
+          <td colspan="2">
+            <b>Target Concept Details</b>
+          </td>
+          <td colspan="2">
+            <b>Properties</b>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <b>Codes</b> from http://snomed.info./sct
+          </td>
+          <td/>
+          <td colspan="2">
+            <b>Codes</b> from 
+            <a href="http://terminology.hl7.org/6.1.0/CodeSystem-icd10.html" title="http://hl7.org/fhir/sid/icd-10">ICD-10</a>
+          </td>
+          <td>
+            <b>mapAdvice</b>
+          </td>
+          <td>
+            <b>priority</b>
+          </td>
+        </tr>
+        <tr>
+          <td style="border-right-width: 0px; border-bottom-style: none">429353004</td>
+          <td style="border-left-width: 0px; border-bottom-style: none"/>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#source-is-narrower-than-target" title="source-is-narrower-than-target">is narrower than</a>
+          </td>
+          <td style="border-right-width: 0px">S59.7</td>
+          <td style="border-left-width: 0px"/>
+          <td>todo</td>
+          <td>todo</td>
+        </tr>
+        <tr>
+          <td style="border-right-width: 0px; border-top-style: none; border-bottom-style: none"/>
+          <td style="border-left-width: 0px; border-top-style: none; border-bottom-style: none"/>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#source-is-narrower-than-target" title="source-is-narrower-than-target">is narrower than</a>
+          </td>
+          <td style="border-right-width: 0px">S59.9</td>
+          <td style="border-left-width: 0px"/>
+          <td>todo</td>
+          <td>todo</td>
+        </tr>
+        <tr>
+          <td style="border-right-width: 0px; border-top-style: none"/>
+          <td style="border-top-style: none; border-left-width: 0px"/>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#source-is-narrower-than-target" title="source-is-narrower-than-target">is narrower than</a>
+          </td>
+          <td style="border-right-width: 0px">S59.8</td>
+          <td style="border-left-width: 0px"/>
+          <td>todo</td>
+          <td>todo</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="vocab"/>
+  </extension>
+  <url value="http://hl7.org/fhir/ConceptMap/example-priority"/>
+  <version value="6.0.0-ballot2"/>
+  <title value="Example map with priorities"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <publisher value="HL7 International / Terminology Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/Vocab"/>
+    </telecom>
+  </contact>
+  <description value="Example inspired by UK extended complex map (999002271000000101)"/>
+  <copyright value="Creative Commons 0"/>
+  <property>
+    <code value="priority"/>
+    <description value="The priority with which to choose this mapping over the other mappings for the same code"/>
+    <type value="string"/>
+  </property>
+  <property>
+    <code value="mapAdvice"/>
+    <description value="Additional advice for a user using these maps"/>
+    <type value="string"/>
+  </property>
+  <sourceScopeUri value="http://snomed.info/sct?fhir_vs"/>
+  <group>
+    <source value="http://snomed.info./sct"/>
+    <target value="http://hl7.org/fhir/sid/icd-10"/>
+    <element>
+      <code value="429353004"/>
+      <target>
+        <code value="S59.7"/>
+        <relationship value="source-is-narrower-than-target"/>
+        <property>
+          <code value="priority"/>
+          <valueString value="1"/>
+        </property>
+        <property>
+          <code value="mapAdvice"/>
+          <valueString value="ADDITIONAL CODE POSSIBLE"/>
+        </property>
+      </target>
+      <target>
+        <code value="S59.9"/>
+        <relationship value="source-is-narrower-than-target"/>
+        <property>
+          <code value="priority"/>
+          <valueString value="3"/>
+        </property>
+        <property>
+          <code value="mapAdvice"/>
+          <valueString value="ADDITIONAL CODE POSSIBLE"/>
+        </property>
+      </target>
+      <target>
+        <code value="S59.8"/>
+        <relationship value="source-is-narrower-than-target"/>
+        <property>
+          <code value="priority"/>
+          <valueString value="2"/>
+        </property>
+        <property>
+          <code value="mapAdvice"/>
+          <valueString value="ADDITIONAL CODE POSSIBLE"/>
+        </property>
+      </target>
+    </element>
+  </group>
+</ConceptMap>

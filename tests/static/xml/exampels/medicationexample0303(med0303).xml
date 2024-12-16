@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><Medication xmlns="http://hl7.org/fhir">
+  <id value="med0303"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Organization>
+      <id value="mmanu"/>
+      <name value="Medication Manufacturer"/>
+    </Organization>
+  </contained>
+  <code>
+    <coding>
+      <system value="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+      <code value="1594660"/>
+      <display value="alemtuzumab 10 MG/ML [Lemtrada]"/>
+    </coding>
+  </code>
+  <marketingAuthorizationHolder>
+    <reference value="#mmanu"/>
+  </marketingAuthorizationHolder>
+  <doseForm>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="385219001"/>
+      <display value="Solution for injection"/>
+    </coding>
+  </doseForm>
+  <ingredient>
+    <item>
+      <concept>
+        <coding>
+          <system value="http://snomed.info/sct"/>
+          <code value="129472003"/>
+          <display value="Alemtuzumab (substance)"/>
+        </coding>
+      </concept>
+    </item>
+    <strengthRatio>
+      <numerator>
+        <value value="12"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mg"/>
+      </numerator>
+      <denominator>
+        <value value="1.2"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mL"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+  <batch>
+    <lotNumber value="9494788"/>
+    <expirationDate value="2017-05-22"/>
+  </batch>
+</Medication>

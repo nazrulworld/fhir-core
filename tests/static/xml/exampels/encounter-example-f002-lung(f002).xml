@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><Encounter xmlns="http://hl7.org/fhir">
+  <id value="f002"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <use value="official"/>
+    <system value="http://www.bmc.nl/zorgportal/identifiers/encounters"/>
+    <value value="v3251"/>
+  </identifier>
+  <status value="completed"/>
+  <class>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+      <code value="AMB"/>
+      <!--  outpatient  -->
+      <display value="ambulatory"/>
+    </coding>
+  </class>
+  <priority>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="103391001"/>
+      <display value="Urgent"/>
+    </coding>
+  </priority>
+  <type>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="270427003"/>
+      <display value="Patient-initiated encounter"/>
+    </coding>
+  </type>
+  <subject>
+    <reference value="Patient/f001"/>
+    <display value="P. van de Heuvel"/>
+  </subject>
+  <serviceProvider>
+    <reference value="Organization/f001"/>
+    <display value="BMC"/>
+  </serviceProvider>
+  <participant>
+    <actor>
+      <reference value="Practitioner/f003"/>
+      <display value="M.I.M Versteegh"/>
+    </actor>
+  </participant>
+  <length>
+    <value value="140"/>
+    <unit value="min"/>
+    <system value="http://unitsofmeasure.org"/>
+    <code value="min"/>
+  </length>
+  <reason>
+    <value>
+      <concept>
+        <coding>
+          <system value="http://snomed.info/sct"/>
+          <code value="359615001"/>
+          <display value="Partial lobectomy of lung"/>
+        </coding>
+      </concept>
+    </value>
+  </reason>
+  <admission>
+    <preAdmissionIdentifier>
+      <use value="official"/>
+      <system value="http://www.bmc.nl/zorgportal/identifiers/pre-admissions"/>
+      <value value="98682"/>
+    </preAdmissionIdentifier>
+    <!--     <preAdmissionTest>
+            <coding>
+                <system value="http://snomed.info/sct"/>
+                <code value="399208008"/>
+                <display value="Chest X-ray"/>
+            </coding>
+            <coding>
+                <system value="http://snomed.info/sct"/>
+                <code value="396550006"/>
+                <display value="Blood test"/>
+            </coding>
+        </preAdmissionTest>  -->
+    <admitSource>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="305997006"/>
+        <display value="Referral by radiologist"/>
+      </coding>
+    </admitSource>
+    <dischargeDisposition>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="306689006"/>
+        <display value="Discharge to home"/>
+      </coding>
+    </dischargeDisposition>
+  </admission>
+</Encounter>

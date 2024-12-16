@@ -13,7 +13,12 @@ __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
 TESTS_ROOT_PATH = pathlib.Path(dirname(os.path.abspath(__file__)))
-STATIC_PATH = TESTS_ROOT_PATH / "static"
+STATIC_PATH = TESTS_ROOT_PATH.parent / "static"
+STATIC_PATH_JSON = STATIC_PATH / "json"
+STATIC_PATH_XML = STATIC_PATH / "xml"
+STATIC_PATH_JSON_EXAMPLES = STATIC_PATH_JSON / "examples"
+STATIC_PATH_XML_SCHEMA = STATIC_PATH_XML / "xsd"
+STATIC_PATH_XML_EXAMPLES = STATIC_PATH_XML / "examples"
 IS_TRAVIS = "TRAVIS" in os.environ
 
 

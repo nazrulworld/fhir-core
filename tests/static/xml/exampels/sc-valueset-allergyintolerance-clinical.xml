@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ConceptMap xmlns="http://hl7.org/fhir">
+  <id value="sc-allergyintolerance-clinical"/>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: ConceptMap sc-allergyintolerance-clinical</b>
+      </p>
+      <a name="sc-allergyintolerance-clinical"> </a>
+      <a name="hcsc-allergyintolerance-clinical"> </a>
+      <a name="sc-allergyintolerance-clinical-en-US"> </a>
+      <p>Mapping from 
+        <a href="valueset-allergyintolerance-clinical.html">AllergyIntolerance Clinical Status Codes</a> to 
+        <a href="valueset-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <br/>
+      <p>
+        <b>Group 1 </b>Mapping from 
+        <a href="http://terminology.hl7.org/6.1.0/CodeSystem-allergyintolerance-clinical.html">AllergyIntolerance Clinical Status Codes</a> to 
+        <a href="codesystem-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <table class="grid">
+        <tr>
+          <td>
+            <b>Source Code</b>
+          </td>
+          <td>
+            <b>Relationship</b>
+          </td>
+          <td>
+            <b>Target Code</b>
+          </td>
+        </tr>
+        <tr>
+          <td>active</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>active</td>
+        </tr>
+        <tr>
+          <td>inactive</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>inactive</td>
+        </tr>
+        <tr>
+          <td>resolved</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>resolved</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <url value="http://hl7.org/fhir/ConceptMap/sc-allergyintolerance-clinical"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="AllergyIntoleranceClinicalStatusCodesCanonicalMap"/>
+  <title value="Canonical Mapping for &quot;AllergyIntolerance Clinical Status Codes&quot;"/>
+  <status value="draft"/>
+  <experimental value="false"/>
+  <publisher value="FHIR Project team"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://hl7.org/fhir"/>
+    </telecom>
+  </contact>
+  <description value="Canonical Mapping for &quot;Preferred value set for AllergyIntolerance Clinical Status.&quot;"/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <sourceScopeCanonical value="http://hl7.org/fhir/ValueSet/allergyintolerance-clinical"/>
+  <targetScopeCanonical value="http://hl7.org/fhir/ValueSet/resource-status"/>
+  <group>
+    <source value="http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"/>
+    <target value="http://hl7.org/fhir/resource-status"/>
+    <element>
+      <code value="active"/>
+      <target>
+        <code value="active"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="inactive"/>
+      <target>
+        <code value="inactive"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="resolved"/>
+      <target>
+        <code value="resolved"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+  </group>
+</ConceptMap>

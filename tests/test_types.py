@@ -159,10 +159,12 @@ def test_uri_type():
 
 
 def test_fhir_type_integer64():
-    from pydantic import BaseModel
-    from fhir_core.types import Integer64Type
     import sys
+
+    from pydantic import BaseModel
+
     from fhir_core.types import Integer64  # noqa
+    from fhir_core.types import Integer64Type
 
     # Input should be less than or equal to 2147483647 [type=less_than_equal, input_value='9223372036854775807', input_type=str]
     class MyModel(BaseModel):
@@ -172,8 +174,11 @@ def test_fhir_type_integer64():
     Integer64.min_length == sys.maxsize * -1
 
     import sys
+
     assert MyModel(size=f"{sys.maxsize}"), "Should not raise an exception"
-    assert MyModel(size=f"{sys.maxsize}").size == sys.maxsize, f"Should be {sys.maxsize}"
+    assert (
+        MyModel(size=f"{sys.maxsize}").size == sys.maxsize
+    ), f"Should be {sys.maxsize}"
     assert MyModel(size=sys.maxsize).size == sys.maxsize, f"Should be {sys.maxsize}"
 
     _ = MyModel(size=0)

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><MedicationStatement xmlns="http://hl7.org/fhir">
+  <id value="example005"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <status value="entered-in-error"/>
+  <medication>
+    <concept>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="27658006"/>
+        <display value="Product containing amoxicillin (medicinal product)"/>
+      </coding>
+    </concept>
+  </medication>
+  <subject>
+    <reference value="Patient/pat1"/>
+    <display value="Donald Duck"/>
+  </subject>
+  <encounter>
+    <reference value="Encounter/f203"/>
+  </encounter>
+  <effectiveDateTime value="2014-01-23"/>
+  <dateAsserted value="2015-02-22"/>
+  <informationSource>
+    <reference value="Patient/pat1"/>
+    <display value="Donald Duck"/>
+  </informationSource>
+  <note>
+    <text value="Patient indicated that they thought it was Amoxicillin they were taking but it was really Erythromycin"/>
+  </note>
+</MedicationStatement>

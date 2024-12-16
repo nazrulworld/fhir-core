@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><CarePlan xmlns="http://hl7.org/fhir">
+  <id value="preg"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <text>
+    <status value="additional"/><div xmlns="http://www.w3.org/1999/xhtml">
+      <p>A maternity care plan (for a pregnant woman).</p>
+      <p>LMP is 1st Jan, 2013 (a great new years party!) The plan has activities to take prenatal vitamins, schedule first antenatal,
+            and 'placeholders' for the second antenatal and delivery (there would be lots of others of course)</p>
+      <p>Note that where is a proposed 'status' element against each activity</p>
+    </div>
+  </text>
+  <contained>
+    <Condition>
+      <id value="p1"/>
+      <clinicalStatus>
+        <coding>
+          <system value="http://terminology.hl7.org/CodeSystem/condition-clinical"/>
+          <code value="active"/>
+        </coding>
+      </clinicalStatus>
+      <verificationStatus>
+        <coding>
+          <system value="http://terminology.hl7.org/CodeSystem/condition-ver-status"/>
+          <code value="confirmed"/>
+        </coding>
+      </verificationStatus>
+      <code>
+        <text value="pregnancy"/>
+      </code>
+      <subject>
+        <reference value="Patient/1"/>
+        <display value="Eve Everywoman"/>
+      </subject>
+    </Condition>
+  </contained>
+  <contained>
+    <Practitioner>
+      <id value="pr1"/>
+      <name>
+        <family value="Midwife"/>
+        <given value="Mavis"/>
+      </name>
+    </Practitioner>
+  </contained>
+  <contained>
+    <Practitioner>
+      <id value="pr2"/>
+      <name>
+        <family value="Obstetrician"/>
+        <given value="Oscar"/>
+      </name>
+    </Practitioner>
+  </contained>
+  <contained>
+    <CareTeam>
+      <id value="careteam"/>
+      <participant>
+        <!--  In New Zealand, there is a Lead Maternity Carer (LMC) - often a midwife  -->
+        <role>
+          <coding>
+            <system value="http://example.org/mysys"/>
+            <code value="lmc"/>
+          </coding>
+          <text value="Midwife"/>
+        </role>
+        <member>
+          <!--  This links to the clinician resource, so we get all the stuff related to that like address, contact etc...  -->
+          <reference value="#pr1"/>
+          <display value="Mavis Midwife"/>
+        </member>
+      </participant>
+      <participant>
+        <!--  To indicate that there is an obstretian consultant involved in this case.  -->
+        <role>
+          <coding>
+            <system value="http://example.org/mysys"/>
+            <code value="obs"/>
+          </coding>
+          <text value="Obstretitian"/>
+        </role>
+        <member>
+          <!--  This links to the clinician resource, so we get all the stuff related to that like address, contact etc...  -->
+          <reference value="#pr2"/>
+          <display value="Oscar Obstetrician"/>
+        </member>
+      </participant>
+    </CareTeam>
+  </contained>
+  <contained>
+    <Goal>
+      <id value="goal"/>
+      <lifecycleStatus value="active"/>
+      <description>
+        <text value="Maintain patient's health throughout pregnancy and ensure a healthy child"/>
+      </description>
+      <subject>
+        <reference value="Patient/1"/>
+        <display value="Eve Everywoman"/>
+      </subject>
+    </Goal>
+  </contained>
+  <contained>
+    <Appointment>
+      <id value="activity-1"/>
+      <status value="booked"/>
+      <description value="The first antenatal encounter. This is where a detailed physical examination is performed and the pregnanacy discussed with the mother-to-be."/>
+      <start value="2013-02-14T10:38:00+00:00"/>
+      <end value="2013-02-14T10:50:00+00:00"/>
+      <requestedPeriod>
+        <start value="2013-02-14"/>
+        <end value="2013-02-28"/>
+      </requestedPeriod>
+      <subject>
+        <reference value="Patient/1"/>
+        <display value="Eve Everywoman"/>
+      </subject>
+      <participant>
+        <actor>
+          <reference value="Patient/1"/>
+          <display value="Eve Everywoman"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+      <participant>
+        <type>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-ParticipationType"/>
+            <code value="ATND"/>
+          </coding>
+        </type>
+        <actor>
+          <reference value="#pr1"/>
+          <display value="Mavis Midwife"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+    </Appointment>
+  </contained>
+  <contained>
+    <Appointment>
+      <id value="activity-2"/>
+      <status value="proposed"/>
+      <description value="The second antenatal encounter. Discuss any issues that arose from the first antenatal encounter"/>
+      <requestedPeriod>
+        <start value="2013-03-01"/>
+        <end value="2013-03-14"/>
+      </requestedPeriod>
+      <subject>
+        <reference value="Patient/1"/>
+        <display value="Eve Everywoman"/>
+      </subject>
+      <participant>
+        <actor>
+          <reference value="Patient/1"/>
+          <display value="Eve Everywoman"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+      <participant>
+        <type>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-ParticipationType"/>
+            <code value="ATND"/>
+          </coding>
+        </type>
+        <actor>
+          <reference value="#pr1"/>
+          <display value="Mavis Midwife"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+    </Appointment>
+  </contained>
+  <contained>
+    <Appointment>
+      <id value="activity-3"/>
+      <status value="proposed"/>
+      <description value="The delivery."/>
+      <requestedPeriod>
+        <start value="2013-09-01"/>
+        <end value="2013-09-14"/>
+      </requestedPeriod>
+      <subject>
+        <reference value="Patient/1"/>
+        <display value="Eve Everywoman"/>
+      </subject>
+      <participant>
+        <actor>
+          <reference value="Patient/1"/>
+          <display value="Eve Everywoman"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+      <participant>
+        <type>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-ParticipationType"/>
+            <code value="ATND"/>
+          </coding>
+        </type>
+        <actor>
+          <reference value="#pr1"/>
+          <display value="Mavis Midwife"/>
+        </actor>
+        <required value="true"/>
+        <status value="accepted"/>
+      </participant>
+    </Appointment>
+  </contained>
+  <!--  an extension to record the LMP, which is required at the plan level...  -->
+  <extension url="http://example.org/fhir/StructureDefinition/careplan#lmp">
+    <valueDateTime value="2013-01-01"/>
+  </extension>
+  <status value="active"/>
+  <intent value="plan"/>
+  <subject>
+    <reference value="Patient/1"/>
+    <display value="Eve Everywoman"/>
+  </subject>
+  <period>
+    <!--  The likely duration of the pregnancy  -->
+    <start value="2013-01-01"/>
+    <end value="2013-10-01"/>
+  </period>
+  <careTeam>
+    <reference value="#careteam"/>
+  </careTeam>
+  <addresses>
+    <reference>
+      <reference value="#p1"/>
+      <display value="pregnancy"/>
+    </reference>
+  </addresses>
+  <goal>
+    <reference value="#goal"/>
+  </goal>
+  <activity>
+    <plannedActivityReference>
+      <display value="Prenatal vitamin MedicationRequest"/>
+    </plannedActivityReference>
+  </activity>
+  <activity>
+    <!--  This will be the first antenatal encounter  -->
+    <!--  a link to further details about the first antenatal details  -->
+    <extension url="http://example.org/fhir/StructureDefinition/careplan#andetails">
+      <valueUri value="http://orionhealth.com/fhir/careplan/1andetails"/>
+    </extension>
+    <plannedActivityReference>
+      <reference value="#activity-1"/>
+    </plannedActivityReference>
+  </activity>
+  <activity>
+    <plannedActivityReference>
+      <reference value="#activity-2"/>
+    </plannedActivityReference>
+  </activity>
+  <!--  
+        There would be a number of other encounters to be scheduled here... 
+        ...
+        ...
+    
+     -->
+  <activity>
+    <plannedActivityReference>
+      <reference value="#activity-3"/>
+    </plannedActivityReference>
+  </activity>
+</CarePlan>

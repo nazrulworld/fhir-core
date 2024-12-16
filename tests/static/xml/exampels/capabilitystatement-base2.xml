@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CapabilityStatement xmlns="http://hl7.org/fhir">
+  <id value="base2"/>
+  <text>
+    <status value="extensions"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: CapabilityStatement base2</b>
+      </p>
+      <a name="base2"> </a>
+      <a name="hcbase2"> </a>
+      <a name="base2-en-US"> </a>
+      <h2 id="title"/>
+      <ul>
+        <li>Implementation Guide Version: 6.0.0-ballot2 </li>
+        <li>FHIR Version: 6.0.0-ballot2 </li>
+        <li>Supported Formats: 
+          <code>xml</code>, 
+          <code>json</code>
+        </li>
+        <li>Supported Patch Formats: </li>
+        <li>Published on: 2024-12-12T18:56:29Z </li>
+        <li>Published by: HL7 International / FHIR Infrastructure </li>
+      </ul>
+      <blockquote class="impl-note">
+        <p>
+          <strong>Note to Implementers: FHIR Capabilities</strong>
+        </p>
+        <p>Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.</p>
+      </blockquote>
+      <h2 id="rest">FHIR RESTful Capabilities</h2>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 id="mode1" class="panel-title">Mode: 
+            <code>server</code>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div>
+            <p>An empty Capability Statement</p>
+
+          </div>
+          <div class="lead">
+            <em>Security</em>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">Enable CORS: yes</div>
+            <div class="col-lg-6">Security services supported: 
+              <code>SMART-on-FHIR</code>
+            </div>
+          </div>
+          <blockquote>
+            <div>
+              <p>This is the Capability Statement to declare that the server supports SMART-on-FHIR. See the SMART-on-FHIR docs for the extension that would go with such a server</p>
+
+            </div>
+          </blockquote>
+          <div class="lead">
+            <em>Summary of System-wide Interactions</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="fhir"/>
+  </extension>
+  <url value="http://hl7.org/fhir/CapabilityStatement/base2"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="Base FHIR Capability Statement (Empty)"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <date value="2024-12-12T18:56:29+00:00"/>
+  <publisher value="HL7 International / FHIR Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/fiwg"/>
+    </telecom>
+  </contact>
+  <description value="This is the base Capability Statement for FHIR. It represents a server that provides the none of the functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from. A capability statement has to contain something, so this contains a read of a Capability Statement"/>
+  <kind value="capability"/>
+  <software>
+    <name value="Insert your software name here..."/>
+  </software>
+  <fhirVersion value="6.0.0-ballot2"/>
+  <format value="xml"/>
+  <format value="json"/>
+  <rest>
+    <mode value="server"/>
+    <documentation value="An empty Capability Statement"/>
+    <security>
+      <cors value="true"/>
+      <service>
+        <coding>
+          <system value="http://terminology.hl7.org/CodeSystem/restful-security-service"/>
+          <code value="SMART-on-FHIR"/>
+          <display value="SMART-on-FHIR"/>
+        </coding>
+        <text value="See http://docs.smarthealthit.org/"/>
+      </service>
+      <description value="This is the Capability Statement to declare that the server supports SMART-on-FHIR. See the SMART-on-FHIR docs for the extension that would go with such a server"/>
+    </security>
+  </rest>
+</CapabilityStatement>

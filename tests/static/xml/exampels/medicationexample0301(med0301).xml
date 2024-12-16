@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><Medication xmlns="http://hl7.org/fhir">
+  <id value="med0301"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Organization>
+      <id value="mmanu"/>
+      <name value="Medication Manufacturer"/>
+    </Organization>
+  </contained>
+  <identifier id="123456789"/>
+  <code>
+    <!--  Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"  -->
+    <coding>
+      <system value="http://hl7.org/fhir/sid/ndc"/>
+      <code value="0409-6531-02"/>
+      <display value="Vancomycin Hydrochloride, 10 VIAL in 1 TRAY (0409-6531-02) &gt; 1 INJECTION, POWDER, LYOPHILIZED, FOR SOLUTION in 1 VIAL (0409-6531-12) (package)"/>
+    </coding>
+    <text value="Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"/>
+  </code>
+  <status value="active"/>
+  <marketingAuthorizationHolder>
+    <reference value="#mmanu"/>
+  </marketingAuthorizationHolder>
+  <doseForm>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="385219001"/>
+      <display value="Solution for injection"/>
+    </coding>
+  </doseForm>
+  <ingredient>
+    <item>
+      <concept>
+        <!--  <display value="Vancomycin Hydrochloride"/>  -->
+        <coding>
+          <system value="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+          <code value="66955"/>
+        </coding>
+        <text value="Vancomycin Hydrochloride"/>
+      </concept>
+    </item>
+    <isActive value="true"/>
+    <strengthRatio>
+      <numerator>
+        <value value="500"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mg"/>
+      </numerator>
+      <denominator>
+        <value value="10"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mL"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+  <batch>
+    <lotNumber value="9494788"/>
+    <expirationDate value="2017-05-22"/>
+  </batch>
+</Medication>

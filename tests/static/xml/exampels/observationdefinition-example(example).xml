@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><ObservationDefinition xmlns="http://hl7.org/fhir">
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="oo"/>
+  </extension>
+  <status value="active"/>
+  <publisher value="HL7 International / Orders and Observations"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/orders"/>
+    </telecom>
+  </contact>
+  <category>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+      <code value="laboratory"/>
+    </coding>
+  </category>
+  <code>
+    <coding>
+      <system value="http://loinc.org"/>
+      <code value="13980-8"/>
+      <display value="Albumin/Protein.total in Serum or Plasma by Electrophoresis"/>
+    </coding>
+  </code>
+  <permittedDataType value="Quantity"/>
+  <multipleResultsAllowed value="false"/>
+  <method>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="115341008"/>
+      <display value="Total measurement"/>
+    </coding>
+  </method>
+  <preferredReportName value="Serum albumin/​Protein total"/>
+  <permittedUnit>
+    <system value="http://unitsofmeasure.org"/>
+    <code value="%"/>
+    <display value="%"/>
+  </permittedUnit>
+  <qualifiedValue>
+    <context>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/referencerange-meaning"/>
+        <code value="normal"/>
+        <display value="Normal Range"/>
+      </coding>
+    </context>
+    <rangeCategory value="reference"/>
+    <range>
+      <low>
+        <value value="50"/>
+      </low>
+    </range>
+  </qualifiedValue>
+  <qualifiedValue>
+    <context>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/referencerange-meaning"/>
+        <code value="normal"/>
+        <display value="Normal Range"/>
+      </coding>
+    </context>
+    <rangeCategory value="critical"/>
+    <range>
+      <high>
+        <value value="40"/>
+      </high>
+    </range>
+  </qualifiedValue>
+</ObservationDefinition>

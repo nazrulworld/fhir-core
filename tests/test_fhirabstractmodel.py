@@ -5,7 +5,7 @@ from pydantic import Field, ValidationError
 
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
 from fhir_core.types import Base64BinaryType
-from tests.fixtures import STATIC_PATH
+from tests.fixtures import STATIC_PATH_JSON_EXAMPLES
 from tests.fixtures.resources import fhirtypes
 from tests.fixtures.resources.domainresource import DomainResource
 from tests.fixtures.resources.fhirtypes import FHIRPrimitiveExtensionType
@@ -111,7 +111,7 @@ def test_model_dump_serialization():
     """ """
     from tests.fixtures.resources.account import Account
 
-    filename = STATIC_PATH / "account-example.json"
+    filename = STATIC_PATH_JSON_EXAMPLES / "account-example.json"
     obj = Account.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert Account.model_validate(serialized_data).model_dump() == serialized_data
@@ -125,7 +125,9 @@ def test_general_resource_validation():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    filename = STATIC_PATH / "activitydefinition-medicationorder-example.json"
+    filename = (
+        STATIC_PATH_JSON_EXAMPLES / "activitydefinition-medicationorder-example.json"
+    )
     obj = ActivityDefinition.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert (
@@ -162,7 +164,7 @@ def test_base64binary_validation():
 
     from tests.fixtures.resources.auditevent import AuditEvent
 
-    filename = STATIC_PATH / "audit-event-example-search.json"
+    filename = STATIC_PATH_JSON_EXAMPLES / "audit-event-example-search.json"
     obj = AuditEvent.model_validate_json(filename.read_bytes())
     serialized_data = obj.model_dump()
     assert AuditEvent.model_validate(serialized_data).model_dump() == serialized_data
@@ -176,10 +178,15 @@ def test_model_from_yaml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    filename = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+    filename = (
+        STATIC_PATH_JSON_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
+    )
     obj = ActivityDefinition.model_validate_yaml(filename.read_bytes())
     obj2 = ActivityDefinition.model_validate_json(
-        (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
+        (
+            STATIC_PATH_JSON_EXAMPLES
+            / "activitydefinition-medicationorder-example.json"
+        ).read_bytes()
     )
     assert obj.model_dump() == obj2.model_dump()
 
@@ -188,21 +195,26 @@ def test_model_dump_yaml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition
 
-    filename = STATIC_PATH / "activitydefinition-medicationorder-example.yaml"
+    filename = (
+        STATIC_PATH_JSON_EXAMPLES / "activitydefinition-medicationorder-example.yaml"
+    )
 
     obj = ActivityDefinition.model_validate_json(
-        (STATIC_PATH / "activitydefinition-medicationorder-example.json").read_bytes()
+        (
+            STATIC_PATH_JSON_EXAMPLES
+            / "activitydefinition-medicationorder-example.json"
+        ).read_bytes()
     )
     assert obj.model_dump_yaml() == filename.read_text()
 
 
 def test_model_attachment_max_size():
     """ """
-    from tests.fixtures.resources.attachment import Attachment
     import sys
-    filename = STATIC_PATH / "attachment-example.json"
 
-    attachment = Attachment.model_validate_json(
-        filename.read_bytes()
-    )
+    from tests.fixtures.resources.attachment import Attachment
+
+    filename = STATIC_PATH_JSON_EXAMPLES / "attachment-example.json"
+
+    attachment = Attachment.model_validate_json(filename.read_bytes())
     assert attachment.size == sys.maxsize, "Attachment.size should be sys.maxsize"

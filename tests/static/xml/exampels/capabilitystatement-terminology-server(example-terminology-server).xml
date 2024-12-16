@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="UTF-8"?><CapabilityStatement xmlns="http://hl7.org/fhir">
+  <id value="example-terminology-server"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <text>
+    <status value="extensions"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: CapabilityStatement example-terminology-server</b>
+      </p>
+      <a name="example-terminology-server"> </a>
+      <a name="hcexample-terminology-server"> </a>
+      <a name="example-terminology-server-en-US"> </a>
+      <h2 id="title">ACME Terminology Service — Capability Statement</h2>
+      <ul>
+        <li>Implementation Guide Version: 6.0.0-ballot2 </li>
+        <li>FHIR Version: 6.0.0-ballot2 </li>
+        <li>Supported Formats: 
+          <code>json</code>, 
+          <code>xml</code>
+        </li>
+        <li>Supported Patch Formats: </li>
+        <li>Published on: 2022-09-01 </li>
+        <li>Published by: HL7 International / FHIR Infrastructure </li>
+      </ul>
+      <blockquote class="impl-note">
+        <p>
+          <strong>Note to Implementers: FHIR Capabilities</strong>
+        </p>
+        <p>Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.</p>
+      </blockquote>
+      <h2 id="rest">FHIR RESTful Capabilities</h2>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title" id="mode1">Mode: 
+            <code>server</code>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="lead">
+            <em>Summary of System-wide Interactions</em>
+          </div>
+        </div>
+      </div>
+      <h3 id="resourcesCap1">Capabilities by Resource/Profile</h3>
+      <h4 id="resourcesSummary1">Summary</h4>
+      <p>The summary table lists the resources that are part of this configuration, and for each resource it lists:</p>
+      <ul>
+        <li>The relevant profiles (if any)</li>
+        <li>The interactions supported by each resource (
+          <b>
+            <span class="bg-info">R</span>
+          </b>ead, 
+          <b>
+            <span class="bg-info">S</span>
+          </b>earch, 
+          <b>
+            <span class="bg-info">U</span>
+          </b>pdate, and 
+          <b>
+            <span class="bg-info">C</span>
+          </b>reate, are always shown, while 
+          <b>
+            <span class="bg-info">VR</span>
+          </b>ead, 
+          <b>
+            <span class="bg-info">P</span>
+          </b>atch, 
+          <b>
+            <span class="bg-info">D</span>
+          </b>elete, 
+          <b>
+            <span class="bg-info">H</span>
+          </b>istory on 
+          <b>
+            <span class="bg-info">I</span>
+          </b>nstance, or 
+          <b>
+            <span class="bg-info">H</span>
+          </b>istory on 
+          <b>
+            <span class="bg-info">T</span>
+          </b>ype are only present if at least one of the resources has support for them.
+        </li>
+        <li>
+          <span>The required, recommended, and some optional search parameters (if any). </span>
+        </li>
+        <li>The linked resources enabled for 
+          <code>_include</code>
+        </li>
+        <li>The other resources enabled for 
+          <code>_revinclude</code>
+        </li>
+        <li>The operations on the resource (if any)</li>
+      </ul>
+      <div class="table-responsive">
+        <table class="table table-condensed table-hover">
+          <thead>
+            <tr>
+              <th>
+                <b>Resource Type</b>
+              </th>
+              <th>
+                <b>Profile</b>
+              </th>
+              <th class="text-center">
+                <b title="GET a resource (read interaction)">R</b>
+              </th>
+              <th class="text-center">
+                <b title="GET all set of resources of the type (search interaction)">S</b>
+              </th>
+              <th class="text-center">
+                <b title="PUT a new resource version (update interaction)">U</b>
+              </th>
+              <th class="text-center">
+                <b title="POST a new resource (create interaction)">C</b>
+              </th>
+              <th>
+                <b title="Required and recommended search parameters">Searches</b>
+              </th>
+              <th>
+                <code>
+                  <b>_include</b>
+                </code>
+              </th>
+              <th>
+                <code>
+                  <b>_revinclude</b>
+                </code>
+              </th>
+              <th>
+                <b>Operations</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="#CodeSystem1-1">CodeSystem</a>
+              </td>
+              <td>
+                <a href="codesystem.html">http://hl7.org/fhir/StructureDefinition/CodeSystem</a>
+              </td>
+              <td class="text-center">y</td>
+              <td class="text-center">y</td>
+              <td class="text-center"/>
+              <td class="text-center"/>
+              <td>url, version, name, title, status</td>
+              <td/>
+              <td/>
+              <td>
+                <code>$expand</code>, 
+                <code>$expand</code>, 
+                <code>$expand</code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#ValueSet1-2">ValueSet</a>
+              </td>
+              <td>
+                <a href="valueset.html">http://hl7.org/fhir/StructureDefinition/ValueSet</a>
+              </td>
+              <td class="text-center">y</td>
+              <td class="text-center">y</td>
+              <td class="text-center"/>
+              <td class="text-center"/>
+              <td>url, version, name, title, status</td>
+              <td/>
+              <td/>
+              <td>
+                <code>$expand</code>, 
+                <code>$expand</code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#ConceptMap1-3">ConceptMap</a>
+              </td>
+              <td>
+                <a href="conceptmap.html">http://hl7.org/fhir/StructureDefinition/ConceptMap</a>
+              </td>
+              <td class="text-center">y</td>
+              <td class="text-center">y</td>
+              <td class="text-center"/>
+              <td class="text-center"/>
+              <td>url, version, name, title, status</td>
+              <td/>
+              <td/>
+              <td>
+                <code>$expand</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr/>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" id="CodeSystem1-1">
+            <span style="float: right;">Resource Conformance: SHALL </span>CodeSystem
+          </h4>
+        </div>
+        <div class="panel-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Base System Profile</span>
+                <br/>
+                <a href="codesystem.html">CodeSystem</a>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Profile Conformance</span>
+                <br/>
+                <b>SHALL</b>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Reference Policy</span>
+                <br/>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Interaction summary</span>
+                <br/>
+                <ul>
+                  <li>
+                    <strong>SHALL</strong> support 
+                    <code>read</code>, 
+                    <code>search-type</code>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-7">
+                <span class="lead">Search Parameters</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>url</td>
+                      <td>
+                        <code>uri</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>version</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>name</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>title</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>status</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-5"> </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <span class="lead">Extended Operations</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Operation</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>
+                        <a href="codesystem-operation-lookup.html">$expand</a>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>
+                        <a href="codesystem-operation-validate-code.html">$expand</a>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>
+                        <a href="codesystem-operation-subsumes.html">$expand</a>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" id="ValueSet1-2">
+            <span style="float: right;">Resource Conformance: SHALL </span>ValueSet
+          </h4>
+        </div>
+        <div class="panel-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Base System Profile</span>
+                <br/>
+                <a href="valueset.html">ValueSet</a>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Profile Conformance</span>
+                <br/>
+                <b>SHALL</b>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Reference Policy</span>
+                <br/>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Interaction summary</span>
+                <br/>
+                <ul>
+                  <li>
+                    <strong>SHALL</strong> support 
+                    <code>read</code>, 
+                    <code>search-type</code>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-7">
+                <span class="lead">Search Parameters</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>url</td>
+                      <td>
+                        <code>uri</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>version</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>name</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>title</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>status</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-5"> </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <span class="lead">Extended Operations</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Operation</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>
+                        <a href="valueset-operation-expand.html">$expand</a>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>
+                        <a href="valueset-operation-validate-code.html">$expand</a>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" id="ConceptMap1-3">
+            <span style="float: right;">Resource Conformance: SHALL </span>ConceptMap
+          </h4>
+        </div>
+        <div class="panel-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Base System Profile</span>
+                <br/>
+                <a href="conceptmap.html">ConceptMap</a>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Profile Conformance</span>
+                <br/>
+                <b>SHALL</b>
+              </div>
+              <div class="col-lg-3">
+                <span class="lead">Reference Policy</span>
+                <br/>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="lead">Interaction summary</span>
+                <br/>
+                <ul>
+                  <li>
+                    <strong>SHALL</strong> support 
+                    <code>read</code>, 
+                    <code>search-type</code>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p/>
+            <div class="row">
+              <div class="col-lg-7">
+                <span class="lead">Search Parameters</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>url</td>
+                      <td>
+                        <code>uri</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>version</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>name</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>title</td>
+                      <td>
+                        <code>string</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>status</td>
+                      <td>
+                        <code>token</code>
+                      </td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-5"> </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <span class="lead">Extended Operations</span>
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Conformance</th>
+                      <th>Operation</th>
+                      <th>Documentation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>SHALL</b>
+                      </td>
+                      <td>$expand</td>
+                      <td>
+                        <div/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="fhir"/>
+  </extension>
+  <url value="http://hl7.org/fhir/CapabilityStatement/terminology-server"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="ACMETerminologyServiceCapabilityStatement"/>
+  <title value="ACME Terminology Service — Capability Statement"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <date value="2022-09-01"/>
+  <publisher value="HL7 International / FHIR Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/fiwg"/>
+    </telecom>
+  </contact>
+  <description value="Example capability statement for a Terminology Server. A server can support more fucntionality than defined here, but this is the minimum amount"/>
+  <kind value="instance"/>
+  <implementation>
+    <description value="The ACME FHIR Terminology Server"/>
+  </implementation>
+  <fhirVersion value="6.0.0-ballot2"/>
+  <format value="json"/>
+  <format value="xml"/>
+  <rest>
+    <mode value="server"/>
+    <resource>
+      <type value="CodeSystem"/>
+      <profile value="http://hl7.org/fhir/StructureDefinition/CodeSystem"/>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="read"/>
+      </interaction>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="search-type"/>
+      </interaction>
+      <searchParam>
+        <name value="url"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/CodeSystem-url"/>
+        <type value="uri"/>
+      </searchParam>
+      <searchParam>
+        <name value="version"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/CodeSystem-version"/>
+        <type value="token"/>
+      </searchParam>
+      <searchParam>
+        <name value="name"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/CodeSystem-name"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="title"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/CodeSystem-title"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="status"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/CodeSystem-status"/>
+        <type value="token"/>
+      </searchParam>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/CodeSystem-lookup"/>
+      </operation>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/CodeSystem-validate-code"/>
+      </operation>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/CodeSystem-subsumes"/>
+      </operation>
+    </resource>
+    <resource>
+      <type value="ValueSet"/>
+      <profile value="http://hl7.org/fhir/StructureDefinition/ValueSet"/>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="read"/>
+      </interaction>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="search-type"/>
+      </interaction>
+      <searchParam>
+        <name value="url"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ValueSet-url"/>
+        <type value="uri"/>
+      </searchParam>
+      <searchParam>
+        <name value="version"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ValueSet-version"/>
+        <type value="token"/>
+      </searchParam>
+      <searchParam>
+        <name value="name"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ValueSet-name"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="title"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ValueSet-title"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="status"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ValueSet-status"/>
+        <type value="token"/>
+      </searchParam>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/ValueSet-expand"/>
+      </operation>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/ValueSet-validate-code"/>
+      </operation>
+    </resource>
+    <resource>
+      <type value="ConceptMap"/>
+      <profile value="http://hl7.org/fhir/StructureDefinition/ConceptMap"/>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="read"/>
+      </interaction>
+      <interaction>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <code value="search-type"/>
+      </interaction>
+      <searchParam>
+        <name value="url"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ConceptMap-url"/>
+        <type value="uri"/>
+      </searchParam>
+      <searchParam>
+        <name value="version"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ConceptMap-version"/>
+        <type value="token"/>
+      </searchParam>
+      <searchParam>
+        <name value="name"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ConceptMap-name"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="title"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ConceptMap-title"/>
+        <type value="string"/>
+      </searchParam>
+      <searchParam>
+        <name value="status"/>
+        <definition value="http://hl7.org/fhir/SearchParameter/ConceptMap-status"/>
+        <type value="token"/>
+      </searchParam>
+      <operation>
+        <extension url="http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation">
+          <valueCode value="SHALL"/>
+        </extension>
+        <name value="expand"/>
+        <definition value="http://hl7.org/fhir/OperationDefinition/ConceptMap-translate"/>
+      </operation>
+    </resource>
+  </rest>
+</CapabilityStatement>

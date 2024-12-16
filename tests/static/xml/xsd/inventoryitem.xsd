@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * #%L
+ * org.hl7.fhir.r5
+ * %%
+ * Copyright (C) 2014 - 2019 Health Level 7
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
+
+  Generated on Thu, Dec 12, 2024 18:56+0000 for FHIR v6.0.0-ballot2 
+
+  Note: the schemas &amp; schematrons do not contain all of the rules about what makes resources
+  valid. Implementers will still need to be familiar with the content of the specification and with
+  any profiles that apply to the resources in order to make a conformant implementation.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+  <xs:include schemaLocation="fhir-base.xsd"/>
+  <xs:element name="InventoryItem" type="InventoryItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="InventoryItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="DomainResource">
+        <xs:sequence>
+          <xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Business identifier for the inventory item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="1" maxOccurs="1" type="InventoryItemStatusCodes">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Status of the item entry.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="category" minOccurs="0" maxOccurs="unbounded" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Category or class of the item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="code" minOccurs="0" maxOccurs="unbounded" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Code designating the specific type of item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="name" type="InventoryItem.Name" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The item name(s) - the brand name, or common name, functional name, generic name.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="responsibleOrganization" type="InventoryItem.ResponsibleOrganization" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Organization(s) responsible for the product.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="description" type="InventoryItem.Description" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The descriptive characteristics of the inventory item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="inventoryStatus" minOccurs="0" maxOccurs="unbounded" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The usage status e.g. recalled, in use, discarded... This can be used to indicate that the items have been taken out of inventory, or are in use, etc.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="baseUnit" minOccurs="0" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The base unit of measure - the unit in which the product is used or counted.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="netContent" minOccurs="0" maxOccurs="1" type="Quantity">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Net content or amount present in the item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="association" type="InventoryItem.Association" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Association with other items or products.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="characteristic" type="InventoryItem.Characteristic" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The descriptive or identifying characteristics of the item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="instance" type="InventoryItem.Instance" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Instances or occurrences of the product.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="productReference" minOccurs="0" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Link to a product resource used in clinical workflows.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.Name">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="nameType" minOccurs="1" maxOccurs="1" type="Coding">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The type of name e.g. 'brand-name', 'functional-name', 'common-name'.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="language" minOccurs="1" maxOccurs="1" type="CommonLanguages">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The language that the item name is expressed in.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="name" minOccurs="1" maxOccurs="1" type="string">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The name or designation that the item is given.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.ResponsibleOrganization">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="role" minOccurs="1" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The role of the organization e.g. manufacturer, distributor, etc.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="organization" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">An organization that has an association with the item, e.g. manufacturer, distributor, responsible, etc.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.Description">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="language" minOccurs="0" maxOccurs="1" type="CommonLanguages">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The language for the item description, when an item must be described in different languages and those languages may be authoritative and not translations of a 'main' language.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="description" minOccurs="0" maxOccurs="1" type="string">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Textual description of the item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.Association">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="associationType" minOccurs="1" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This attribute defined the type of association when establishing associations or relations between items, e.g. 'packaged within' or 'used with' or 'to be mixed with.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="relatedItem" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The related item or product.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="quantity" minOccurs="1" maxOccurs="1" type="Ratio">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The quantity of the related product in this product - Numerator is the quantity of the related product. Denominator is the quantity of the present product. For example a value of 20 means that this product contains 20 units of the related product; a value of 1:20 means the inverse - that the contained product contains 20 units of the present product.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.Characteristic">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="characteristicType" minOccurs="1" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The type of characteristic that is being defined.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:choice minOccurs="1" maxOccurs="1" >
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The value of the attribute.</xs:documentation>
+            </xs:annotation>
+            <xs:element name="valueString" type="string"/>
+            <xs:element name="valueInteger" type="integer"/>
+            <xs:element name="valueDecimal" type="decimal"/>
+            <xs:element name="valueBoolean" type="boolean"/>
+            <xs:element name="valueUrl" type="url"/>
+            <xs:element name="valueDateTime" type="dateTime"/>
+            <xs:element name="valueQuantity" type="Quantity"/>
+            <xs:element name="valueRange" type="Range"/>
+            <xs:element name="valueRatio" type="Ratio"/>
+            <xs:element name="valueAnnotation" type="Annotation"/>
+            <xs:element name="valueAddress" type="Address"/>
+            <xs:element name="valueDuration" type="Duration"/>
+            <xs:element name="valueCodeableConcept" type="CodeableConcept"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InventoryItem.Instance">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A functional description of an inventory item used in inventory and supply-related workflows.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The identifier for the physical instance, typically a serial number.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="lotNumber" minOccurs="0" maxOccurs="1" type="string">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The lot or batch number of the item.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="expiry" minOccurs="0" maxOccurs="1" type="dateTime">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The expiry date or date and time for the product.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="subject" minOccurs="0" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The subject that the item is associated with.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="location" minOccurs="0" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The location that the item is associated with.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="InventoryItemStatusCodesEnum">
+    <xs:restriction base="code-primitive">
+      <xs:enumeration value="active">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Active</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="inactive">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Inactive</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="entered-in-error">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Entered in Error</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="unknown">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Unknown</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="InventoryItemStatusCodes">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A coded concept specifying the status of the inventory item.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Element">
+        <xs:attribute name="value" type="InventoryItemStatusCodesEnum" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="CommonLanguagesEnum">
+    <xs:restriction base="code-primitive">
+      <xs:enumeration value="ar">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Arabic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bg">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bulgarian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bg-BG">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bulgarian (Region=Bulgaria)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bn">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bengali</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="cs">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Czech</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="cs-CZ">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Czech (Region=Czechia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bs">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bosnian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bs-BA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bosnian (Region=Bosnia and Herzegovina)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="da">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Danish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="da-DK">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Danish (Region=Denmark)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="de">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">German</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="de-AT">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">German (Region=Austria)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="de-CH">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">German (Region=Switzerland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="de-DE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">German (Region=Germany)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="el">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Modern Greek (1453-)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="el-GR">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Modern Greek (1453-) (Region=Greece)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-AU">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=Australia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-CA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=Canada)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-GB">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=United Kingdom)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-IN">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=India)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-NZ">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=New Zealand)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-SG">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=Singapore)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="en-US">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">English (Region=United States)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="es">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Spanish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="es-AR">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Spanish (Region=Argentina)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="es-ES">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Spanish (Region=Spain)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="es-UY">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Spanish (Region=Uruguay)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="et">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Estonian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="et-EE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Estonian (Region=Estonia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fi">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Finnish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fr">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">French</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fr-BE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">French (Region=Belgium)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fr-CH">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">French (Region=Switzerland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fr-FR">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">French (Region=France)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fi-FI">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Finnish (Region=Finland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fr-CA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">French (Region=Canada)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fy">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Western Frisian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="fy-NL">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Western Frisian (Region=Netherlands)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="hi">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Hindi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="hr">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Croatian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="hr-HR">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Croatian (Region=Croatia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="is">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Icelandic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="is-IS">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Icelandic (Region=Iceland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="it">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Italian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="it-CH">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Italian (Region=Switzerland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="it-IT">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Italian (Region=Italy)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ja">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Japanese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ko">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Korean</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="lt">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Lithuanian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="lt-LT">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Lithuanian (Region=Lithuania)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="lv">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Latvian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="lv-LV">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Latvian (Region=Latvia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="nl">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Dutch</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="nl-BE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Dutch (Region=Belgium)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="nl-NL">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Dutch (Region=Netherlands)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="no">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Norwegian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="no-NO">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Norwegian (Region=Norway)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pa">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Panjabi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pl">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Polish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pl-PL">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Polish (Region=Poland)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pt">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Portuguese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pt-PT">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Portuguese (Region=Portugal)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="pt-BR">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Portuguese (Region=Brazil)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ro">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Romanian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ro-RO">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Romanian (Region=Romania)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ru">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Russian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ru-RU">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Russian (Region=Russian Federation)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sk">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Slovak</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sk-SK">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Slovak (Region=Slovakia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sl">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Slovenian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sl-SI">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Slovenian (Region=Slovenia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sr">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Serbian</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sr-RS">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Serbian (Region=Serbia)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sv">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Swedish</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="sv-SE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Swedish (Region=Sweden)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="te">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Telugu</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="zh">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Chinese</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="zh-CN">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Chinese (Region=China)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="zh-HK">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Chinese (Region=Hong Kong)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="zh-SG">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Chinese (Region=Singapore)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="zh-TW">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Chinese (Region=Taiwan, Province of China)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="CommonLanguages">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The languages for a description of an item</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Element">
+        <xs:attribute name="value" type="CommonLanguagesEnum" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

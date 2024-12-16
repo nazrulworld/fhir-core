@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ConceptMap xmlns="http://hl7.org/fhir">
+  <id value="sc-publication-status"/>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: ConceptMap sc-publication-status</b>
+      </p>
+      <a name="sc-publication-status"> </a>
+      <a name="hcsc-publication-status"> </a>
+      <a name="sc-publication-status-en-US"> </a>
+      <p>Mapping from 
+        <a href="valueset-publication-status.html">PublicationStatus</a> to 
+        <a href="valueset-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <br/>
+      <p>
+        <b>Group 1 </b>Mapping from 
+        <a href="codesystem-publication-status.html">PublicationStatus</a> to 
+        <a href="codesystem-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <table class="grid">
+        <tr>
+          <td>
+            <b>Source Code</b>
+          </td>
+          <td>
+            <b>Relationship</b>
+          </td>
+          <td>
+            <b>Target Code</b>
+          </td>
+        </tr>
+        <tr>
+          <td>draft</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>draft</td>
+        </tr>
+        <tr>
+          <td>active</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>active</td>
+        </tr>
+        <tr>
+          <td>retired</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>inactive</td>
+        </tr>
+        <tr>
+          <td>unknown</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>unknown</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <url value="http://hl7.org/fhir/ConceptMap/sc-publication-status"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="PublicationStatusCanonicalMap"/>
+  <title value="Canonical Mapping for &quot;PublicationStatus&quot;"/>
+  <status value="draft"/>
+  <experimental value="false"/>
+  <date value="2024-12-12T18:56:29+00:00"/>
+  <publisher value="HL7 International / FHIR Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/fiwg"/>
+    </telecom>
+  </contact>
+  <description value="Canonical Mapping for &quot;The lifecycle status of an artifact.&quot;"/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <sourceScopeCanonical value="http://hl7.org/fhir/ValueSet/publication-status"/>
+  <targetScopeCanonical value="http://hl7.org/fhir/ValueSet/resource-status"/>
+  <group>
+    <source value="http://hl7.org/fhir/publication-status"/>
+    <target value="http://hl7.org/fhir/resource-status"/>
+    <element>
+      <code value="draft"/>
+      <target>
+        <code value="draft"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="active"/>
+      <target>
+        <code value="active"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="retired"/>
+      <target>
+        <code value="inactive"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="unknown"/>
+      <target>
+        <code value="unknown"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+  </group>
+</ConceptMap>

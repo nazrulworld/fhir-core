@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><MedicationKnowledge xmlns="http://hl7.org/fhir">
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <code>
+    <!--  Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"  -->
+    <coding>
+      <system value="http://hl7.org/fhir/sid/ndc"/>
+      <code value="0409-6531-02"/>
+      <display value="Vancomycin Hydrochloride, 10 VIAL in 1 TRAY (0409-6531-02) &gt; 1 INJECTION, POWDER, LYOPHILIZED, FOR SOLUTION in 1 VIAL (0409-6531-12) (package)"/>
+    </coding>
+    <text value="Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"/>
+  </code>
+  <status value="active"/>
+  <name value="Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"/>
+  <definitional>
+    <doseForm>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="385268001"/>
+        <display value="Oral dose form (dose form)"/>
+      </coding>
+    </doseForm>
+  </definitional>
+</MedicationKnowledge>

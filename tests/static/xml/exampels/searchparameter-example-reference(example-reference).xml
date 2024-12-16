@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><SearchParameter xmlns="http://hl7.org/fhir">
+  <id value="example-reference"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="fhir"/>
+  </extension>
+  <url value="http://hl7.org/fhir/SearchParameter/example-reference"/>
+  <name value="ExampleSearchParameter"/>
+  <title value="Example Search Parameter"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <date value="2013-10-23"/>
+  <publisher value="HL7 International / FHIR Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/fiwg"/>
+    </telecom>
+  </contact>
+  <description value="Search by condition subject"/>
+  <purpose value="Need to search Condition by subject"/>
+  <code value="subject"/>
+  <base value="Condition"/>
+  <type value="reference"/>
+  <expression value="Condition.subject"/>
+  <processingMode value="normal"/>
+  <target value="Organization"/>
+  <modifier value="missing"/>
+  <chain value="name"/>
+  <chain value="identifier"/>
+</SearchParameter>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><ClinicalUseDefinition xmlns="http://hl7.org/fhir">
+  <id value="example-undesirable"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="brr"/>
+  </extension>
+  <!--  common side effect  -->
+  <type value="undesirable-effect"/>
+  <subject>
+    <reference value="MedicinalProductDefinition/example"/>
+  </subject>
+  <undesirableEffect>
+    <symptomConditionEffect>
+      <concept>
+        <coding>
+          <system value="http://ema.europa.eu/example/undesirableeffectassymptom-condition-effect"/>
+          <code value="Anaemia"/>
+        </coding>
+      </concept>
+    </symptomConditionEffect>
+    <classification>
+      <coding>
+        <system value="http://ema.europa.eu/example/symptom-condition-effectclassification"/>
+        <code value="Blood-and-lymphatic-system-disorders"/>
+      </coding>
+    </classification>
+    <frequencyOfOccurrence>
+      <coding>
+        <system value="http://ema.europa.eu/example/frequencyofoccurrence"/>
+        <code value="Common"/>
+      </coding>
+    </frequencyOfOccurrence>
+  </undesirableEffect>
+</ClinicalUseDefinition>

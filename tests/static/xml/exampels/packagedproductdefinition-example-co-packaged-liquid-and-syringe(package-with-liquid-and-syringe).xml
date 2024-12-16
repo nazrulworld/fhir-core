@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><PackagedProductDefinition xmlns="http://hl7.org/fhir">
+  <id value="package-with-liquid-and-syringe"/>
+  <!--  Schema appears to be broken, deviceName is not present in XSD  -->
+  <!-- deviceName>
+				<name value="WonderSyringe"/>
+				<type value="manufacturer-name"/>
+			</deviceName -->
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <DeviceDefinition>
+      <id value="syringeDevice"/>
+      <classification>
+        <type>
+          <text value="syringe"/>
+        </type>
+      </classification>
+    </DeviceDefinition>
+  </contained>
+  <contained>
+    <ManufacturedItemDefinition>
+      <id value="liquidItem"/>
+      <status value="active"/>
+      <manufacturedDoseForm>
+        <coding>
+          <system value="http://example.org.uk/fhir/doseform"/>
+          <code value="solution for injection"/>
+        </coding>
+      </manufacturedDoseForm>
+    </ManufacturedItemDefinition>
+  </contained>
+  <!--  the product for which this is one available package type (possibly one package type of several for this product)  -->
+  <packageFor>
+    <reference value="MedicinalProductDefinition/ProductThatHasThisPackType"/>
+  </packageFor>
+  <!--  package contents start here, consists of a liquid and a syringe  -->
+  <packaging>
+    <!--  here we can describe the packaging, but in this case we just want to talk about the contents  -->
+    <!--  Note that containedItem here is a completely different meaning to "contained" above
+	         This refers to items physically contained in the package.  -->
+    <containedItem>
+      <item>
+        <reference>
+          <!--  reference an item defined above  -->
+          <reference value="#liquidItem"/>
+        </reference>
+      </item>
+      <amount>
+        <value value="20"/>
+        <unit value="ml"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mL"/>
+      </amount>
+    </containedItem>
+    <containedItem>
+      <item>
+        <reference>
+          <!--  reference an item defined above  -->
+          <reference value="#syringeDevice"/>
+        </reference>
+      </item>
+    </containedItem>
+  </packaging>
+</PackagedProductDefinition>

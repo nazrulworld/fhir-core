@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><Bundle xmlns="http://hl7.org/fhir">
+  <id value="e2c9dc20-615e-4603-9005-74deb209cbb0"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <type value="subscription-notification"/>
+  <timestamp value="2020-04-17T10:24:13.1882432-05:00"/>
+  <entry>
+    <fullUrl value="urn:uuid:b21e4fae-ce73-45cb-8e37-1e203362b2ae"/>
+    <resource>
+      <SubscriptionStatus>
+        <id value="b21e4fae-ce73-45cb-8e37-1e203362b2ae"/>
+        <text>
+          <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: SubscriptionStatus b21e4fae-ce73-45cb-8e37-1e203362b2ae</b></p><a name="b21e4fae-ce73-45cb-8e37-1e203362b2ae"> </a><a name="hcb21e4fae-ce73-45cb-8e37-1e203362b2ae"> </a><a name="b21e4fae-ce73-45cb-8e37-1e203362b2ae-en-US"> </a><p><b>status</b>: error</p><p><b>type</b>: event-notification</p><p><b>eventsSinceSubscriptionStart</b>: 328</p><h3>NotificationEvents</h3><table class="grid"><tr><td style="display: none">-</td><td><b>EventNumber</b></td><td><b>Timestamp</b></td></tr><tr><td style="display: none">*</td><td>328</td><td>2020-04-17T10:20:00-05:00</td></tr></table><p><b>subscription</b>: <a href="broken-link.html">??</a></p><p><b>topic</b>: <a href="broken-link.html">http://example.org/FHIR/R5/SubscriptionTopic/admission</a></p><p><b>error</b>: <span title="Codes:{http://terminology.hl7.org/CodeSystem/subscription-error no-response}">No response</span></p></div>
+        </text>
+        <status value="error"/>
+        <type value="event-notification"/>
+        <eventsSinceSubscriptionStart value="328"/>
+        <notificationEvent>
+          <eventNumber value="328"/>
+          <timestamp value="2020-04-17T10:20:00.0000000-05:00"/>
+        </notificationEvent>
+        <subscription>
+          <reference value="http://example.org/FHIR/R5/Subscription/123"/>
+        </subscription>
+        <topic value="http://example.org/FHIR/R5/SubscriptionTopic/admission"/>
+        <error>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/subscription-error"/>
+            <code value="no-response"/>
+          </coding>
+        </error>
+      </SubscriptionStatus>
+    </resource>
+  </entry>
+</Bundle>

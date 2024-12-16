@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><ServiceRequest xmlns="http://hl7.org/fhir">
+  <id value="subrequest"/>
+  <!-- 	<extension url="http://hl7.org/fhir/StructureDefinition/bodysitecode">
+		<valueCodeableConcept>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="51185008"/>
+				<display value="Thoracic structure"/>
+			</coding>
+		</valueCodeableConcept>
+</extension>
+	 -->
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <basedOn>
+    <display value="Original Request"/>
+  </basedOn>
+  <replaces>
+    <display value="Previous allergy test"/>
+  </replaces>
+  <!--  0..1 The value that is unique  -->
+  <requisition>
+    <!--  from Element: extension  -->
+    <value value="A13848392"/>
+  </requisition>
+  <status value="active"/>
+  <intent value="instance-order"/>
+  <priority value="routine"/>
+  <code>
+    <concept>
+      <coding>
+        <system value="http://loinc.org"/>
+        <code value="35542-0"/>
+      </coding>
+      <text value="Peanut IgG"/>
+    </concept>
+  </code>
+  <subject>
+    <reference value="Patient/dicom"/>
+  </subject>
+  <occurrenceDateTime value="2013-05-08T09:33:27+07:00"/>
+  <requester>
+    <reference value="Practitioner/example"/>
+    <display value="Dr. Adam Careful"/>
+  </requester>
+  <performerType>
+    <coding>
+      <display value="Qualified nurse"/>
+    </coding>
+    <text value="Nurse"/>
+  </performerType>
+  <reason>
+    <concept>
+      <text value="Check for Peanut Allergy"/>
+    </concept>
+  </reason>
+  <bodySite>
+    <coding>
+      <display value="Right arm"/>
+    </coding>
+    <text value="Right arm"/>
+  </bodySite>
+</ServiceRequest>

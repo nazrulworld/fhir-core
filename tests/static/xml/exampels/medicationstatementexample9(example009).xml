@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><MedicationStatement xmlns="http://hl7.org/fhir">
+  <id value="example009"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Medication>
+      <id value="med0315"/>
+      <code>
+        <coding>
+          <system value="http://hl7.org/fhir/sid/ndc"/>
+          <code value="358793"/>
+          <display value="Nigroglycerin patch"/>
+        </coding>
+      </code>
+      <doseForm>
+        <coding>
+          <system value="http://snomed.info/sct"/>
+          <code value="376251004"/>
+          <display value="Nitroglycerin 200 microgram/hour prolonged-release transdermal patch"/>
+        </coding>
+      </doseForm>
+    </Medication>
+  </contained>
+  <partOf>
+    <reference value="MedicationStatement/example008"/>
+  </partOf>
+  <status value="recorded"/>
+  <medication>
+    <!--  Linked to a RESOURCE Medication  -->
+    <reference>
+      <reference value="#med0315"/>
+    </reference>
+  </medication>
+  <subject>
+    <reference value="Patient/pat1"/>
+    <display value="Donald Duck"/>
+  </subject>
+  <effectiveDateTime value="2015-01-23"/>
+  <dateAsserted value="2015-02-22"/>
+  <informationSource>
+    <reference value="Patient/pat1"/>
+    <display value="Donald Duck"/>
+  </informationSource>
+  <note>
+    <text value="Patient reports they used the medication patch on this day."/>
+  </note>
+</MedicationStatement>

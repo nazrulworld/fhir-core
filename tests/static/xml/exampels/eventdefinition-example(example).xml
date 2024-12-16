@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><EventDefinition xmlns="http://hl7.org/fhir">
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="cds"/>
+  </extension>
+  <status value="draft"/>
+  <publisher value="HL7 International / Clinical Decision Support"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/dss"/>
+    </telecom>
+  </contact>
+  <purpose value="Monitor all admissions to Emergency"/>
+  <trigger>
+    <type value="named-event"/>
+    <name value="monitor-emergency-admissions"/>
+    <data>
+      <type value="Encounter"/>
+    </data>
+    <condition>
+      <description value="Encounter Location = emergency (active/completed encounters, current or previous)"/>
+      <language value="text/fhirpath"/>
+      <expression value="(%current | %previous).location.where(location = 'Location/emergency' and status in {'active', 'completed'}).exists()"/>
+    </condition>
+  </trigger>
+</EventDefinition>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><Medication xmlns="http://hl7.org/fhir">
+  <id value="medexample015"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Organization>
+      <id value="mmanu"/>
+      <name value="Medication Manufacturer"/>
+    </Organization>
+  </contained>
+  <contained>
+    <Substance>
+      <id value="sub04"/>
+      <instance value="false"/>
+      <code>
+        <concept>
+          <coding>
+            <system value="http://snomed.info/sct"/>
+            <code value="386906001"/>
+            <display value="Capecitabine (substance)"/>
+          </coding>
+        </concept>
+      </code>
+    </Substance>
+  </contained>
+  <code>
+    <coding>
+      <system value="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+      <code value="213293"/>
+      <display value="capecitabine 500 MG Oral Tablet [Xeloda]"/>
+    </coding>
+  </code>
+  <marketingAuthorizationHolder>
+    <reference value="#mmanu"/>
+  </marketingAuthorizationHolder>
+  <doseForm>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="385055001"/>
+      <display value="Tablet (basic dose form)"/>
+    </coding>
+  </doseForm>
+  <ingredient>
+    <item>
+      <reference>
+        <reference value="#sub04"/>
+      </reference>
+    </item>
+    <strengthRatio>
+      <numerator>
+        <value value="500"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mg"/>
+      </numerator>
+      <denominator>
+        <value value="1"/>
+        <system value="http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm"/>
+        <code value="TAB"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+  <batch>
+    <lotNumber value="9494788"/>
+    <expirationDate value="2017-05-22"/>
+  </batch>
+</Medication>

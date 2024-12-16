@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><Device xmlns="http://hl7.org/fhir">
+  <id value="example-udi2"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <type>
+      <coding>
+        <system value="http://hl7.org/fhir/NamingSystem/iccbba-din"/>
+      </coding>
+    </type>
+    <value value="A99971312345600"/>
+  </identifier>
+  <udiCarrier>
+    <deviceIdentifier value="A9999XYZ100T0474"/>
+    <issuer value="http://hl7.org/fhir/NamingSystem/iccbba-other"/>
+    <jurisdiction value="http://hl7.org/fhir/NamingSystem/fda-udi"/>
+  </udiCarrier>
+  <status value="inactive"/>
+  <manufacturer value="Acme Devices, Inc"/>
+  <manufactureDate value="2013-02-01"/>
+  <!-- 	013032 = this is the manufacturing date expressed in YYYDDD (three digit year, three digit day number) -->
+  <expirationDate value="2014-02-01"/>
+</Device>

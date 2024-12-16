@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><MedicationAdministration xmlns="http://hl7.org/fhir">
+  <id value="medadmin0305"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <contained>
+    <Medication>
+      <id value="med0306"/>
+      <code>
+        <coding>
+          <system value="http://hl7.org/fhir/sid/ndc"/>
+          <code value="51144-050-01"/>
+          <display value="ADCETRIS, 1 VIAL, SINGLE-DOSE in 1 BOX (51144-050-01) &gt; 10.5 mL in 1 VIAL, SINGLE-DOSE (package)"/>
+        </coding>
+      </code>
+      <marketingAuthorizationHolder>
+        <reference value="Organization/mmanu"/>
+      </marketingAuthorizationHolder>
+      <doseForm>
+        <coding>
+          <system value="http://snomed.info/sct"/>
+          <code value="421637006"/>
+          <display value="Lyophilised powder for conventional release solution for injection"/>
+        </coding>
+      </doseForm>
+      <batch>
+        <lotNumber value="12345"/>
+        <expirationDate value="2019-10-31"/>
+      </batch>
+    </Medication>
+  </contained>
+  <status value="completed"/>
+  <medication>
+    <reference>
+      <reference value="#med0306"/>
+    </reference>
+  </medication>
+  <subject>
+    <reference value="Patient/pat1"/>
+    <display value="Donald Duck"/>
+  </subject>
+  <encounter>
+    <reference value="Encounter/f001"/>
+    <display value="encounter who leads to this prescription"/>
+  </encounter>
+  <occurrencePeriod>
+    <start value="2015-01-15T04:30:00+01:00"/>
+    <end value="2015-01-15T14:30:00+01:00"/>
+  </occurrencePeriod>
+  <performer>
+    <actor>
+      <reference>
+        <reference value="Practitioner/f007"/>
+        <display value="Patrick Pump"/>
+      </reference>
+    </actor>
+  </performer>
+  <request>
+    <reference value="MedicationRequest/medrx0316"/>
+  </request>
+  <dosage>
+    <text value="1.8 mg/kg IV infusion over 30 minutes"/>
+    <route>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="255560000"/>
+        <display value="Intravenous"/>
+      </coding>
+    </route>
+    <dose>
+      <value value="1.8"/>
+      <unit value="mg/kg"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="mg/kg"/>
+    </dose>
+    <rateRatio>
+      <numerator>
+        <value value="250"/>
+        <unit value="ml"/>
+        <system value="http://unitsofmeasure.org"/>
+      </numerator>
+      <denominator>
+        <value value="30"/>
+        <unit value="min"/>
+        <system value="http://unitsofmeasure.org"/>
+      </denominator>
+    </rateRatio>
+  </dosage>
+</MedicationAdministration>

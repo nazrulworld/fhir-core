@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><Substance xmlns="http://hl7.org/fhir">
+  <id value="f204"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <system value="http://acme.org/identifiers/substances/lot"/>
+    <value value="AB94687"/>
+  </identifier>
+  <instance value="true"/>
+  <category>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/substance-category"/>
+      <code value="chemical"/>
+      <display value="Chemical"/>
+    </coding>
+  </category>
+  <code>
+    <concept>
+      <coding>
+        <system value="http://snomed.info/sct"/>
+        <code value="333346007"/>
+        <display value="Silver nitrate 200 mg/mL cutaneous solution"/>
+      </coding>
+    </concept>
+  </code>
+  <description value="Solution for silver nitrate stain"/>
+  <expiry value="2018-01-01"/>
+  <quantity>
+    <value value="100"/>
+    <unit value="mL"/>
+    <system value="http://unitsofmeasure.org"/>
+    <code value="mL"/>
+  </quantity>
+</Substance>

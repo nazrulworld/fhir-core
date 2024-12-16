@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><Bundle xmlns="http://hl7.org/fhir">
+  <id value="f202"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <type value="collection"/>
+  <entry>
+    <fullUrl value="https://example.com/base/DiagnosticReport/f202"/>
+    <resource>
+      <DiagnosticReport>
+        <!--  No identifier was available  -->
+        <id value="f202"/>
+        <text>
+          <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: DiagnosticReport f202</b></p><a name="f202"> </a><a name="hcf202"> </a><a name="f202-en-US"> </a><h2><span title="Codes:{http://snomed.info/sct 104177005}">Blood culture for bacteria, including anaerobic screen</span> (<span title="Codes:{http://snomed.info/sct 15220000}, {http://terminology.hl7.org/CodeSystem/v2-0074 LAB}">Laboratory test</span>) </h2><table class="grid"><tr><td>Subject</td><td>Roel(official) male, DoB: 1960-03-13 ( BSN: 123456789 (use: official, ))</td></tr><tr><td>Reported</td><td>2013-03-11T10:28:00+01:00</td></tr><tr><td>Performer</td><td> <a href="organization-example-f201-aumc.html">AUMC</a></td></tr></table><p><b>Report Details</b></p><table class="grid"><tr><td><b>Code</b></td><td><b>Value</b></td><td><b>Flags</b></td></tr><tr><td><a href="observation-example-f206-staphylococcus.html"><span title="Codes:{http://acmelabs.org 104177}, {http://loinc.org 600-7}">Blood culture</span></a></td><td><span title="Codes:{http://snomed.info/sct 3092008}">Staphylococcus aureus</span></td><td>final, <span title="Codes:{http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation POS}">Positive</span></td></tr></table><div><p>Blood culture tested positive on staphylococcus aureus</p>
+</div><p><b>Coded Conclusions:</b></p><ul><li/></ul></div>
+        </text>
+        <basedOn>
+          <reference value="ServiceRequest/req"/>
+        </basedOn>
+        <status value="final"/>
+        <category>
+          <!--  Lab test  -->
+          <coding>
+            <system value="http://snomed.info/sct"/>
+            <code value="15220000"/>
+            <display value="Laboratory test"/>
+          </coding>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v2-0074"/>
+            <code value="LAB"/>
+          </coding>
+        </category>
+        <code>
+          <coding>
+            <system value="http://snomed.info/sct"/>
+            <code value="104177005"/>
+            <display value="Blood culture for bacteria, including anaerobic screen"/>
+          </coding>
+        </code>
+        <subject>
+          <reference value="Patient/f201"/>
+          <display value="Roel"/>
+        </subject>
+        <issued value="2013-03-11T10:28:00+01:00"/>
+        <performer>
+          <reference value="Organization/f201"/>
+          <display value="AUMC"/>
+        </performer>
+        <result>
+          <reference value="Observation/f206"/>
+          <display value="Results for staphylococcus analysis on Roel's blood culture"/>
+        </result>
+        <conclusion value="Blood culture tested positive on staphylococcus aureus"/>
+        <conclusionCode/>
+      </DiagnosticReport>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="https://example.com/base/ServiceRequest/req"/>
+    <resource>
+      <ServiceRequest>
+        <id value="req"/>
+        <text>
+          <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: ServiceRequest req</b></p><a name="req"> </a><a name="hcreq"> </a><a name="req-en-US"> </a><p><b>status</b>: active</p><p><b>intent</b>: original-order</p><h3>Codes</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes:{http://snomed.info/sct 104177005}">Blood culture for bacteria, including anaerobic screen</span></td></tr></table><p><b>subject</b>: <a href="patient-example-f201-roel.html">Roel</a></p><p><b>encounter</b>: <a href="encounter-example-f203-20130311.html">Roel's encounter on March elevanth 2013</a></p><p><b>requester</b>: <a href="practitioner-example-f201-ab.html">Dokter Bronsig</a></p></div>
+        </text>
+        <status value="active"/>
+        <intent value="original-order"/>
+        <code>
+          <concept>
+            <coding>
+              <system value="http://snomed.info/sct"/>
+              <code value="104177005"/>
+              <display value="Blood culture for bacteria, including anaerobic screen"/>
+            </coding>
+          </concept>
+        </code>
+        <subject>
+          <reference value="Patient/f201"/>
+          <display value="Roel"/>
+        </subject>
+        <encounter>
+          <reference value="Encounter/f203"/>
+          <display value="Roel's encounter on March elevanth 2013"/>
+        </encounter>
+        <requester>
+          <reference value="Practitioner/f201"/>
+          <display value="Dokter Bronsig"/>
+        </requester>
+      </ServiceRequest>
+    </resource>
+  </entry>
+</Bundle>

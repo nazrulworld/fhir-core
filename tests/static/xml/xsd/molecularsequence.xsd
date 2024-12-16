@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * #%L
+ * org.hl7.fhir.r5
+ * %%
+ * Copyright (C) 2014 - 2019 Health Level 7
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
+
+  Generated on Thu, Dec 12, 2024 18:56+0000 for FHIR v6.0.0-ballot2 
+
+  Note: the schemas &amp; schematrons do not contain all of the rules about what makes resources
+  valid. Implementers will still need to be familiar with the content of the specification and with
+  any profiles that apply to the resources in order to make a conformant implementation.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+  <xs:include schemaLocation="fhir-base.xsd"/>
+  <xs:element name="MolecularSequence" type="MolecularSequence">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="MolecularSequence">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="DomainResource">
+        <xs:sequence>
+          <xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A unique identifier for this particular sequence instance.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="type" minOccurs="0" maxOccurs="1" type="SequenceType">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The type of the Molecular Sequence (Amino Acid Sequence, DNA Sequence, RNA Sequence).</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="literal" type="MolecularSequence.Literal" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A literal representation of a Molecular Sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="file" minOccurs="0" maxOccurs="unbounded" type="Attachment">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Sequence that was observed as file content. Can be an actual file contents, or referenced by a URL to an external system.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="relative" type="MolecularSequence.Relative" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A Molecular Sequence that is represented as an ordered series of edits on a specified starting sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="extracted" type="MolecularSequence.Extracted" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A Molecular Sequence that is represented as an extracted portion of a different Molecular Sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="repeated" type="MolecularSequence.Repeated" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A Molecular Sequence that is represented as a repeated sequence motif.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="concatenated" type="MolecularSequence.Concatenated" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A Molecular Sequence that is represented as an ordered concatenation of two or more Molecular Sequences.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Literal">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="sequenceValue" minOccurs="1" maxOccurs="1" type="string">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The primary (linear) sequence, expressed as a literal string.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Relative">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="startingSequence" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The Molecular Sequence that serves as the starting sequence, on which edits will be applied.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="edit" type="MolecularSequence.Edit" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">An edit (change) made to a sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Edit">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="editOrder" minOccurs="0" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The order of this edit, relative to other edits on the starting sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="coordinateSystem" minOccurs="1" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The coordinate system used to define the edited intervals on the starting sequence. Coordinate systems are usually 0- or 1-based.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="start" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The start coordinate of the interval that will be edited.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="end" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The end coordinate of the interval that will be edited.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="replacementSequence" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The sequence that defines the replacement sequence used in the edit operation.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="replacedSequence" minOccurs="0" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The sequence on the 'starting' sequence for the edit operation, defined by the specified interval, that will be replaced during the edit.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Extracted">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="startingSequence" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The Molecular Sequence that serves as the parent sequence, from which the intended sequence will be extracted.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="start" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The start coordinate (on the parent sequence) of the interval that defines the subsequence to be extracted.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="end" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The end coordinate (on the parent sequence) of the interval that defines the subsequence to be extracted.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="coordinateSystem" minOccurs="1" maxOccurs="1" type="CodeableConcept">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The coordinate system used to define the interval that defines the subsequence to be extracted. Coordinate systems are usually 0- or 1-based.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="reverseComplement" minOccurs="0" maxOccurs="1" type="boolean">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A flag that indicates whether the extracted sequence should be reverse complemented.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Repeated">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="sequenceMotif" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The sequence that defines the repeated motif.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="copyCount" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The number of repeats (copies) of the sequence motif.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.Concatenated">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="sequenceElement" type="MolecularSequence.SequenceElement" minOccurs="1" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">One element of a concatenated Molecular Sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MolecularSequence.SequenceElement">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Representation of a molecular sequence.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BackboneElement">
+        <xs:sequence>
+          <xs:element name="sequence" minOccurs="1" maxOccurs="1" type="Reference">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The Molecular Sequence corresponding to this element.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+          <xs:element name="ordinalIndex" minOccurs="1" maxOccurs="1" type="integer">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The ordinal position of this sequence element within the concatenated Molecular Sequence.</xs:documentation>
+           </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

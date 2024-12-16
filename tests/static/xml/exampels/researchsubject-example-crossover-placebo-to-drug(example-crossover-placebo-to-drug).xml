@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><ResearchSubject xmlns="http://hl7.org/fhir">
+  <id value="example-crossover-placebo-to-drug"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <value value="ecsr45"/>
+  </identifier>
+  <status value="active"/>
+  <period>
+    <start value="2022-06-10"/>
+  </period>
+  <study>
+    <reference value="example-ctgov-study-record"/>
+  </study>
+  <subject>
+    <reference value="cfsb1676546565857"/>
+  </subject>
+  <assignedComparisonGroup value="placebo"/>
+  <actualComparisonGroup value="ap303"/>
+</ResearchSubject>

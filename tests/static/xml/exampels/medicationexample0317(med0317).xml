@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><Medication xmlns="http://hl7.org/fhir">
+  <id value="med0317"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <doseForm>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="385219001"/>
+      <display value="Solution for injection"/>
+    </coding>
+    <text value="Solution for injection"/>
+  </doseForm>
+  <ingredient>
+    <item>
+      <concept>
+        <!--  <display value="Potassium Chloride"/>  -->
+        <coding>
+          <system value="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+          <code value="8591"/>
+        </coding>
+        <text value="Potassium Chloride"/>
+      </concept>
+    </item>
+    <strengthRatio>
+      <numerator>
+        <value value="20"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="meq"/>
+      </numerator>
+      <denominator>
+        <value value="1000"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mL"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+  <ingredient>
+    <item>
+      <concept>
+        <coding>
+          <system value="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+          <code value="313002"/>
+          <display value="sodium chloride 9 MG/ML Injectable Solution"/>
+        </coding>
+        <text value="1000 ml glucost 50mg/ml Injection"/>
+      </concept>
+    </item>
+    <strengthRatio>
+      <numerator>
+        <value value="5"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="g"/>
+      </numerator>
+      <denominator>
+        <value value="100"/>
+        <system value="http://unitsofmeasure.org"/>
+        <code value="mL"/>
+      </denominator>
+    </strengthRatio>
+  </ingredient>
+</Medication>

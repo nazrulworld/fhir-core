@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><StructureMap xmlns="http://hl7.org/fhir">
+  <id value="supplyrequest-transform"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: StructureMap supplyrequest-transform</b>
+      </p>
+      <a name="supplyrequest-transform"> </a>
+      <a name="hcsupplyrequest-transform"> </a>
+      <a name="supplyrequest-transform-en-US"> </a>
+      <pre class="fml">
+
+        <span style="color: #cc00cc">/// 
+          <b>url</b> = 
+        </span>
+        <span style="color: blue">'http://hl7.org/fhir/StructureMap/supplyrequest-transform'</span>
+
+        <span style="color: #cc00cc">/// 
+          <b>name</b> = 
+        </span>
+        <span style="color: blue">'TransformFromAnActivityDefinitionToASupplyRequest'</span>
+
+        <span style="color: #cc00cc">/// 
+          <b>title</b> = 
+        </span>
+        <span style="color: blue">'Transform from an ActivityDefinition to a SupplyRequest'</span>
+
+        <span style="color: #cc00cc">/// 
+          <b>status</b> = 
+        </span>
+        <span style="color: blue">'draft'</span>
+
+
+        <b>uses</b>
+        <span style="color: navy"> "</span>
+        <a href="activitydefinition.html" title="ActivityDefinition">http://hl7.org/fhir/StructureDefinition/ActivityDefinition</a>
+        <span style="color: navy">" </span>
+        <b>as </b>
+        <b>source</b>
+
+        <b>uses</b>
+        <span style="color: navy"> "</span>
+        <a href="supplyrequest.html" title="SupplyRequest">http://hl7.org/fhir/StructureDefinition/SupplyRequest</a>
+        <span style="color: navy">" </span>
+        <b>as </b>
+        <b>target</b>
+
+
+        <b>group </b>main
+        <span style="color: navy">(</span>
+        <b>source</b> 
+        <span style="color: maroon">source</span>
+        <span style="color: navy"> : </span>ActivityDefinition, 
+        <b>target</b> 
+        <span style="color: maroon">target</span>
+        <span style="color: navy"> : </span>SupplyRequest
+        <span style="color: navy">)</span>
+        <span style="color: navy"> {
+</span>  source.id
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.status = 
+        <span style="color: navy">(</span>'draft'
+        <span style="color: navy">)</span> 
+        <i>"status"</i>
+        <span style="color: navy">;</span>
+  source.id
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.category = 
+        <span style="color: navy">(</span>'non-stock'
+        <span style="color: navy">)</span> 
+        <i>"category"</i>
+        <span style="color: navy">;</span>
+  source.id
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.priority = 
+        <span style="color: navy">(</span>'routine'
+        <span style="color: navy">)</span> 
+        <i>"priority"</i>
+        <span style="color: navy">;</span>
+  source.quantity
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.category = 
+        <b>copy</b>
+        <span style="color: navy">(</span>
+        <span style="color: navy">)</span>
+        <span style="color: navy">;</span>
+  source.code
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span> target.item = 
+        <b>create</b>
+        <span style="color: navy">(</span>
+        <span style="color: navy">)</span>
+        <b> as </b>
+        <span style="color: maroon">b</span>
+        <span style="color: navy">, </span> b.concept = 
+        <b>copy</b>
+        <span style="color: navy">(</span>
+        <span style="color: navy">)</span> 
+        <i>"item"</i>
+        <span style="color: navy">;</span>
+  source.id
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.occurrence = 
+        <span style="color: navy">(</span>now()
+        <span style="color: navy">)</span> 
+        <i>"when"</i>
+        <span style="color: navy">;</span>
+  source.id
+        <b> as </b>
+        <span style="color: maroon">a</span>
+        <span style="color: navy">
+          <b> -&gt; </b>
+        </span>target.authoredOn = 
+        <span style="color: navy">(</span>now()
+        <span style="color: navy">)</span> 
+        <i>"authoredOn"</i>
+        <span style="color: navy">;</span>
+
+        <span style="color: navy">}
+
+</span>
+      </pre>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="fhir"/>
+  </extension>
+  <url value="http://hl7.org/fhir/StructureMap/supplyrequest-transform"/>
+  <identifier>
+    <system value="urn:ietf:rfc:3986"/>
+    <value value="urn:oid:2.16.840.1.113883.4.642.13.1"/>
+  </identifier>
+  <version value="6.0.0-ballot2"/>
+  <name value="TransformFromAnActivityDefinitionToASupplyRequest"/>
+  <title value="Transform from an ActivityDefinition to a SupplyRequest"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <publisher value="HL7 International / FHIR Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/fiwg"/>
+    </telecom>
+  </contact>
+  <description value="Transform from an ActivityDefinition to a SupplyRequest"/>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/ActivityDefinition"/>
+    <mode value="source"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/SupplyRequest"/>
+    <mode value="target"/>
+  </structure>
+  <group>
+    <name value="main"/>
+    <input>
+      <name value="source"/>
+      <type value="ActivityDefinition"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="target"/>
+      <type value="SupplyRequest"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="status"/>
+      <source>
+        <context value="source"/>
+        <element value="id"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="status"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="'draft'"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="category"/>
+      <source>
+        <context value="source"/>
+        <element value="id"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="category"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="'non-stock'"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="priority"/>
+      <source>
+        <context value="source"/>
+        <element value="id"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="priority"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="'routine'"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="quantity"/>
+      <source>
+        <context value="source"/>
+        <element value="quantity"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="category"/>
+        <transform value="copy"/>
+      </target>
+    </rule>
+    <rule>
+      <name value="item"/>
+      <source>
+        <context value="source"/>
+        <element value="code"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="item"/>
+        <variable value="b"/>
+        <transform value="create"/>
+      </target>
+      <target>
+        <context value="b"/>
+        <element value="concept"/>
+        <transform value="copy"/>
+      </target>
+    </rule>
+    <rule>
+      <name value="when"/>
+      <source>
+        <context value="source"/>
+        <element value="id"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="occurrence"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="now()"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="authoredOn"/>
+      <source>
+        <context value="source"/>
+        <element value="id"/>
+        <variable value="a"/>
+      </source>
+      <target>
+        <context value="target"/>
+        <element value="authoredOn"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="now()"/>
+        </parameter>
+      </target>
+    </rule>
+  </group>
+</StructureMap>

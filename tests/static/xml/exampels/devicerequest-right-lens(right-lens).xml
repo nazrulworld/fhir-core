@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><DeviceRequest xmlns="http://hl7.org/fhir">
+  <id value="right-lens"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <system value="http://www.happysight.com/prescription"/>
+    <value value="15013R"/>
+  </identifier>
+  <!--  insert contents here  -->
+  <groupIdentifier>
+    <system value="http://acme.org"/>
+    <value value="15013"/>
+  </groupIdentifier>
+  <status value="completed"/>
+  <intent value="original-order"/>
+  <code>
+    <concept>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct"/>
+        <code value="lens"/>
+      </coding>
+    </concept>
+  </code>
+  <parameter>
+    <code>
+      <coding>
+        <system value="http://loinc.org"/>
+        <code value="28826-6"/>
+        <display value="Right glasses lens prescription Sphere far"/>
+      </coding>
+      <text value="sphere, right lens"/>
+    </code>
+    <valueQuantity>
+      <value value="-2.00"/>
+      <unit value="Diopter"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="[diop]"/>
+    </valueQuantity>
+  </parameter>
+  <parameter>
+    <code>
+      <coding>
+        <system value="http://loinc.org"/>
+        <code value="28829-0"/>
+        <display value="Right glasses lens prescription Prism base direction"/>
+      </coding>
+      <text value="prisms, right lens"/>
+    </code>
+    <valueQuantity>
+      <value value="-2.00"/>
+      <unit value="Diopter"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="[diop]"/>
+    </valueQuantity>
+  </parameter>
+  <parameter>
+    <code>
+      <coding>
+        <system value="http://loinc.org"/>
+        <code value="28810-0"/>
+        <display value="Right corrective lens Add 1 by Lensmeter"/>
+      </coding>
+      <text value="add, right lens"/>
+    </code>
+    <valueQuantity>
+      <value value="2.00"/>
+      <unit value="Diopter"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="[diop]"/>
+    </valueQuantity>
+  </parameter>
+  <subject>
+    <reference value="Patient/example"/>
+  </subject>
+  <occurrenceDateTime value="2014-06-15"/>
+  <requester>
+    <reference value="Practitioner/example"/>
+  </requester>
+</DeviceRequest>

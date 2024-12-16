@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><TerminologyCapabilities xmlns="http://hl7.org/fhir">
+  <id value="example-terminology-server"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="vocab"/>
+  </extension>
+  <url value="http://hl7.org/fhir/TerminologyCapabilities/terminology-server"/>
+  <identifier>
+    <system value="urn:ietf:rfc:3986"/>
+    <value value="urn:oid:2.16.840.1.113883.4.642.6.1"/>
+  </identifier>
+  <name value="ACMETerminologyServiceTerminologyCapabilities"/>
+  <title value="ACME Terminology Service — Terminology Capabilities"/>
+  <status value="draft"/>
+  <date value="2022-09-01"/>
+  <publisher value="HL7 International / Terminology Infrastructure"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://www.hl7.org/Special/committees/Vocab"/>
+    </telecom>
+  </contact>
+  <description value="ACME Terminology Service — Terminology Capabilities"/>
+  <kind value="instance"/>
+  <implementation>
+    <description value="The ACME FHIR Terminology Server"/>
+  </implementation>
+  <codeSystem>
+    <uri value="http://snomed.info/sct"/>
+    <version>
+      <code value="http://snomed.info/sct/32506021000036107/version/20220831"/>
+    </version>
+    <content value="complete"/>
+  </codeSystem>
+  <codeSystem>
+    <uri value="http://loinc.org"/>
+    <version>
+      <code value="2.73"/>
+    </version>
+    <content value="complete"/>
+  </codeSystem>
+</TerminologyCapabilities>

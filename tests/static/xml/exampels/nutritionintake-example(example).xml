@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><NutritionIntake xmlns="http://hl7.org/fhir">
+  <!--  id = example  file name = nutritionintake-example.xml  Name=Simple   Description = General NutritionIntake Example edited by Jean Duteau & Becky Gradl -->
+  <id value="example"/>
+  <meta>
+    <security>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/>
+      <code value="HTEST"/>
+      <display value="test health data"/>
+    </security>
+  </meta>
+  <identifier>
+    <system value="http://example.org"/>
+    <value value="1144223344"/>
+  </identifier>
+  <status value="completed"/>
+  <code>
+    <text value="Inpatient"/>
+  </code>
+  <subject>
+    <display value="Paula Patient Chalmers"/>
+  </subject>
+  <encounter>
+    <reference value="Encounter/example"/>
+  </encounter>
+  <occurrenceDateTime value="2019-08-02T12:45:18+04:00"/>
+  <reportedReference>
+    <reference value="PractitionerRole/example"/>
+  </reportedReference>
+</NutritionIntake>

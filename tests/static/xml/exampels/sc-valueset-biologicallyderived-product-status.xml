@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ConceptMap xmlns="http://hl7.org/fhir">
+  <id value="sc-biologicallyderived-product-status"/>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>Generated Narrative: ConceptMap sc-biologicallyderived-product-status</b>
+      </p>
+      <a name="sc-biologicallyderived-product-status"> </a>
+      <a name="hcsc-biologicallyderived-product-status"> </a>
+      <a name="sc-biologicallyderived-product-status-en-US"> </a>
+      <p>Mapping from 
+        <a href="valueset-biologicallyderived-product-status.html">Biologically Derived Product Status</a> to 
+        <a href="valueset-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <br/>
+      <p>
+        <b>Group 1 </b>Mapping from 
+        <a href="codesystem-biologicallyderived-product-status.html">Biologically Derived Product Status</a> to 
+        <a href="codesystem-resource-status.html">Canonical Status Codes for FHIR Resources</a>
+      </p>
+      <table class="grid">
+        <tr>
+          <td>
+            <b>Source Code</b>
+          </td>
+          <td>
+            <b>Relationship</b>
+          </td>
+          <td>
+            <b>Target Code</b>
+          </td>
+        </tr>
+        <tr>
+          <td>available</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>active</td>
+        </tr>
+        <tr>
+          <td>unavailable</td>
+          <td>
+            <a href="codesystem-concept-map-relationship.html#equivalent" title="equivalent">is equivalent to</a>
+          </td>
+          <td>busy-unavailable</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <url value="http://hl7.org/fhir/ConceptMap/sc-biologicallyderived-product-status"/>
+  <version value="6.0.0-ballot2"/>
+  <name value="BiologicallyDerivedProductStatusCanonicalMap"/>
+  <title value="Canonical Mapping for &quot;Biologically Derived Product Status&quot;"/>
+  <status value="draft"/>
+  <experimental value="false"/>
+  <date value="2020-12-28T05:55:11+00:00"/>
+  <publisher value="HL7 (FHIR Project)"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://hl7.org/fhir"/>
+    </telecom>
+    <telecom>
+      <system value="email"/>
+      <value value="fhir@lists.hl7.org"/>
+    </telecom>
+  </contact>
+  <description value="Canonical Mapping for &quot;Biologically Derived Product Status.&quot;"/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <sourceScopeCanonical value="http://hl7.org/fhir/ValueSet/biologicallyderived-product-status"/>
+  <targetScopeCanonical value="http://hl7.org/fhir/ValueSet/resource-status"/>
+  <group>
+    <source value="http://hl7.org/fhir/biologicallyderived-product-status"/>
+    <target value="http://hl7.org/fhir/resource-status"/>
+    <element>
+      <code value="available"/>
+      <target>
+        <code value="active"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+    <element>
+      <code value="unavailable"/>
+      <target>
+        <code value="busy-unavailable"/>
+        <relationship value="equivalent"/>
+      </target>
+    </element>
+  </group>
+</ConceptMap>
