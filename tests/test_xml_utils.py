@@ -71,9 +71,7 @@ def test_xml_node_patient_resource():
     try:
         patient_node.validate(patient_node, xmlparser=xmlparser)
     except ValueError:
-        pass
-        # xxx: fix is coming
-        # raise AssertionError("code should not come here!")
+        raise AssertionError("code should not come here!")
 
 
 def test_element_to_node():

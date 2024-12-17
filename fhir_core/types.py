@@ -8,7 +8,6 @@ import logging
 import re
 import typing
 from functools import lru_cache
-from uuid import UUID
 
 import typing_extensions
 from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
@@ -337,12 +336,6 @@ class Base64Binary:
     __visit_name__ = "base64Binary"
     regex = r"^(\s*([0-9a-zA-Z+=]){4}\s*)+$"
 
-    @staticmethod
-    def to_string(value):
-        """ """
-        assert isinstance(value, bytes)
-        return value.decode()
-
     def __hash__(self) -> int:
         """ """
         return hash(self.__class__)
@@ -362,14 +355,6 @@ class Code(GroupedMetadata):
         """ """
         regex = r"^[^\s]+(\s[^\s]+)*$"
         yield pydantic_general_metadata(pattern=regex)
-
-    @staticmethod
-    def to_string(value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
 
     def __hash__(self) -> int:
         return hash(self.__class__)
@@ -405,14 +390,6 @@ class Id(GroupedMetadata):
             yield MaxLen(self.max_length)
         if self.pattern:
             yield pydantic_general_metadata(pattern=self.pattern)
-
-    @staticmethod
-    def to_string(value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
 
 
 @dataclasses.dataclass(**SLOTS)
@@ -460,12 +437,6 @@ class Decimal:
             core_schema.decimal_schema(),
         )
 
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        assert isinstance(value, decimal.Decimal)
-        return str(float(value))
-
     def __hash__(self) -> int:
         return hash(self.__class__)
 
@@ -486,12 +457,6 @@ class Integer(GroupedMetadata):
         yield Le(self.max_length)
 
         yield Ge(self.min_length)
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        assert isinstance(value, int)
-        return str(value)
 
 
 class Integer64(GroupedMetadata):
@@ -552,14 +517,6 @@ class Uri(PatternConstraint):
     __visit_name__ = "uri"
     pattern = re.compile(r"\S*")
 
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
-
 
 class Oid(PatternConstraint):
     """An OID represented as a URI (RFC 3001 ); e.g. urn:oid:1.2.3.4.5"""
@@ -567,28 +524,12 @@ class Oid(PatternConstraint):
     __visit_name__ = "oid"
     pattern = re.compile(r"^urn:oid:[0-2](\.(0|[1-9][0-9]*))+$")
 
-    @staticmethod
-    def to_string(value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
-
 
 class Uuid:
     """A UUID (aka GUID) represented as a URI (RFC 4122 );
     e.g. urn:uuid:c757873d-ec9a-4326-a141-556f43239520"""
 
     __visit_name__ = "uuid"
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, UUID):
-            value = f"urn:uuid:{value}"
-        assert isinstance(value, str)
-        return value
 
 
 class Canonical(Uri):
@@ -601,14 +542,6 @@ class Canonical(Uri):
     #fragment references"""
 
     __visit_name__ = "canonical"
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
@@ -720,16 +653,6 @@ class Url:
             inner_schema,
         )
 
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, PydanticUrl):
-            value = str(value)
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
-
 
 class Markdown(PatternConstraint):
     """A FHIR string (see above) that may contain markdown syntax for optional processing
@@ -742,14 +665,6 @@ class Markdown(PatternConstraint):
 
 class Xhtml:  # type:ignore
     __visit_name__ = "xhtml"
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, bytes):
-            value = value.decode()
-        assert isinstance(value, str)
-        return value
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
@@ -776,7 +691,7 @@ class Date:
         cls, source_type: typing.Any, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         """
-        Return a Pydantic CoreSchema with the FHIR resource validation.
+        Return a Pydantic CoreSchema with the FHIR Date, DateTime, Time and Instant validation.
 
         Args:
             source_type: The source type to be converted.
@@ -788,6 +703,16 @@ class Date:
         """
 
         # inner_schema = cls.produce_inner_schema(source_type, handler)
+        def _serialize(
+            value: typing.Union[str, datetime.datetime, datetime.date, datetime.time],
+            info: core_schema.SerializationInfo,
+        ) -> typing.Union[str, datetime.datetime, datetime.date, datetime.time]:
+            if isinstance(value, str):
+                return value
+            if info.mode == "json":
+                return value.isoformat()
+            else:
+                return value
 
         def _validate(
             input_value: typing.Union[str, PydanticUrl],
@@ -822,6 +747,11 @@ class Date:
         return core_schema.with_info_wrap_validator_function(
             _validate,
             cls.produce_inner_schema(),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                _serialize,
+                info_arg=True,
+                when_used="always",
+            ),
         )
 
     @classmethod
@@ -843,14 +773,6 @@ class Date:
             return input_value
 
         return validator(input_value)
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, (datetime.date, datetime.time, datetime.datetime)):
-            value = value.isoformat()
-        assert isinstance(value, str)
-        return value
 
 
 class DateTime(Date):
@@ -960,14 +882,6 @@ class Time:
                 raise ValueError
 
         return validator(input_value)
-
-    @classmethod
-    def to_string(cls, value):
-        """ """
-        if isinstance(value, (datetime.date, datetime.time, datetime.datetime)):
-            value = value.isoformat()
-        assert isinstance(value, str)
-        return value
 
 
 # **************************************

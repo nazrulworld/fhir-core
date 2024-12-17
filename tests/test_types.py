@@ -200,7 +200,9 @@ def test_fhir_type_integer64():
 
 
 class MySimpleDateModel(BaseModel):
-    time_stamp: fhir_types.DateTimeType = Field(..., alias="time_stamp", title="TimeStamp")
+    time_stamp: fhir_types.DateTimeType = Field(
+        ..., alias="time_stamp", title="TimeStamp"
+    )
 
 
 def test_datetime_type_valid_timestamps():
@@ -208,12 +210,25 @@ def test_datetime_type_valid_timestamps():
 
     GOOD_TIMESTAMP = "2016-09-09T12:00:00+00:00"
     GOOD_TIMESTAMP_ZULU = "2016-09-09T12:00:00Z"
-    assert MySimpleDateModel(time_stamp=GOOD_TIMESTAMP).model_dump()["time_stamp"].isoformat() == GOOD_TIMESTAMP
-    assert MySimpleDateModel(time_stamp=GOOD_TIMESTAMP_ZULU).model_dump()["time_stamp"].isoformat() == GOOD_TIMESTAMP
+    assert (
+        MySimpleDateModel(time_stamp=GOOD_TIMESTAMP)
+        .model_dump()["time_stamp"]
+        .isoformat()
+        == GOOD_TIMESTAMP
+    )
+    assert (
+        GOOD_TIMESTAMP in MySimpleDateModel(time_stamp=GOOD_TIMESTAMP).model_dump_json()
+    )
+    assert (
+        MySimpleDateModel(time_stamp=GOOD_TIMESTAMP_ZULU)
+        .model_dump()["time_stamp"]
+        .isoformat()
+        == GOOD_TIMESTAMP
+    )
 
 
 def test_datetime_type_invalid_timestamp():
-    """ If hours and minutes are specified, a time zone SHALL be populated. See https://hl7.org/fhir/datatypes.html#dateTime"""
+    """If hours and minutes are specified, a time zone SHALL be populated. See https://hl7.org/fhir/datatypes.html#dateTime"""
 
     BAD_TIMESTAMP = "2016-09-09T12:00:00"
     with pytest.raises(ValidationError):
@@ -221,21 +236,29 @@ def test_datetime_type_invalid_timestamp():
 
 
 def test_datetime_type_valid_yyyy_mm_dd():
-    """  partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
+    """partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
 
     PARTIAL_DATE = "2016-09-09"
-    assert f'"{PARTIAL_DATE}"' in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    assert (
+        f'"{PARTIAL_DATE}"'
+        in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    )
 
 
 def test_datetime_type_valid_yyyy_dd():
-    """  partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
+    """partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
 
     PARTIAL_DATE = "2016-09"
-    assert f'"{PARTIAL_DATE}"' in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    assert (
+        f'"{PARTIAL_DATE}"'
+        in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    )
 
 
 def test_datetime_type_valid_yyyy():
-    """  partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
-
+    """partial date (e.g. just year or year + month). See https://hl7.org/fhir/datatypes.html#dateTime"""
     PARTIAL_DATE = "2016"
-    assert f'"{PARTIAL_DATE}"' in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    assert (
+        f'"{PARTIAL_DATE}"'
+        in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
+    )
