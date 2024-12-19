@@ -416,8 +416,21 @@ class Decimal:
 
         """
 
+        def _serialize(
+            value: typing.Union[str],
+            info: core_schema.SerializationInfo,
+        ) -> typing.Union[float]:
+            # if isinstance(value, str):
+            #     return value
+            """Encodes a Decimal as float."""
+            return float(value)
+
         def _validate(
             input_value: decimal.Decimal,
+            validator: typing.Callable[
+                [typing.Union[str, decimal.Decimal]], typing.Any
+            ],
+            validation_info: ValidationInfo,
         ) -> decimal.Decimal:
             """
             Validate a decimal value.
@@ -430,11 +443,18 @@ class Decimal:
             """
             if not cls.pattern.match(str(input_value)):
                 raise ValueError
+            if isinstance(input_value, str):
+                return decimal.Decimal(input_value)
             return input_value
 
-        return core_schema.no_info_after_validator_function(
+        return core_schema.with_info_wrap_validator_function(
             _validate,
             core_schema.decimal_schema(),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                _serialize,
+                info_arg=True,
+                when_used="always",
+            ),
         )
 
     def __hash__(self) -> int:
