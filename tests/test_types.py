@@ -265,6 +265,7 @@ def test_datetime_type_valid_yyyy():
 
 
 def test_fhir_type_quantity():
+    """Ensure that Quantity is correctly handled"""
     from pydantic import BaseModel
     from tests.fixtures.resources.quantity import Quantity
 
