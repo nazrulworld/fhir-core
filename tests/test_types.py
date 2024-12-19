@@ -262,3 +262,20 @@ def test_datetime_type_valid_yyyy():
         f'"{PARTIAL_DATE}"'
         in MySimpleDateModel(time_stamp=PARTIAL_DATE).model_dump_json()
     )
+
+
+def test_fhir_type_quantity():
+    """Ensure that Quantity is correctly handled"""
+    from pydantic import BaseModel
+    from tests.fixtures.resources.quantity import Quantity
+
+    class MyModel(BaseModel):
+        size: Quantity
+
+    _ = MyModel(size={"value": 10.101, "unit": "kg"})
+
+    assert float(_.size.value) == 10.101, "Should be 10.101"
+    serialized = _.model_dump_json()
+    assert (
+        '"10.101"' not in serialized
+    ), f"Decimal values should not have quotes {serialized}"
