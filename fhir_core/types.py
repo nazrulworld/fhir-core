@@ -420,8 +420,6 @@ class Decimal:
             value: typing.Union[str],
             info: core_schema.SerializationInfo,
         ) -> typing.Union[float]:
-            # if isinstance(value, str):
-            #     return value
             """Encodes a Decimal as float."""
             return float(value)
 
@@ -443,9 +441,8 @@ class Decimal:
             """
             if not cls.pattern.match(str(input_value)):
                 raise ValueError
-            if isinstance(input_value, str):
-                return decimal.Decimal(input_value)
-            return input_value
+
+            return decimal.Decimal(input_value)
 
         return core_schema.with_info_wrap_validator_function(
             _validate,
@@ -454,6 +451,7 @@ class Decimal:
                 _serialize,
                 info_arg=True,
                 when_used="always",
+                return_schema=core_schema.decimal_schema(),
             ),
         )
 

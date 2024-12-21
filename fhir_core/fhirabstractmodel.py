@@ -1,5 +1,7 @@
 from __future__ import annotations as _annotations
 
+import decimal
+
 """Base class for all FHIR elements. """
 
 import inspect
@@ -516,7 +518,10 @@ class FHIRAbstractModel(BaseModel):
             _enc_klass = get_base64_encoder(field_info)
             if _enc_klass:
                 return _enc_klass.encode(value)
-
+        if isinstance(value, decimal.Decimal):
+            # @TODO: the function types.py#Decimal.__get_pydantic_core_schema__._serialize
+            # somehow is not called, until the reason is found, we serialize from here!
+            return float(value)
         return value
 
     @model_validator(mode="after")
