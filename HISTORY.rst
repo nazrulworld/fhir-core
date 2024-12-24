@@ -2,7 +2,7 @@
 History
 =======
 
-1.0.0 (unreleased)
+1.0.0 (2024-12-25)
 ------------------
 
 - **XML serialization/deserialization support has been added**.
