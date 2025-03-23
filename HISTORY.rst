@@ -5,7 +5,9 @@ History
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Fixes
+
+- External issue https://github.com/nazrulworld/fhir.resources/issues/175
 
 
 1.0.0 (2024-12-25)

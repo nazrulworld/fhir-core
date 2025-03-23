@@ -184,21 +184,22 @@ class FhirBase(metaclass=abc.ABCMeta):
             }
             errors.append(error_)
 
-        if model_klass.__resource_type__ != value.__resource_type__:
-            error_type = PydanticCustomError(
-                "model_validation_format",
-                'Expected resource_type is "{model_name}", but value has resource_type "{resource_type}"',
-                {
-                    "model_name": model_klass.__resource_type__,
-                    "resource_type": value.__resource_type__,
-                },
-            )
-            error_ = {
-                "type": error_type,
-                "loc": ("root",),
-                "input": value,
-            }
-            errors.append(error_)
+        if len(errors) == 0:
+            if model_klass.__resource_type__ != value.__resource_type__:
+                error_type = PydanticCustomError(
+                    "model_validation_format",
+                    'Expected resource_type is "{model_name}", but value has resource_type "{resource_type}"',
+                    {
+                        "model_name": model_klass.__resource_type__,
+                        "resource_type": value.__resource_type__,
+                    },
+                )
+                error_ = {
+                    "type": error_type,
+                    "loc": ("root",),
+                    "input": value,
+                }
+                errors.append(error_)
         if len(errors) > 0:
             raise ValidationError.from_exception_data(cls.__name__, errors)
         else:
