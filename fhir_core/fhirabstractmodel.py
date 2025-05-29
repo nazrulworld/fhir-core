@@ -459,7 +459,9 @@ class FHIRAbstractModel(BaseModel):
                     )
                 if ext_val is not None:
                     dict_key_ = (
-                        info.by_alias and self.__class__.model_fields[ext_key].alias or ext_key
+                        info.by_alias
+                        and self.__class__.model_fields[ext_key].alias
+                        or ext_key
                     )
                     if ext_val is not None and len(ext_val) > 0:
                         yield dict_key_, ext_val
