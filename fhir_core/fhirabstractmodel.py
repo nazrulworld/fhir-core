@@ -74,7 +74,7 @@ class FHIRAbstractModel(BaseModel):
             raise ValueError("__resource_type__ must be defined in subclasses")
 
         resource_type = data.pop("resource_type", None)
-        if "resourceType" in data and "resourceType" not in self.model_fields:
+        if "resourceType" in data and "resourceType" not in self.__class__.model_fields:
             resource_type = data.pop("resourceType", None)
 
         if resource_type is not None and resource_type != self.__resource_type__:
@@ -438,7 +438,7 @@ class FHIRAbstractModel(BaseModel):
         alias_maps = self.get_alias_mapping()
         for prop_name in self.elements_sequence():
             field_key = alias_maps[prop_name]
-            field_info = self.model_fields[field_key]
+            field_info = self.__class__.model_fields[field_key]
             is_primitive = is_primitive_type(field_info)
             dict_key = info.by_alias and field_info.alias or field_key
             value = self.__dict__.get(field_key, None)
@@ -459,7 +459,7 @@ class FHIRAbstractModel(BaseModel):
                     )
                 if ext_val is not None:
                     dict_key_ = (
-                        info.by_alias and self.model_fields[ext_key].alias or ext_key
+                        info.by_alias and self.__class__.model_fields[ext_key].alias or ext_key
                     )
                     if ext_val is not None and len(ext_val) > 0:
                         yield dict_key_, ext_val
@@ -554,10 +554,10 @@ class FHIRAbstractModel(BaseModel):
 
         for prefix, fields in one_of_many_fields.items():
             assert (
-                self.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix  # type: ignore
+                self.__class__.model_fields[fields[0]].json_schema_extra["one_of_many"] == prefix  # type: ignore
             )
             required = (
-                self.model_fields[fields[0]].json_schema_extra["one_of_many_required"]  # type: ignore
+                self.__class__.model_fields[fields[0]].json_schema_extra["one_of_many_required"]  # type: ignore
                 is True
             )
             found = False
@@ -591,8 +591,8 @@ class FHIRAbstractModel(BaseModel):
 
         for name, ext in required_fields:
             field_key = alias_maps[name]
-            field_info = self.model_fields[field_key]
-            ext_field_info = self.model_fields[ext]
+            field_info = self.__class__.model_fields[field_key]
+            ext_field_info = self.__class__.model_fields[ext]
             value = getattr(self, field_key, _missing)
             if value not in (_missing, None):
                 continue
