@@ -10,4 +10,4 @@ Development Lead
 Contributors
 ------------
 
-- put your name here
+- Daniel Casals Amat [dacasals]
