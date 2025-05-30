@@ -1,5 +1,7 @@
 from __future__ import annotations as _annotations
 
+from typing import Optional
+
 """XML Utilities"""
 import datetime
 import decimal
@@ -406,7 +408,7 @@ class Node:
         """ """
         self.name = name
         self._value = None
-        self._text = None
+        self._text: Optional[str] = None
         self.attributes = AttributeContainer(self)
         self.namespaces = NamespaceContainer(self)
         self.comments = CommentContainer(self)
