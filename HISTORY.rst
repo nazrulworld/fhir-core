@@ -5,7 +5,9 @@ History
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Fixes
+
+- Issue: deprecated access of ``model_fields`` in Pydantic model instances. https://github.com/nazrulworld/fhir-core/issues/9.
 
 
 1.0.1 (2025-03-23)

@@ -44,13 +44,13 @@ def test_xml_represent():
     )
     assert (
         xml_utils.xml_represent(
-            model.model_fields["booleanTypeRequired"], model.booleanTypeRequired
+            model.__class__.model_fields["booleanTypeRequired"], model.booleanTypeRequired
         )
         == "false"
     )
     assert (
         xml_utils.xml_represent(
-            model.model_fields["base64BinaryTypeRequired"],
+            model.__class__.model_fields["base64BinaryTypeRequired"],
             model.base64BinaryTypeRequired,
         ).strip()
         == "QUxMLUlOLU9ORQ=="
@@ -58,19 +58,19 @@ def test_xml_represent():
 
     assert (
         xml_utils.xml_represent(
-            model.model_fields["uuidTypeRequired"], model.uuidTypeRequired
+            model.__class__.model_fields["uuidTypeRequired"], model.uuidTypeRequired
         )
         == "urn:uuid:0f617818-ee6a-4d11-86ff-cf5924038f27"
     )
     assert (
         xml_utils.xml_represent(
-            model.model_fields["urlTypeNotRequired"], model.urlTypeNotRequired
+            model.__class__.model_fields["urlTypeNotRequired"], model.urlTypeNotRequired
         )
         == "https://schemas.xmlsoap.org/soap/encoding/"
     )
     assert (
         xml_utils.xml_represent(
-            model.model_fields["dateTypeRequired"], model.dateTypeRequired
+            model.__class__.model_fields["dateTypeRequired"], model.dateTypeRequired
         )
         == "1970-01-01"
     )

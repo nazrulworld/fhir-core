@@ -1,5 +1,7 @@
 from __future__ import annotations as _annotations
 
+from typing import Optional
+
 """XML Utilities"""
 import datetime
 import decimal
@@ -406,7 +408,7 @@ class Node:
         """ """
         self.name = name
         self._value = None
-        self._text = None
+        self._text: Optional[str] = None
         self.attributes = AttributeContainer(self)
         self.namespaces = NamespaceContainer(self)
         self.comments = CommentContainer(self)
@@ -722,7 +724,7 @@ class Node:
             # this is a special primitive extension
             del child
             # xxx: handle comments (add comment to main element, parent in this case)
-            field = value.model_fields["extension"]
+            field = value.__class__.model_fields["extension"]
             value = value.__dict__.get(field.alias, None)
             if not value:
                 return
