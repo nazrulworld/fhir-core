@@ -2,10 +2,12 @@
 History
 =======
 
-1.0.3 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+New features
+
+-  `Issue 11:<https://github.com/nazrulworld/fhir-core/issues/11>`_ Added support for FHIR  ``_summary`` based filter during serialization.
 
 
 1.0.2 (2025-06-23)

@@ -53,6 +53,7 @@ class FHIRAbstractModel(BaseModel):
     """Abstract base model class for all FHIR elements."""
 
     __fhir_serialization_exclude_comment__: bool = False
+    __fhir_serialization_summary_only__: bool = False
     # __resource_type__: Literal['ResourceType'] = 'ResourceType'
     __resource_type__: str = "__resource_type__"
 
@@ -111,8 +112,24 @@ class FHIRAbstractModel(BaseModel):
 
     @classmethod
     def elements_sequence(cls) -> typing.List[str]:
-        """returning all elements names from ``Resource`` according specification,
-        with preserving original sequence order.
+        """returning all element names from ``Resource`` according to specification,
+        with preserving the original sequence order.
+        """
+        return []
+
+    @classmethod
+    def summary_element_properties(
+        cls: typing.Type["FHIRAbstractModel"],
+    ) -> typing.Generator[FieldInfo, None, None]:
+        """ """
+        for field_info in cls.model_fields.values():
+            if field_info.json_schema_extra.get("element_property", False) and field_info.json_schema_extra.get("is_summery_element", False):  # type: ignore
+                yield field_info
+
+    @classmethod
+    def summary_elements_sequence(cls) -> typing.List[str]:
+        """returning all element names (those are a summary element also) from ``Resource`` according to specification,
+        with preserving the original sequence order.
         """
         return []
 
@@ -137,7 +154,7 @@ class FHIRAbstractModel(BaseModel):
     def get_alias_mapping(
         cls: typing.Type["FHIRAbstractModel"],
     ) -> typing.Dict[str, str]:
-        """Mappings between field's name and alias"""
+        """Mappings between a field's name and alias"""
         aliases = cls.elements_sequence()
         return {
             fi.alias: fn for fn, fi in cls.model_fields.items() if fi.alias in aliases
@@ -154,6 +171,7 @@ class FHIRAbstractModel(BaseModel):
         indent: int | None = None,
         # FHIR custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> str:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump_json
@@ -166,6 +184,8 @@ class FHIRAbstractModel(BaseModel):
                     By default, FHIR comments are included.
             pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
                     Normally you don't need to use other params.
+            exclude_comments:
+            summary_only:
 
         Returns:
             A JSON string representation of the model.
@@ -181,9 +201,14 @@ class FHIRAbstractModel(BaseModel):
             exclude_none = True
 
         org_config_val = None
+        org_config_val_summery = None
         if exclude_comments is not None:
             org_config_val = self.__fhir_serialization_exclude_comment__
             self.__fhir_serialization_exclude_comment__ = exclude_comments
+
+        if summary_only is not None:
+            org_config_val_summery = self.__fhir_serialization_summary_only__
+            self.__fhir_serialization_summary_only__ = summary_only
 
         result = BaseModel.model_dump_json(
             self,
@@ -194,6 +219,8 @@ class FHIRAbstractModel(BaseModel):
         )
         if exclude_comments is not None:
             self.__fhir_serialization_exclude_comment__ = org_config_val
+        if summary_only is not None:
+            self.__fhir_serialization_summary_only__ = org_config_val_summery
         return result
 
     def model_dump_yaml(
@@ -203,6 +230,7 @@ class FHIRAbstractModel(BaseModel):
         indent: int | None = None,
         # FHIR custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> str:
         """
@@ -212,6 +240,7 @@ class FHIRAbstractModel(BaseModel):
             indent: Indentation to use in the YAML output. If None is passed, the output will be compact.
             exclude_comments: If the FHIR comment should be excluded.
                     By default, FHIR comments are included.
+            summary_only: If only the FHIR summary element should be included.
             pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
                     Normally you don't need to use other params.
 
@@ -225,7 +254,11 @@ class FHIRAbstractModel(BaseModel):
             raise ModuleNotFoundError(
                 "You need to install ``PyYAML`` package to use this method. "
             )
-        result = self.model_dump(exclude_comments=exclude_comments, **pydantic_kwargs)
+        result = self.model_dump(
+            exclude_comments=exclude_comments,
+            summary_only=summary_only,
+            **pydantic_kwargs,
+        )
 
         return yaml_dumps(result, indent=indent, return_bytes=False, sort_keys=False)
 
@@ -237,6 +270,7 @@ class FHIRAbstractModel(BaseModel):
         xml_declaration=True,
         # FHIR custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> str:
         """
@@ -247,6 +281,7 @@ class FHIRAbstractModel(BaseModel):
             exclude_comments: If the FHIR comment should be excluded.
                     By default, FHIR comments are included.
             xml_declaration:
+            summary_only: If only the FHIR summary element should be included.
             pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
                     Normally you don't need to use other params.
 
@@ -257,18 +292,26 @@ class FHIRAbstractModel(BaseModel):
             raise ModuleNotFoundError(
                 "You need to install ``lxml`` package to use this method. "
             )
-        return xml_dumps(
+        org_config_val_summary = None
+        if summary_only is not None:
+            org_config_val_summary = self.__fhir_serialization_summary_only__
+            self.__fhir_serialization_summary_only__ = summary_only
+
+        xml_str = xml_dumps(
             self,
             pretty_print=pretty_print,
             xml_declaration=xml_declaration,
             with_comments=exclude_comments is False,
         )
+        self.__fhir_serialization_summary_only__ = org_config_val_summary
+        return xml_str
 
     def model_dump(
         self,
         *,
         # our custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> typing.Dict[str, typing.Any]:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump
@@ -278,6 +321,7 @@ class FHIRAbstractModel(BaseModel):
         Args:
             exclude_comments: If the FHIR comment should be excluded.
                     By default, FHIR comments are included.
+            summary_only: If only the FHIR summary element should be included.
             pydantic_kwargs: Original pydantic BaseModel.model_dump() parameters.
                     Normally you don't need to use other params.
 
@@ -304,9 +348,14 @@ class FHIRAbstractModel(BaseModel):
             exclude_none = True
 
         org_config_val = None
+        org_config_val_summery = None
         if exclude_comments is not None:
             org_config_val = self.__fhir_serialization_exclude_comment__
             self.__fhir_serialization_exclude_comment__ = exclude_comments
+
+        if summary_only is not None:
+            org_config_val_summery = self.__fhir_serialization_summary_only__
+            self.__fhir_serialization_summary_only__ = summary_only
 
         result = BaseModel.model_dump(
             self,
@@ -317,6 +366,9 @@ class FHIRAbstractModel(BaseModel):
         )
         if exclude_comments is not None:
             self.__fhir_serialization_exclude_comment__ = org_config_val
+        if summary_only is not None:
+            self.__fhir_serialization_summary_only__ = org_config_val_summery
+
         return result
 
     @typing_extensions.deprecated(
@@ -327,13 +379,18 @@ class FHIRAbstractModel(BaseModel):
         *,
         # FHIR custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> typing.Dict[str, typing.Any]:
         warnings.warn(
             "The `dict` method is deprecated; use `model_dump` instead.",
             category=PydanticDeprecatedSince20,
         )
-        return self.model_dump(exclude_comments=exclude_comments, **pydantic_kwargs)
+        return self.model_dump(
+            exclude_comments=exclude_comments,
+            summary_only=summary_only,
+            **pydantic_kwargs,
+        )
 
     @typing_extensions.deprecated(
         "The `json` method is deprecated; use `model_dump_json` instead.", category=None
@@ -344,6 +401,7 @@ class FHIRAbstractModel(BaseModel):
         indent: int | None = None,
         # FHIR custom
         exclude_comments: bool = False,
+        summary_only: bool = False,
         **pydantic_kwargs,
     ) -> str:
         warnings.warn(
@@ -351,7 +409,10 @@ class FHIRAbstractModel(BaseModel):
             category=PydanticDeprecatedSince20,
         )
         return self.model_dump_json(
-            indent=indent, exclude_comments=exclude_comments, **pydantic_kwargs
+            indent=indent,
+            exclude_comments=exclude_comments,
+            summary_only=summary_only,
+            **pydantic_kwargs,
         )
 
     @classmethod
@@ -436,7 +497,16 @@ class FHIRAbstractModel(BaseModel):
             yield "resourceType", self.__resource_type__
 
         alias_maps = self.get_alias_mapping()
-        for prop_name in self.elements_sequence():
+        summery_elements_sequence = self.__class__.summary_elements_sequence()
+        for prop_name in self.__class__.elements_sequence():
+
+            if (
+                self.__fhir_serialization_summary_only__
+                and prop_name not in summery_elements_sequence
+            ):
+                # we are ignoring a non-summary element
+                continue
+
             field_key = alias_maps[prop_name]
             field_info = self.__class__.model_fields[field_key]
             is_primitive = is_primitive_type(field_info)

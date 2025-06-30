@@ -635,7 +635,12 @@ class Node:
 
     @staticmethod
     def add_fhir_element(
-        parent: "Node", field: FieldInfo, value: typing.Any, ext=None, ext_field=None
+        parent: "Node",
+        field: FieldInfo,
+        value: typing.Any,
+        ext=None,
+        ext_field=None,
+        summary_only=False,
     ):
         """"""
         child = Node.create(field.alias)
@@ -678,6 +683,7 @@ class Node:
                         value=ext,
                         ext=None,
                         ext_field=None,
+                        summary_only=summary_only,
                     )
                 parent.children.append(child)
             else:
@@ -696,6 +702,7 @@ class Node:
                             value=ext_,
                             ext=None,
                             ext_field=None,
+                            summary_only=summary_only,
                         )
                 parent.children.append(child)
             return
@@ -709,9 +716,10 @@ class Node:
                     value_,
                     ext=ext,
                     ext_field=ext_field,
+                    summary_only=summary_only,
                 )
             return
-        # we see it's instance of 'FHIRAbstractModel'
+        # we see its instance of 'FHIRAbstractModel'
         parent_child = None
         fhir_type_name = get_fhir_type_name(field)
         if fhir_type_name == "Resource":
@@ -723,7 +731,7 @@ class Node:
         if fhir_type_name == "FHIRPrimitiveExtension":
             # this is a special primitive extension
             del child
-            # xxx: handle comments (add comment to main element, parent in this case)
+            # xxx: handle comments (add comment to the main element, parent in this case)
             field = value.__class__.model_fields["extension"]
             value = value.__dict__.get(field.alias, None)
             if not value:
@@ -734,6 +742,7 @@ class Node:
                 value,
                 ext=ext,
                 ext_field=ext_field,
+                summary_only=summary_only,
             )
             return
         # working comments
@@ -741,7 +750,11 @@ class Node:
         Node.inject_comments(parent, comments)
 
         alias_maps = value.__class__.get_alias_mapping()
+        summery_elements_sequence = value.__class__.summary_elements_sequence()
         for prop_name in value.__class__.elements_sequence():
+            if prop_name in summery_elements_sequence and summary_only:
+                # we filter non-summary field
+                continue
             field_ = value.__class__.model_fields[alias_maps[prop_name]]
             val = value.__dict__.get(field_.alias)
             if fhir_type_name == "Extension" and field_.alias in ("url", "id") and val:
@@ -775,6 +788,7 @@ class Node:
                 val,
                 ext=value_ext,
                 ext_field=value_ext_field,
+                summary_only=summary_only,
             )
         if parent_child is None:
             parent.children.append(child)
@@ -788,7 +802,14 @@ class Node:
             model.get_resource_type(), namespaces=[Namespace(None, ROOT_NS)]
         )
         alias_maps = model.__class__.get_alias_mapping()
+        summery_elements_sequence = model.__class__.summary_elements_sequence()
         for prop_name in model.__class__.elements_sequence():
+            if (
+                prop_name in summery_elements_sequence
+                and model.__fhir_serialization_summary_only__
+            ):
+                # we filter non-summary element
+                continue
             field = model.__class__.model_fields[alias_maps[prop_name]]
             if typing.TYPE_CHECKING:
                 assert field.alias
@@ -809,6 +830,7 @@ class Node:
                 value,
                 ext=value_ext,
                 ext_field=value_ext_field,
+                summary_only=model.__fhir_serialization_summary_only__,
             )
 
         return resource_node
