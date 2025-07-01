@@ -126,13 +126,28 @@ class Meta(datatype.DataType):
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``Meta`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``Meta`` according to specification,
+        with preserving the original sequence order.
         """
         return [
             "id",
             "extension",
+            "versionId",
+            "lastUpdated",
+            "source",
+            "profile",
+            "security",
+            "tag",
+        ]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Account`` according to specification, those are part of summary mode,
+        with preserving original sequence order.
+        """
+        return [
             "versionId",
             "lastUpdated",
             "source",

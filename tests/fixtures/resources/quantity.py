@@ -77,7 +77,7 @@ class Quantity(datatype.DataType):
         alias="unit",
         title="Unit representation",
         description="A human-readable form of the unit.",
-        # if property is element of this resource.
+        # if property is an element of this resource.
         json_schema_extra={"element_property": True},
     )
     unit__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
@@ -101,8 +101,16 @@ class Quantity(datatype.DataType):
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``Quantity`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``Quantity`` according to specification,
+        with preserving the original sequence order.
         """
         return ["id", "extension", "value", "comparator", "unit", "system", "code"]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Quantity`` according to specification,
+        with preserving the original sequence order.
+        """
+        return ["value", "comparator", "unit", "system", "code"]

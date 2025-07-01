@@ -120,3 +120,17 @@ class Coding(datatype.DataType):
             "display",
             "userSelected",
         ]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Coding`` according to specification,
+        with preserving the original sequence order.
+        """
+        return [
+            "system",
+            "version",
+            "code",
+            "display",
+            "userSelected",
+        ]

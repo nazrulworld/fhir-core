@@ -44,7 +44,8 @@ def test_xml_represent():
     )
     assert (
         xml_utils.xml_represent(
-            model.__class__.model_fields["booleanTypeRequired"], model.booleanTypeRequired
+            model.__class__.model_fields["booleanTypeRequired"],
+            model.booleanTypeRequired,
         )
         == "false"
     )

@@ -2,6 +2,7 @@ import datetime
 import decimal
 import typing
 import uuid
+from collections import OrderedDict
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
@@ -75,5 +76,13 @@ FHIR_PRIMITIVES = frozenset(
         "dateTime",
         "instant",
         "time",
+    ]
+)
+
+SUMMARY_MODE_CODING = OrderedDict(
+    [
+        ("system", "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"),
+        ("code", "SUBSETTED"),
+        ("display", "Resource encoded in summary mode"),
     ]
 )

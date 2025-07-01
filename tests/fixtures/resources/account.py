@@ -305,6 +305,27 @@ class Account(domainresource.DomainResource):
             "calculatedAt",
         ]
 
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Account`` according to specification, those are part of summary mode,
+        with preserving original sequence order.
+        """
+        return [
+            "id",
+            "meta",
+            "implicitRules",
+            "identifier",
+            "status",
+            "type",
+            "name",
+            "subject",
+            "servicePeriod",
+            "coverage",
+            "owner",
+            "description",
+        ]
+
     def get_required_fields(self) -> typing.List[typing.Tuple[str, str]]:
         """https://www.hl7.org/fhir/extensibility.html#Special-Case
         In some cases, implementers might find that they do not have appropriate data for

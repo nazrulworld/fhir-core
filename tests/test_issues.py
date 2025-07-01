@@ -1,5 +1,6 @@
-from tests.fixtures import STATIC_PATH_JSON_EXAMPLES
 import pytest
+
+from tests.fixtures import STATIC_PATH_JSON_EXAMPLES
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
@@ -7,9 +8,10 @@ __email__ = "email2nazrul@gmail.com"
 
 def test_issue_external_175():
     """https://github.com/nazrulworld/fhir.resources/issues/175
-    Library fails when object is replaced by an array in Patient resource
+    Library fails when an array replaces an object in Patient resource
     """
     from pydantic_core._pydantic_core import ValidationError
+
     from tests.fixtures.resources.patient import Patient
 
     try:

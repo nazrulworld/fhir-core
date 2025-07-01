@@ -107,3 +107,11 @@ class Reference(datatype.DataType):
         with preserving original sequence order.
         """
         return ["id", "extension", "reference", "type", "identifier", "display"]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Account`` according to specification, those are part of summary mode,
+        with preserving original sequence order.
+        """
+        return ["reference", "type", "identifier", "display"]

@@ -705,6 +705,54 @@ class CodeSystem(domainresource.DomainResource):
             "concept",
         ]
 
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all elements names from
+        ``CodeSystem`` according specification,
+        with preserving original sequence order.
+        """
+        return [
+            "id",
+            "meta",
+            "implicitRules",
+            "language",
+            "url",
+            "identifier",
+            "version",
+            "versionAlgorithmString",
+            "versionAlgorithmCoding",
+            "name",
+            "title",
+            "status",
+            "experimental",
+            "date",
+            "publisher",
+            "contact",
+            "description",
+            "useContext",
+            "jurisdiction",
+            "copyrightLabel",
+            "approvalDate",
+            "lastReviewDate",
+            "effectivePeriod",
+            "topic",
+            "author",
+            "editor",
+            "reviewer",
+            "endorser",
+            "relatedArtifact",
+            "caseSensitive",
+            "valueSet",
+            "hierarchyMeaning",
+            "compositional",
+            "versionNeeded",
+            "content",
+            "supplements",
+            "count",
+            "filter",
+            "property",
+        ]
+
     def get_required_fields(self) -> typing.List[typing.Tuple[str, str]]:
         """https://www.hl7.org/fhir/extensibility.html#Special-Case
         In some cases, implementers might find that they do not have appropriate data for

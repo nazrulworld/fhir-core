@@ -160,3 +160,19 @@ class HumanName(datatype.DataType):
             "suffix",
             "period",
         ]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all elements names from
+        ``HumanName`` according specification,
+        with preserving original sequence order.
+        """
+        return [
+            "use",
+            "text",
+            "family",
+            "given",
+            "prefix",
+            "suffix",
+            "period",
+        ]

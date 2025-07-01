@@ -122,3 +122,18 @@ class Identifier(datatype.DataType):
             "period",
             "assigner",
         ]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names from
+        ``Account`` according to specification, those are part of summary mode,
+        with preserving original sequence order.
+        """
+        return [
+            "use",
+            "type",
+            "system",
+            "value",
+            "period",
+            "assigner",
+        ]

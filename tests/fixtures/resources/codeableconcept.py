@@ -57,3 +57,11 @@ class CodeableConcept(datatype.DataType):
         with preserving original sequence order.
         """
         return ["id", "extension", "coding", "text"]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all elements names from
+        ``CodeableConcept`` according specification,
+        with preserving original sequence order.
+        """
+        return ["coding", "text"]
