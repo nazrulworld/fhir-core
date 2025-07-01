@@ -1,4 +1,3 @@
-=======
 History
 =======
 
@@ -7,7 +6,7 @@ History
 
 New features
 
--  `Issue 11:<https://github.com/nazrulworld/fhir-core/issues/11>`_ Added support for FHIR  ``_summary`` based filter during serialization.
+-  Issue 11: <https://github.com/nazrulworld/fhir-core/issues/11>_ Added support for FHIR `_summary` based filter during serialization.
 
 
 1.0.2 (2025-06-23)
