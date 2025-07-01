@@ -2,8 +2,6 @@ from __future__ import annotations as _annotations
 
 import decimal
 
-"""Base class for all FHIR elements. """
-
 import inspect
 import logging
 import typing
@@ -54,7 +52,6 @@ class FHIRAbstractModel(BaseModel):
 
     __fhir_serialization_exclude_comment__: bool = False
     __fhir_serialization_summary_only__: bool = False
-    # __resource_type__: Literal['ResourceType'] = 'ResourceType'
     __resource_type__: str = "__resource_type__"
 
     fhir_comments: typing.Union[str, typing.List[str]] | None = Field(
@@ -62,15 +59,7 @@ class FHIRAbstractModel(BaseModel):
     )
 
     def __init__(self, /, **data: typing.Any) -> None:  # type: ignore
-        """
-        from pydantic_core import PydanticCustomError
-        raise PydanticCustomError(
-            'sequence_str',
-            "'{type_name}' instances are not allowed as a Sequence value",
-            {'type_name': value_type.__name__},
-        )
-        https://docs.pydantic.dev/latest/api/pydantic_core/#pydantic_core.InitErrorDetails
-        """
+        """ """
         if self.__resource_type__ is Ellipsis:
             raise ValueError("__resource_type__ must be defined in subclasses")
 
@@ -128,7 +117,7 @@ class FHIRAbstractModel(BaseModel):
 
     @classmethod
     def summary_elements_sequence(cls) -> typing.List[str]:
-        """returning all element names (those are a summary element also) from ``Resource`` according to specification,
+        """returning all element names (those have summary mode are enabled) from ``Resource`` according to specification,
         with preserving the original sequence order.
         """
         return []
@@ -327,14 +316,6 @@ class FHIRAbstractModel(BaseModel):
 
         Returns:
             A dictionary representation of the model.
-
-        if len(pydantic_kwargs) > 0:
-            logger.warning(
-                f"{self.__class__.__name__}.dict method accepts only"
-                "´by_alias´, ´exclude_none´, ´exclude_comments` as parameters"
-                " since version v6.2.0, any extra parameter is simply ignored. "
-                "You should not provide any extra argument."
-        )
         """
         by_alias = pydantic_kwargs.pop("by_alias", None)
         if by_alias is None:
@@ -496,7 +477,7 @@ class FHIRAbstractModel(BaseModel):
         if self.__class__.has_resource_base():
             yield "resourceType", self.__resource_type__
 
-        alias_maps = self.get_alias_mapping()
+        alias_maps = self.__class__.get_alias_mapping()
         summery_elements_sequence = self.__class__.summary_elements_sequence()
         for prop_name in self.__class__.elements_sequence():
 
@@ -635,7 +616,7 @@ class FHIRAbstractModel(BaseModel):
             found = False
             for field in fields:
                 if getattr(self, field, None) is not None:
-                    if found is True:
+                    if found:
                         raise ValueError(
                             "Any of one field value is expected from "
                             f"this list {fields}, but got multiple!"
@@ -681,12 +662,6 @@ class FHIRAbstractModel(BaseModel):
                         missing_ext = False
                 else:
                     validate_pass = True
-                    # for validator in ext_field.type_.__get_validators__():
-                    #    try:
-                    #        ext_value = validator(v=ext_value)
-                    #    except ValidationError as exc:
-                    #        errors.append(ErrorWrapper(exc, loc=ext_field.alias))
-                    #        validate_pass = False
                     if not validate_pass:
                         continue
                     if ext_value.extension and len(ext_value.extension) > 0:  # type: ignore

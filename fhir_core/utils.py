@@ -22,7 +22,7 @@ def _is_primitive_type(annotation: typing.Any) -> typing.Union[bool, None]:
     args = get_args(annotation)
     for arg in args:
         if _is_primitive_type(arg) is not None:
-            # check number of args
+            # check the number of args
             return True
     return None
 
@@ -83,7 +83,7 @@ def _get_fhir_type(annotation: typing.Any, field: FieldInfo):
     for arg in args:
         val = _get_fhir_type(arg, field)
         if val is not None:
-            # check number of args
+            # check the number of args
             return val
     return None
 
@@ -109,6 +109,7 @@ def get_base64_encoder(field_info: FieldInfo) -> typing.Any:
             return enc
     if "Base64Binary" in str(field_info.annotation):
         return Base64Encoder
+    return None
 
 
 __all__ = [

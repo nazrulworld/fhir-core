@@ -263,3 +263,58 @@ def test_model_dump_xml():
     activitydefinition_el_2 = etree.fromstring(obj.model_dump_xml())
     assert len(activitydefinition_el_1) == len(activitydefinition_el_2)
     # assert etree.tostring(activitydefinition_el_1) == etree.tostring(activitydefinition_el_2)
+
+
+def test_model_serialize_with_summary_fields():
+    """ """
+    from tests.fixtures.resources.account import Account
+
+    filename = STATIC_PATH_JSON_EXAMPLES / "account-example.json"
+    account_obj = Account.model_validate_json(filename.read_bytes())
+    non_summary_fields = [
+        f
+        for f in Account.elements_sequence()
+        if f not in Account.summary_elements_sequence()
+    ]
+    account_dict = account_obj.model_dump(summary_only=True)
+    for field in non_summary_fields:
+        assert field not in account_dict.keys()
+
+    assert len(account_obj.model_dump(summary_only=False).keys()) > len(
+        account_dict.keys()
+    )
+
+
+def test_model_json_serialize_with_summary_fields():
+    """ """
+    from tests.fixtures.resources.account import Account
+
+    filename = STATIC_PATH_JSON_EXAMPLES / "account-example.json"
+    account_obj = Account.model_validate_json(filename.read_bytes())
+
+    assert len(account_obj.model_dump_json(summary_only=False)) > len(
+        account_obj.model_dump_json(summary_only=True)
+    )
+
+
+def test_model_yaml_serialize_with_summary_fields():
+    """ """
+    from tests.fixtures.resources.account import Account
+
+    filename = STATIC_PATH_JSON_EXAMPLES / "account-example.json"
+    account_obj = Account.model_validate_json(filename.read_bytes())
+
+    assert len(account_obj.model_dump_yaml(summary_only=False)) > len(
+        account_obj.model_dump_yaml(summary_only=True)
+    )
+
+def test_model_xml_serialize_with_summary_fields():
+    """ """
+    from tests.fixtures.resources.account import Account
+
+    filename = STATIC_PATH_JSON_EXAMPLES / "account-example.json"
+    account_obj = Account.model_validate_json(filename.read_bytes())
+
+    assert len(account_obj.model_dump_xml(summary_only=False)) > len(
+        account_obj.model_dump_xml(summary_only=True)
+    )

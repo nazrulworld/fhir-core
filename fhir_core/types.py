@@ -598,14 +598,7 @@ class Url:
         """ """
         # todo: check with 'mailto:', 'mllp:', 'llp:'
         # todo: validate email?
-        # if input_value.startswith("mailto:"):
-        #    schema = input_value[0:7]
-        #    email = input_value[7:]
-        #    realname = parseaddr(email)[0]
-        #    name, email = validate_email(email)
-        #    if realname:
-        #        email = formataddr((name, email))
-        #    return schema + email
+
         if isinstance(input_value, PydanticUrl):
             return input_value
 
@@ -617,7 +610,7 @@ class Url:
         try:
             return validator(input_value)
         except ValidationError as exc:
-            # we are allowing relative path
+            # we are allowing a relative path
             if not input_value.startswith("/"):
                 matched = cls.path_pattern.match("/" + input_value)
             else:
@@ -674,8 +667,8 @@ class Url:
 
 
 class Markdown(PatternConstraint):
-    """A FHIR string (see above) that may contain markdown syntax for optional processing
-    by a markdown presentation engine, in the GFM extension of CommonMark format (see below)
+    """A FHIR string (see above) that may contain Markdown syntax for optional processing
+    by a Markdown presentation engine, in the GFM extension of CommonMark format (see below)
     """
 
     __visit_name__ = "markdown"
