@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.1 (unreleased)
+1.1.1 (2025-07-04)
 ------------------
 
 - Extra field property name ``is_summery_element`` has been renamed to ``summary_element_property``
