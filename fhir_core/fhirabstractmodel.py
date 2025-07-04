@@ -112,7 +112,11 @@ class FHIRAbstractModel(BaseModel):
     ) -> typing.Generator[FieldInfo, None, None]:
         """ """
         for field_info in cls.model_fields.values():
-            if field_info.json_schema_extra.get("element_property", False) and field_info.json_schema_extra.get("is_summery_element", False):  # type: ignore
+            if field_info.json_schema_extra.get(  # type: ignore
+                "element_property", False
+            ) and field_info.json_schema_extra.get(  # type: ignore
+                "summary_element_property", False
+            ):
                 yield field_info
 
     @classmethod
