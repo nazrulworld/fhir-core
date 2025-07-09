@@ -10,25 +10,11 @@ from .fixtures import (
     STATIC_PATH_XML_EXAMPLES,
     STATIC_PATH_XML_SCHEMA,
     FhirPrimitiveTypesModel,
+    should_ignore_xml_schema_test,
 )
 
 __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com>"
-
-
-def should_ignore():
-    """Should ignore test for windows
-    ____________________________ test_element_to_node _____________________________
-        def test_element_to_node():
-            """ """
-    >       schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))
-    tests\test_xml_utils.py:79:
-    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-    >   ???
-    E   lxml.etree.XMLSchemaParseError: Element '{http://www.w3.org/2001/XMLSchema}element':
-    A global element declaration '{http://hl7.org/fhir}Patient' does already exist., line 59
-    """
-    return any(platform.win32_ver())
 
 
 def test_xml_represent():
@@ -83,7 +69,7 @@ def test_xml_node_patient_resource():
         (STATIC_PATH_JSON_EXAMPLES / "patient-example.json").read_bytes()
     )
     patient_node = xml_utils.Node.from_fhir_obj(patient_fhir)
-    if should_ignore():
+    if should_ignore_xml_schema_test():
         return 1 == 1
     schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))
     xmlparser = lxml.etree.XMLParser(schema=schema)
@@ -95,7 +81,7 @@ def test_xml_node_patient_resource():
 
 def test_element_to_node():
     """ """
-    if should_ignore():
+    if should_ignore_xml_schema_test():
         return 1 == 1
     schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))
     xmlparser = lxml.etree.XMLParser(schema=schema)
@@ -121,7 +107,7 @@ def test_model_obj_xml_file():
             / "patient-example-sex-and-gender(patient-example-sex-and-gender).xml"
         ).read_bytes(),
     )
-    if should_ignore():
+    if should_ignore_xml_schema_test():
         return 1 == 1
     # with parser parameter
     schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))

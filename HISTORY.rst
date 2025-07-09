@@ -6,6 +6,8 @@ History
 
 - Fixes nested ignoring (non primitive field serialization), if summary mode is enabled.
 
+- Issue #12 missing xmlparser argument for FHIRAbstractModel.model_validate_xml.
+
 
 1.1.1 (2025-07-04)
 ------------------

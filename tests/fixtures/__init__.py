@@ -2,6 +2,7 @@ from __future__ import annotations as annotations_
 
 import os
 import pathlib
+import platform
 import typing
 from os.path import dirname
 
@@ -85,3 +86,18 @@ class FhirPrimitiveTypesModel(BaseModel):
     dateTimeListNotRequired: typing.List[fhir_types.DateTimeType] | None = Field(
         default=None, title="List of DateTime " "Type (not required)"
     )
+
+
+def should_ignore_xml_schema_test() -> bool:
+    """Should ignore test for windows
+    ____________________________ test_element_to_node _____________________________
+        def test_element_to_node():
+            """ """
+    >       schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))
+    tests\test_xml_utils.py:79:
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    >   ???
+    E   lxml.etree.XMLSchemaParseError: Element '{http://www.w3.org/2001/XMLSchema}element':
+    A global element declaration '{http://hl7.org/fhir}Patient' does already exist., line 59
+    """
+    return any(platform.win32_ver())

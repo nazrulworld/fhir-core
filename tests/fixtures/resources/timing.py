@@ -386,9 +386,9 @@ class TimingRepeat(element.Element):
             "element_property": True,
         },
     )
-    when__ext: typing.List[typing.Union[fhirtypes.FHIRPrimitiveExtensionType, None]] = (
-        Field(None, alias="_when", title="Extension field for ``when``.")
-    )
+    when__ext: typing.List[
+        typing.Union[fhirtypes.FHIRPrimitiveExtensionType, None]
+    ] = Field(None, alias="_when", title="Extension field for ``when``.")
 
     @classmethod
     def elements_sequence(cls):

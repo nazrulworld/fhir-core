@@ -308,6 +308,7 @@ def test_model_yaml_serialize_with_summary_fields():
         account_obj.model_dump_yaml(summary_only=True)
     )
 
+
 def test_model_xml_serialize_with_summary_fields():
     """ """
     from tests.fixtures.resources.account import Account
