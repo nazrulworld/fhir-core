@@ -224,7 +224,6 @@ class FhirElementOrResourceBase(FhirBase):
         value: typing.Union[str, bytes, dict, FHIRAbstractModel],
         model_klass: typing.Type[FHIRAbstractModel],
     ):
-
         _model_klass = model_klass
         if isinstance(value, FHIRAbstractModel):
             _model_klass = value.__class__

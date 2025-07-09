@@ -1,7 +1,6 @@
 from __future__ import annotations as _annotations
 
 import decimal
-
 import inspect
 import logging
 import typing
@@ -437,6 +436,7 @@ class FHIRAbstractModel(BaseModel):
         *,
         strict: bool | None = None,
         context: typing.Any | None = None,
+        xmlparser: typing.Any | None = None,
     ) -> Self:
         """Usage docs: https://pypi.org/project/fhir.resources/#XML
 
@@ -446,6 +446,7 @@ class FHIRAbstractModel(BaseModel):
             xml_data: The YAML data to validate.
             strict: Whether to enforce types strictly.
             context: Extra variables to pass to the validator.
+            xmlparser: Custom XML parser to use. If not provided, the default parser will be used.
 
         Returns:
             The validated Pydantic model.
@@ -457,8 +458,11 @@ class FHIRAbstractModel(BaseModel):
             raise ModuleNotFoundError(
                 "You need to install ``lxml`` package to use this method. "
             )
+        if typing.TYPE_CHECKING and xmlparser is not None:
+            from lxml.etree import XMLParser
 
-        me = xml_loads(cls, xml_data)
+            xmlparser = typing.cast(XMLParser, xmlparser)
+        me = xml_loads(cls, xml_data, xmlparser=xmlparser)
         if typing.TYPE_CHECKING:
             me = typing.cast(Self, me)
         return me
@@ -484,7 +488,6 @@ class FHIRAbstractModel(BaseModel):
         alias_maps = self.__class__.get_alias_mapping()
         summery_elements_sequence = self.__class__.summary_elements_sequence()
         for prop_name in self.__class__.elements_sequence():
-
             if (
                 self.__fhir_serialization_summary_only__
                 and prop_name not in summery_elements_sequence
