@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.2 (unreleased)
+1.1.2 (2025-07-09)
 ------------------
 
 - Fixes nested ignoring (non primitive field serialization), if summary mode is enabled.
