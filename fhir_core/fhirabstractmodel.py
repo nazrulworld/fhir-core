@@ -504,8 +504,11 @@ class FHIRAbstractModel(BaseModel):
             if value is not None or (info.exclude_none is False and value is None):
                 yield dict_key, value
 
-            # looking for comments or primitive extension for primitive data type
-            if is_primitive:
+            # Conditional looking for comments or primitive extension for primitive data type
+            # xxx: we are intentionally ignore any primitive type extension
+            # even if the main primitive field doesn't have value. Fx.
+            # Patient.gender is None, but Patient.gender_ext (_gender) has value.
+            if is_primitive and not self.__fhir_serialization_summary_only__:
                 ext_key = f"{field_key}__ext"
                 ext_val = self.__dict__.get(ext_key, None)
                 if ext_val is not None:
@@ -520,11 +523,13 @@ class FHIRAbstractModel(BaseModel):
                     )
                     if ext_val is not None and len(ext_val) > 0:
                         yield dict_key_, ext_val
-        # looking for comments
-        comments = self.__dict__.get(FHIR_COMMENTS_FIELD_NAME, None)
+        if not self.__fhir_serialization_summary_only__:
+            # Potential comments should be included, if not summary mode is off
+            # looking for comments
+            comments = self.__dict__.get(FHIR_COMMENTS_FIELD_NAME, None)
 
-        if comments is not None and not self.__fhir_serialization_exclude_comment__:
-            yield FHIR_COMMENTS_FIELD_NAME, comments
+            if comments is not None and not self.__fhir_serialization_exclude_comment__:
+                yield FHIR_COMMENTS_FIELD_NAME, comments
 
     def _serialize_non_primitive_value(
         self,
@@ -548,6 +553,7 @@ class FHIRAbstractModel(BaseModel):
         if isinstance(value, FHIRAbstractModel):
             return value.model_dump(
                 exclude_comments=self.__fhir_serialization_exclude_comment__,
+                summary_only=self.__fhir_serialization_summary_only__,
                 mode=info.mode,
                 by_alias=info.by_alias,
                 exclude_none=info.exclude_none,

@@ -35,7 +35,7 @@ test_requirements = [
     + (PY_VERSION_10_OR_LATER and ">=22.12.6" or "==20.1.4;python_version<'3.10'"),
     "requests==2.23.0;python_version<'3.10'",
     "isort" + (PY_VERSION_10_OR_LATER and ">=5.11.4" or "==4.3.21"),
-    "black",
+    "black>=23.0,<24.0; python_version >= '3.7'",
     "mypy",
     "PyYAML>=6.0.1",
     "types-PyYAML",
