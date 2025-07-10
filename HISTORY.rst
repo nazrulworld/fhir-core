@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.3 (unreleased)
+1.1.3 (2025-07-10)
 ------------------
 
 - Fixes business logic for xml serializer, when summary move is active.
