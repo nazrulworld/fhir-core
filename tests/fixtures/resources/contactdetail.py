@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations as _annotations
+
 """
 Profile: http://hl7.org/fhir/StructureDefinition/ContactDetail
 Release: R5
@@ -24,21 +25,22 @@ class ContactDetail(datatype.DataType):
 
     __resource_type__ = "ContactDetail"
 
-    name: fhirtypes.StringType = Field(
-        None,
+    name: fhirtypes.StringType | None = Field(  # type: ignore
+        default=None,
         alias="name",
         title="Name of an individual to contact",
         description="The name of an individual to contact.",
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    name__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_name", title="Extension field for ``name``."
+    name__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_name", title="Extension field for ``name``."
     )
 
-    telecom: typing.List[fhirtypes.ContactPointType] = Field(
-        None,
+    telecom: typing.List[fhirtypes.ContactPointType] | None = Field(  # type: ignore
+        default=None,
         alias="telecom",
         title="Contact details for individual or organization",
         description=(
@@ -47,13 +49,21 @@ class ContactDetail(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``ContactDetail`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``ContactDetail`` according to specification,
+        with preserving the original sequence order.
         """
         return ["id", "extension", "name", "telecom"]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names (those have summary mode are enabled) from ``ContactDetail`` according to specification,
+        with preserving the original sequence order.
+        """
+        return ["name", "telecom"]

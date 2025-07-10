@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations as _annotations
+
 """
 Profile: http://hl7.org/fhir/StructureDefinition/CodeableConcept
 Release: R5
@@ -25,17 +26,19 @@ class CodeableConcept(datatype.DataType):
 
     __resource_type__ = "CodeableConcept"
 
-    coding: typing.List[fhirtypes.CodingType] = Field(
-        None,
+    coding: typing.List[fhirtypes.CodingType] | None = Field(  # type: ignore
+        default=None,
         alias="coding",
         title="Code defined by a terminology system",
         description="A reference to a code defined by a terminology system.",
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+            "summary_element_property": True,
+        },
     )
 
-    text: fhirtypes.StringType = Field(
-        None,
+    text: fhirtypes.StringType | None = Field(  # type: ignore
+        default=None,
         alias="text",
         title="Plain text representation of the concept",
         description=(
@@ -43,25 +46,26 @@ class CodeableConcept(datatype.DataType):
             "seen/selected/uttered by the user who entered the data and/or which "
             "represents the intended meaning of the user."
         ),
-        # if property is element of this resource.
-        json_schema_extra={"element_property": True},
+        json_schema_extra={
+            "element_property": True,
+            "summary_element_property": True,
+        },
     )
-    text__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_text", title="Extension field for ``text``."
+    text__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_text", title="Extension field for ``text``."
     )
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``CodeableConcept`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``CodeableConcept`` according to specification,
+        with preserving the original sequence order.
         """
         return ["id", "extension", "coding", "text"]
 
     @classmethod
     def summary_elements_sequence(cls):
-        """returning all elements names from
-        ``CodeableConcept`` according specification,
-        with preserving original sequence order.
+        """returning all element names (those have summary mode are enabled) from ``CodeableConcept`` according to specification,
+        with preserving the original sequence order.
         """
         return ["coding", "text"]

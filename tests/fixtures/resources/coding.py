@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations as _annotations
+
 """
 Profile: http://hl7.org/fhir/StructureDefinition/Coding
 Release: R5
@@ -21,8 +22,8 @@ class Coding(datatype.DataType):
 
     __resource_type__ = "Coding"
 
-    code: fhirtypes.CodeType = Field(
-        None,
+    code: fhirtypes.CodeType | None = Field(  # type: ignore
+        default=None,
         alias="code",
         title="Symbol in syntax defined by the system",
         description=(
@@ -32,14 +33,15 @@ class Coding(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    code__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_code", title="Extension field for ``code``."
+    code__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_code", title="Extension field for ``code``."
     )
 
-    display: fhirtypes.StringType = Field(
-        None,
+    display: fhirtypes.StringType | None = Field(  # type: ignore
+        default=None,
         alias="display",
         title="Representation defined by the system",
         description=(
@@ -48,14 +50,15 @@ class Coding(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    display__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_display", title="Extension field for ``display``."
+    display__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_display", title="Extension field for ``display``."
     )
 
-    system: fhirtypes.UriType = Field(
-        None,
+    system: fhirtypes.UriType | None = Field(  # type: ignore
+        default=None,
         alias="system",
         title="Identity of the terminology system",
         description=(
@@ -64,14 +67,15 @@ class Coding(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    system__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_system", title="Extension field for ``system``."
+    system__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_system", title="Extension field for ``system``."
     )
 
-    userSelected: bool = Field(
-        None,
+    userSelected: bool | None = Field(  # type: ignore
+        default=None,
         alias="userSelected",
         title="If this coding was chosen directly by the user",
         description=(
@@ -80,14 +84,17 @@ class Coding(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    userSelected__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_userSelected", title="Extension field for ``userSelected``."
+    userSelected__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None,
+        alias="_userSelected",
+        title="Extension field for ``userSelected``.",
     )
 
-    version: fhirtypes.StringType = Field(
-        None,
+    version: fhirtypes.StringType | None = Field(  # type: ignore
+        default=None,
         alias="version",
         title="Version of the system - if relevant",
         description=(
@@ -99,17 +106,18 @@ class Coding(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    version__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_version", title="Extension field for ``version``."
+    version__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_version", title="Extension field for ``version``."
     )
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``Coding`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``Coding`` according to specification,
+        with preserving the original sequence order.
         """
         return [
             "id",
@@ -123,14 +131,7 @@ class Coding(datatype.DataType):
 
     @classmethod
     def summary_elements_sequence(cls):
-        """returning all element names from
-        ``Coding`` according to specification,
+        """returning all element names (those have summary mode are enabled) from ``Coding`` according to specification,
         with preserving the original sequence order.
         """
-        return [
-            "system",
-            "version",
-            "code",
-            "display",
-            "userSelected",
-        ]
+        return ["system", "version", "code", "display", "userSelected"]

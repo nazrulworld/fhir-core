@@ -642,7 +642,14 @@ class Node:
         ext_field=None,
         summary_only=False,
     ):
-        """"""
+        """ """
+        if summary_only and not field.json_schema_extra.get(  # type: ignore
+            "summary_element_property", False
+        ):
+            # we are not accepting the field, which is not the summary element, if summary mode is active.
+            return
+        if isinstance(value, dict):
+            value = value.items()
         child = Node.create(field.alias)
         if is_primitive_type(field):
             if isinstance(value, list):
@@ -673,7 +680,7 @@ class Node:
                     )
             elif value is not None:
                 child.value = xml_represent(field, value)
-                if ext is not None:
+                if ext is not None and not summary_only:
                     Node.inject_comments(
                         parent, ext.__dict__.get("fhir_comments", None)
                     )
@@ -688,7 +695,7 @@ class Node:
                 parent.children.append(child)
             else:
                 child.value = EMPTY_VALUE
-                if ext is not None:
+                if ext is not None and not summary_only:
                     exts = not isinstance(ext, list) and [ext] or ext
                     for ext_ in exts:
                         if ext_ is None:
@@ -745,14 +752,16 @@ class Node:
                 summary_only=summary_only,
             )
             return
-        # working comments
-        comments = value.__dict__.get("fhir_comments", None)
-        Node.inject_comments(parent, comments)
+
+        if not summary_only:
+            # working comments on conditional
+            comments = value.__dict__.get("fhir_comments", None)
+            Node.inject_comments(parent, comments)
 
         alias_maps = value.__class__.get_alias_mapping()
         summery_elements_sequence = value.__class__.summary_elements_sequence()
         for prop_name in value.__class__.elements_sequence():
-            if prop_name in summery_elements_sequence and summary_only:
+            if prop_name not in summery_elements_sequence and summary_only:
                 # we filter non-summary field
                 continue
             field_ = value.__class__.model_fields[alias_maps[prop_name]]
@@ -805,10 +814,10 @@ class Node:
         summery_elements_sequence = model.__class__.summary_elements_sequence()
         for prop_name in model.__class__.elements_sequence():
             if (
-                prop_name in summery_elements_sequence
+                prop_name not in summery_elements_sequence
                 and model.__fhir_serialization_summary_only__
             ):
-                # we filter non-summary element
+                # we filter a non-summary element
                 continue
             field = model.__class__.model_fields[alias_maps[prop_name]]
             if typing.TYPE_CHECKING:

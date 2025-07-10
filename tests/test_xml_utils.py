@@ -133,3 +133,20 @@ def test_model_obj_xml_file():
     # patient.contained[0].text = None
     # patient3.contained[0].text = None
     assert patient3 == patient
+
+
+def test_xml_node_patient_resource_with_summary_mode():
+    """ """
+    patient_fhir = Patient.model_validate_json(
+        (STATIC_PATH_JSON_EXAMPLES / "patient-example.json").read_bytes()
+    )
+    patient_fhir.__fhir_serialization_summary_only__ = True
+    patient_node = xml_utils.Node.from_fhir_obj(patient_fhir)
+    pat_byte = patient_node.to_string()
+
+    assert b"<text>" not in pat_byte
+
+    patient_fhir.__fhir_serialization_summary_only__ = False
+    patient_node = xml_utils.Node.from_fhir_obj(patient_fhir)
+    pat_byte2 = patient_node.to_string()
+    assert b"<text>" in pat_byte2

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations as _annotations
+
 """
 Profile: http://hl7.org/fhir/StructureDefinition/ContactPoint
 Release: R5
@@ -23,18 +24,19 @@ class ContactPoint(datatype.DataType):
 
     __resource_type__ = "ContactPoint"
 
-    period: fhirtypes.PeriodType = Field(
-        None,
+    period: fhirtypes.PeriodType | None = Field(  # type: ignore
+        default=None,
         alias="period",
         title="Time period when the contact point was/is in use",
         description=None,
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
 
-    rank: fhirtypes.PositiveIntType = Field(
-        None,
+    rank: fhirtypes.PositiveIntType | None = Field(  # type: ignore
+        default=None,
         alias="rank",
         title="Specify preferred order of use (1 = highest)",
         description=(
@@ -44,14 +46,15 @@ class ContactPoint(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    rank__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_rank", title="Extension field for ``rank``."
+    rank__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_rank", title="Extension field for ``rank``."
     )
 
-    system: fhirtypes.CodeType = Field(
-        None,
+    system: fhirtypes.CodeType | None = Field(  # type: ignore
+        default=None,
         alias="system",
         title="phone | fax | email | pager | url | sms | other",
         description=(
@@ -60,33 +63,35 @@ class ContactPoint(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
             # note: Enum values can be used in validation,
             # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["phone", "fax", "email", "pager", "url", "sms", "other"],
         },
     )
-    system__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_system", title="Extension field for ``system``."
+    system__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_system", title="Extension field for ``system``."
     )
 
-    use: fhirtypes.CodeType = Field(
-        None,
+    use: fhirtypes.CodeType | None = Field(  # type: ignore
+        default=None,
         alias="use",
         title="home | work | temp | old | mobile - purpose of this contact point",
         description="Identifies the purpose for the contact point.",
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
             # note: Enum values can be used in validation,
             # but use in your own responsibilities, read official FHIR documentation.
             "enum_values": ["home", "work", "temp", "old", "mobile"],
         },
     )
-    use__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_use", title="Extension field for ``use``."
+    use__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_use", title="Extension field for ``use``."
     )
 
-    value: fhirtypes.StringType = Field(
-        None,
+    value: fhirtypes.StringType | None = Field(  # type: ignore
+        default=None,
         alias="value",
         title="The actual contact point details",
         description=(
@@ -95,16 +100,24 @@ class ContactPoint(datatype.DataType):
         ),
         json_schema_extra={
             "element_property": True,
+            "summary_element_property": True,
         },
     )
-    value__ext: fhirtypes.FHIRPrimitiveExtensionType = Field(
-        None, alias="_value", title="Extension field for ``value``."
+    value__ext: fhirtypes.FHIRPrimitiveExtensionType | None = Field(  # type: ignore
+        default=None, alias="_value", title="Extension field for ``value``."
     )
 
     @classmethod
     def elements_sequence(cls):
-        """returning all elements names from
-        ``ContactPoint`` according specification,
-        with preserving original sequence order.
+        """returning all element names from
+        ``ContactPoint`` according to specification,
+        with preserving the original sequence order.
         """
         return ["id", "extension", "system", "value", "use", "rank", "period"]
+
+    @classmethod
+    def summary_elements_sequence(cls):
+        """returning all element names (those have summary mode are enabled) from ``ContactPoint`` according to specification,
+        with preserving the original sequence order.
+        """
+        return ["system", "value", "use", "rank", "period"]
