@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.4 (unreleased)
+1.1.4 (2025-07-11)
 ------------------
 
 - Fixes the issue #13 "pyright struggles with default position args".
