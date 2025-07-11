@@ -54,7 +54,9 @@ class FHIRAbstractModel(BaseModel):
     __resource_type__: str = "__resource_type__"
 
     fhir_comments: typing.Union[str, typing.List[str]] | None = Field(
-        None, alias="fhir_comments", json_schema_extra={"element_property": False}
+        default=None,
+        alias="fhir_comments",
+        json_schema_extra={"element_property": False},
     )
 
     def __init__(self, /, **data: typing.Any) -> None:  # type: ignore
