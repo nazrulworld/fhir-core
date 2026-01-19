@@ -99,7 +99,7 @@ def xml_represent(type_, val):
     if type_name == "dateTime":
         if isinstance(val, str):
             return val
-        if isinstance(val, datetime.datetime):
+        if isinstance(val, datetime.date):
             return val.isoformat()
 
     if type_name == "time":

@@ -439,8 +439,8 @@ class Decimal:
                 Decimal
 
             """
-            if not cls.pattern.match(str(input_value)):
-                raise ValueError
+            if not cls.pattern.fullmatch(str(input_value)):
+                raise ValueError("Decimal value string does not match spec regex.")
 
             return decimal.Decimal(input_value)
 
@@ -722,41 +722,10 @@ class Date:
                 return value
             if info.mode == "json":
                 return value.isoformat()
-            else:
-                return value
-
-        def _validate(
-            input_value: typing.Union[str, PydanticUrl],
-            validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
-            validation_info: ValidationInfo,
-        ) -> typing.Union[datetime.date, str]:
-            """
-            Validate a date from the provided str value.
-
-            Args:
-                input_value: The date value to be validated.
-            Returns:
-                Date or str.
-
-            """
-            validated_value = cls._validate_date(input_value, validator)
-            if (
-                cls.__name__ == DateTime.__name__
-                and isinstance(validated_value, datetime.datetime)
-                and isinstance(input_value, str)
-            ):
-                if "T" in input_value and validated_value.tzinfo is None:
-                    # a datetime with time MUST have a timezone
-                    raise ValueError(
-                        "Datetime must be timezone aware if it has a time component."
-                    )
-                if "T" not in input_value and validated_value.time():
-                    # a datetime without time MUST NOT have a time component
-                    validated_value = validated_value.date().isoformat()
-            return validated_value
+            return value
 
         return core_schema.with_info_wrap_validator_function(
-            _validate,
+            cls._validate,
             cls.produce_inner_schema(),
             serialization=core_schema.plain_serializer_function_ser_schema(
                 _serialize,
@@ -766,21 +735,36 @@ class Date:
         )
 
     @classmethod
-    def _validate_date(
+    def _validate(
         cls,
-        input_value: typing.Any,
-        validator: typing.Callable[[typing.Any], typing.Any],
+        input_value: typing.Union[str, PydanticUrl],
+        validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+        validation_info: ValidationInfo,
     ) -> typing.Union[datetime.date, str]:
-        """ """
+        """
+        Validate a date from the provided date or str value.
+
+        Args:
+            input_value: The date value to be validated.
+        Returns:
+            Date or str.
+        """
         if not isinstance(input_value, str):
             # default handler
             return validator(input_value)
 
-        match = FHIR_DATE_PARTS.match(input_value)
-        if match and not match.groupdict().get("day"):
-            if match.groupdict().get("month") and int(match.groupdict()["month"]) > 12:
+        if not cls.pattern.fullmatch(input_value):
+            raise ValueError(f"{cls.__name__} value string does not match spec regex.")
+
+        match_date = FHIR_DATE_PARTS.match(input_value)
+        if match_date and not match_date.groupdict().get("day"):
+            # It's not a full date, so we can't use the pydantic validator
+            if (
+                match_date.groupdict().get("month")
+                and int(match_date.groupdict()["month"]) > 12
+            ):
                 raise ValueError
-            # we keep original
+            # we keep original string
             return input_value
 
         return validator(input_value)
@@ -811,6 +795,52 @@ class DateTime(Date):
         """ """
         return core_schema.datetime_schema()
 
+    @classmethod
+    def _validate(
+        cls,
+        input_value: typing.Union[str, PydanticUrl],
+        validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+        validation_info: ValidationInfo,
+    ) -> typing.Union[datetime.datetime, datetime.date, str]:
+        """
+        Validate a datetime from the provided datetime, date or str value.
+
+        Args:
+            input_value: The datetime, date or str value to be validated.
+        Returns:
+            Datetime, date or str.
+        """
+        validated_value = super()._validate(input_value, validator, validation_info)
+
+        if isinstance(validated_value, str):
+            # A partial date
+            return validated_value
+
+        if type(input_value) is datetime.date:
+            # The date has been successfully validated. As the validated_value will be a datetime with a
+            # time component of 00:00:00, just return the input date.
+            return input_value
+
+        if isinstance(input_value, str) and isinstance(
+            validated_value, datetime.datetime
+        ):
+            if "T" in input_value and validated_value.tzinfo is None:
+                # a datetime with time MUST have a timezone
+                raise ValueError(
+                    "DateTime must be timezone aware if it has a time component."
+                )
+            if "T" not in input_value and validated_value.time():
+                # a datetime without time MUST NOT have a time component
+                # so extract the date part only
+                validated_value = validated_value.date()
+
+        if isinstance(input_value, datetime.datetime):
+            if input_value.tzinfo is None:
+                # datetime values have time, even if 00:00, so MUST have a timezone
+                raise ValueError("DateTime must be timezone aware.")
+
+        return validated_value
+
 
 class Instant(DateTime):
     """An instant in time in the format YYYY-MM-DDThh:mm:ss.sss+zz:zz
@@ -832,6 +862,36 @@ class Instant(DateTime):
         r"1[0-3]):[0-5][0-9]|14:00))"
     )
     __visit_name__ = "instant"
+
+    @classmethod
+    def _validate(
+        cls,
+        input_value: typing.Union[str, PydanticUrl],
+        validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
+        validation_info: ValidationInfo,
+    ) -> datetime.datetime:
+        """
+        Validate an instant from the provided timestamp or str value.
+
+        Args:
+            input_value: The instant value to be validated.
+        Returns:
+            Datetime
+        """
+        if isinstance(input_value, str):
+            if not cls.pattern.fullmatch(input_value):
+                raise ValueError("Instant value string does not match spec regex.")
+
+        validated_value = validator(input_value)
+
+        if not isinstance(validated_value, datetime.datetime):
+            raise ValueError("Instant value does not parse to datetime.")
+
+        if validated_value.tzinfo is None:
+            # a datetime with time MUST have a timezone
+            raise ValueError("Instant must be timezone aware.")
+
+        return validated_value
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
@@ -889,8 +949,8 @@ class Time:
     def _validate_time(cls, input_value, validator):
         """ """
         if isinstance(input_value, str):
-            if not cls.pattern.match(input_value):
-                raise ValueError
+            if not cls.pattern.fullmatch(input_value):
+                raise ValueError("Time value string does not match spec regex.")
 
         return validator(input_value)
 
