@@ -765,7 +765,7 @@ class Node:
                 # we filter non-summary field
                 continue
             field_ = value.__class__.model_fields[alias_maps[prop_name]]
-            val = value.__dict__.get(field_.alias)
+            val = value.__dict__.get(alias_maps[prop_name])
             if fhir_type_name == "Extension" and field_.alias in ("url", "id") and val:
                 child.add_attribute(field_.alias, val)
                 continue
@@ -822,7 +822,7 @@ class Node:
             field = model.__class__.model_fields[alias_maps[prop_name]]
             if typing.TYPE_CHECKING:
                 assert field.alias
-            value = model.__dict__.get(field.alias, None)
+            value = model.__dict__.get(alias_maps[prop_name], None)
             value_ext, value_ext_field = None, None
             if is_primitive_type(field):
                 ext_key = f"{field.alias}__ext"

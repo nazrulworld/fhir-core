@@ -53,3 +53,22 @@ def test_issue_12():
         )
     except ValueError:
         raise AssertionError("code should not come here!")
+
+
+def test_issue_16():
+    """Serialize a FHIR resource with a non-matching alias for a field name"""
+    from fhir_core import xml_utils
+
+    from tests.fixtures.resources.encounter import Encounter
+
+    encounter_fhir = xml_utils.xml_loads(
+        Encounter,
+        (
+            STATIC_PATH_XML / "examples" / "encounter-example-f001-heart(f001).xml"
+        ).read_bytes(),
+    )
+
+    encounter_node = xml_utils.Node.from_fhir_obj(encounter_fhir)
+    encounter_byt = encounter_node.to_string()
+
+    assert b"<class>" in encounter_byt
