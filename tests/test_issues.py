@@ -1,5 +1,5 @@
 import pytest
-
+from lxml import etree
 from tests.fixtures import (
     STATIC_PATH_JSON_EXAMPLES,
     STATIC_PATH_XML,
@@ -53,3 +53,28 @@ def test_issue_12():
         )
     except ValueError:
         raise AssertionError("code should not come here!")
+
+def test_issue_16():
+    """Encounter.class missing when serializing to XML.
+    https://github.com/nazrulworld/fhir-core/issues/16
+    """
+    from tests.fixtures.resources.codeableconcept import CodeableConcept
+    from tests.fixtures.resources.coding import Coding
+    from tests.fixtures.resources.encounter import Encounter
+
+    encounter = Encounter(
+        status="active",
+        class_fhir=[
+            CodeableConcept(
+                coding=[
+                    Coding(
+                        system="http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                        code="AMB",
+                    ),
+                ]
+            ),
+        ],
+    )
+    el = etree.fromstring(encounter.model_dump_xml())
+    class_el = el.xpath("//fhir:class", namespaces={"fhir": "http://hl7.org/fhir"})
+    assert len(class_el) == 1
