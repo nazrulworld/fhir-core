@@ -6,6 +6,7 @@ History
 
 - Fixes the issue #16 "Encounter.class missing when serializing to XML".
 
+- Fixes the issue #14 "Wrong serialization of Instant type" [dhallam].
 
 1.1.4 (2025-07-11)
 ------------------

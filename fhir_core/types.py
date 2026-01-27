@@ -764,7 +764,7 @@ class Date:
                 and int(match_date.groupdict()["month"]) > 12
             ):
                 raise ValueError
-            # we keep original string
+            # we keep the original string
             return input_value
 
         return validator(input_value)
@@ -845,7 +845,7 @@ class DateTime(Date):
 class Instant(DateTime):
     """An instant in time in the format YYYY-MM-DDThh:mm:ss.sss+zz:zz
     (e.g. 2015-02-07T13:28:17.239+02:00 or 2017-01-01T00:00:00Z).
-    The time SHALL specified at least to the second and SHALL include a time zone.
+    The time SHALL specify at least to the second and SHALL include a time zone.
     Note: This is intended for when precisely observed times are required
     (typically system logs etc.), and not human-reported times - for those,
     use date or dateTime (which can be as precise as instant,
