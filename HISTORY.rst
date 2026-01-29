@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.5 (unreleased)
+1.1.5 (2026-01-29)
 ------------------
 
 - Fixes the issue #16 "Encounter.class missing when serializing to XML".
