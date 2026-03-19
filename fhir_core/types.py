@@ -25,6 +25,7 @@ from .constraints import (
     FHIR_PRIMITIVES,
     FHIR_PRIMITIVES_MAPS,
     FHIR_TYPES_MAPS,
+    FHIR_VERSIONS,
     TYPES_ID_MAX_LENGTH,
     TYPES_STRING_ALLOW_EMPTY_STR,
 )
@@ -63,8 +64,9 @@ class FhirBase(metaclass=abc.ABCMeta):
 
     if typing.TYPE_CHECKING:
         _model_klass: str
+        _prefix: str
     else:
-        __slots__ = ("_model_klass",)
+        __slots__ = ("_model_klass", "_prefix")
 
     @classmethod
     @lru_cache(typed=True)
@@ -229,7 +231,7 @@ class FhirElementOrResourceBase(FhirBase):
             _model_klass = value.__class__
         elif isinstance(value, dict) and "resourceType" in value:
             _model_klass = import_string(
-                FHIR_TYPES_MAPS[value["resourceType"] + "Type"]
+                FHIR_TYPES_MAPS[cls._prefix + value["resourceType"] + "Type"]
             )
         elif isinstance(value, (str, bytes)):
             # @TODO: need to parse json?
@@ -1067,13 +1069,20 @@ def _create_fhir_type(
     klass_name: str, model_klass: str, base_class: typing_extensions.Type[FhirBase]
 ) -> typing.Type[FhirBase]:
     """ """
-    klass = type(klass_name, (base_class,), {"_model_klass": model_klass})
+    has_version = FHIR_VERSIONS.search(model_klass)
+    if has_version:
+        _prefix = has_version.group(1) + "."
+    else:
+        _prefix = ""
+    klass = type(
+        klass_name, (base_class,), {"_model_klass": model_klass, "_prefix": _prefix}
+    )
 
     if typing.TYPE_CHECKING:
         klass = typing.cast(typing.Type[FhirBase], klass)
-
-    if klass_name not in FHIR_TYPES_MAPS:
-        FHIR_TYPES_MAPS[klass_name] = model_klass
+    klass_key = f"{_prefix}{klass_name}"
+    if klass_key not in FHIR_TYPES_MAPS:
+        FHIR_TYPES_MAPS[klass_key] = model_klass
 
     return klass  # type: ignore
 

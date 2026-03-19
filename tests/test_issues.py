@@ -1,5 +1,8 @@
 import pytest
 from lxml import etree
+from pydantic import Field
+
+from fhir_core.fhirabstractmodel import FHIRAbstractModel
 from tests.fixtures import (
     STATIC_PATH_JSON_EXAMPLES,
     STATIC_PATH_XML,
@@ -54,6 +57,7 @@ def test_issue_12():
     except ValueError:
         raise AssertionError("code should not come here!")
 
+
 def test_issue_16():
     """Encounter.class missing when serializing to XML.
     https://github.com/nazrulworld/fhir-core/issues/16
@@ -78,3 +82,34 @@ def test_issue_16():
     el = etree.fromstring(encounter.model_dump_xml())
     class_el = el.xpath("//fhir:class", namespaces={"fhir": "http://hl7.org/fhir"})
     assert len(class_el) == 1
+
+
+def test_fhir_resource_issue_202():
+    """https://github.com/nazrulworld/fhir.resources/issues/202"""
+    from fhir_core.types import create_fhir_type
+    from tests.fixtures.resources.R5.age import Age as R5_Age
+
+    AgeType = create_fhir_type("AgeType", "tests.fixtures.resources.age.Age")
+    AgeType_R5 = create_fhir_type("AgeType", "tests.fixtures.resources.R5.age.Age")
+
+    assert AgeType._prefix == ""
+    assert AgeType_R5._prefix == "R5."
+    from fhir_core.constraints import FHIR_TYPES_MAPS
+
+    assert FHIR_TYPES_MAPS["AgeType"] == "tests.fixtures.resources.age.Age"
+    assert FHIR_TYPES_MAPS["R5.AgeType"] == "tests.fixtures.resources.R5.age.Age"
+
+    class PatientCustom(FHIRAbstractModel):
+        __resource_type__ = "Patient"
+        age: AgeType_R5 = Field(..., alias="age", title="Patient age")
+
+        @classmethod
+        def elements_sequence(cls):
+            """returning all element names from
+            ``Age`` according to specification,
+            with preserving the original sequence order.
+            """
+            return ["age"]
+
+    pat = PatientCustom(age=R5_Age(value=10, unit="y"))
+    assert pat.model_dump_json() == '{"age":{"value":10.0,"unit":"y"}}'

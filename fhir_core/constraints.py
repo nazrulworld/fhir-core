@@ -1,5 +1,6 @@
 import datetime
 import decimal
+import re
 import typing
 import uuid
 from collections import OrderedDict
@@ -86,3 +87,4 @@ SUMMARY_MODE_CODING = OrderedDict(
         ("display", "Resource encoded in summary mode"),
     ]
 )
+FHIR_VERSIONS = re.compile(r"\.(DSTU2|STU3|R4|R4B|R5|R6)\.")
