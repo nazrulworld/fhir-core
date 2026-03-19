@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.6 (unreleased)
+1.1.6 (2026-03-19)
 ------------------
 
 - Fix FHIR_TYPES_MAPS global state prevents using multiple FHIR versions in same process https://github.com/nazrulworld/fhir.resources/issues/202
