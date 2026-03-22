@@ -81,6 +81,8 @@ def test_xml_node_patient_resource():
 
 def test_element_to_node():
     """ """
+    from tests.fixtures.resources.patient import Patient
+
     if should_ignore_xml_schema_test():
         return 1 == 1
     schema = lxml.etree.XMLSchema(file=str(STATIC_PATH_XML_SCHEMA / "patient.xsd"))
@@ -91,7 +93,7 @@ def test_element_to_node():
         ).read_bytes(),
         parser=xmlparser,
     )
-    patient_node = xml_utils.Node.from_element(element)
+    patient_node = xml_utils.Node.from_element(element, fhir_class=Patient)
     try:
         patient_node.validate(patient_node.to_xml(), xmlparser=xmlparser)
     except ValueError:

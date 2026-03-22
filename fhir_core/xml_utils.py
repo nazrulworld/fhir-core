@@ -21,6 +21,7 @@ from pydantic.fields import FieldInfo
 from pydantic_core._pydantic_core import Url
 
 from .utils import (
+    determine_version_prefix,
     get_base64_encoder,
     get_fhir_type_name,
     is_list_type,
@@ -52,11 +53,11 @@ def first_cap(string: str):
     return string[0].upper() + string[1:]
 
 
-def xml_represent(type_, val):
+def xml_represent(type_, val, version_prefix: str = ""):
     """XML  Representation"""
     if val is None:
         return val
-    type_name = get_fhir_type_name(type_)
+    type_name = get_fhir_type_name(type_, prefix=version_prefix)
     if type_name == "boolean":
         return val is True and "true" or "false"
 
@@ -392,6 +393,7 @@ class Node:
     """ """
 
     _allowed_attrs: typing.Set[str] = set()
+    version_prefix: str = ""
 
     def __init__(
         self,
@@ -404,6 +406,7 @@ class Node:
         comments: typing.Optional[typing.List[Comment]] = None,
         parent: typing.Optional["Node"] = None,
         children: typing.Optional[typing.List["Node"]] = None,
+        version_prefix: str = "",
     ):
         """ """
         self.name = name
@@ -431,6 +434,7 @@ class Node:
             self.parent = parent
         if children:
             self.children.extend(children)
+        self.version_prefix = version_prefix
 
     def rename(self, new_name):
         """Rename the current Node name"""
@@ -521,9 +525,10 @@ class Node:
             typing.List[typing.Union[Namespace, typing.Tuple[StrNone, StrBytes]]],
             None,
         ] = None,
+        version_prefix: str = "",
     ):
         """ """
-        self = cls(name=name, value=value, text=text)
+        self = cls(name=name, value=value, text=text, version_prefix=version_prefix)
 
         if attrs:
             if isinstance(attrs, dict):
@@ -564,10 +569,18 @@ class Node:
         parent: typing.Optional["Node"] = None,
         exists_ns: typing.Optional[typing.List[Namespace]] = None,
         comments: typing.Optional[typing.List[Comment]] = None,
+        fhir_class: typing.Optional[typing.Type["FHIRAbstractModel"]] = None,
     ):
         """ """
+        if parent is not None:
+            version_prefix = parent.version_prefix
+        elif fhir_class is not None:
+            version_prefix = determine_version_prefix(fhir_class.__module__)
+        else:
+            raise ValueError("Either 'parent' or 'fhir_class' must be provided.")
+
         name = Node.clean_tag(element)
-        me = cls(name)
+        me = cls(name, version_prefix=version_prefix)
         if element.text:
             me.text = element.text
         # Attributes
@@ -650,7 +663,7 @@ class Node:
             return
         if isinstance(value, dict):
             value = value.items()
-        child = Node.create(field.alias)
+        child = Node.create(field.alias, version_prefix=parent.version_prefix)
         if is_primitive_type(field):
             if isinstance(value, list):
                 if ext and not isinstance(ext, list):
@@ -679,7 +692,7 @@ class Node:
                         ext_field=ext_field,
                     )
             elif value is not None:
-                child.value = xml_represent(field, value)
+                child.value = xml_represent(field, value, child.version_prefix)
                 if ext is not None and not summary_only:
                     Node.inject_comments(
                         parent, ext.__dict__.get("fhir_comments", None)
@@ -728,11 +741,13 @@ class Node:
             return
         # we see its instance of 'FHIRAbstractModel'
         parent_child = None
-        fhir_type_name = get_fhir_type_name(field)
+        fhir_type_name = get_fhir_type_name(field, prefix=parent.version_prefix)
         if fhir_type_name == "Resource":
             # special case
             parent_child = child
-            child = Node.create(value.get_resource_type())
+            child = Node.create(
+                value.get_resource_type(), version_prefix=parent.version_prefix
+            )
             parent_child.children.append(child)
 
         if fhir_type_name == "FHIRPrimitiveExtension":
@@ -770,7 +785,10 @@ class Node:
             if fhir_type_name == "Extension" and field_.alias in ("url", "id") and val:
                 child.add_attribute(field_.alias, val)
                 continue
-            if get_fhir_type_name(field_) == "xhtml" and val:
+            if (
+                get_fhir_type_name(field_, prefix=parent.version_prefix) == "xhtml"
+                and val
+            ):
                 # xxx: fhir-xhtml.xsd validation
                 xhtml_element = etree.fromstring(val)
                 if not (
@@ -808,8 +826,11 @@ class Node:
     @classmethod
     def from_fhir_obj(cls, model: "FHIRAbstractModel"):
         """ """
+        version_prefix = determine_version_prefix(model.__module__)
         resource_node = cls(
-            model.get_resource_type(), namespaces=[Namespace(None, ROOT_NS)]
+            model.get_resource_type(),
+            namespaces=[Namespace(None, ROOT_NS)],
+            version_prefix=version_prefix,
         )
         alias_maps = model.__class__.get_alias_mapping()
         summery_elements_sequence = model.__class__.summary_elements_sequence()
@@ -965,8 +986,9 @@ class Node:
         root_mod: ModuleType,
     ) -> typing.Any:
         """ """
+        prefix = determine_version_prefix(root_mod.__name__)
         if is_primitive_type(field):
-            type_name = get_fhir_type_name(field)
+            type_name = get_fhir_type_name(field, prefix=prefix)
             if type_name == "xhtml":
                 if isinstance(obj, etree._Element):
                     value = etree.tostring(obj)
@@ -982,7 +1004,9 @@ class Node:
                     value = value[len("urn:uuid:") :]
 
         else:
-            klass_ = root_mod.get_fhir_model_class(get_fhir_type_name(field))
+            klass_ = root_mod.get_fhir_model_class(
+                get_fhir_type_name(field, prefix=prefix)
+            )
             # field.shape
             value = obj.to_fhir(klass_, root_mod)
 
@@ -993,6 +1017,7 @@ class Node:
     ) -> "FHIRAbstractModel":
         """ """
         root_mod = root_mod or get_fhir_root_module(klass.__module__)
+        version_prefix = determine_version_prefix(root_mod.__name__)
         if klass.get_resource_type() == "Resource" and len(self.children) > 0:
             # tiny hack to get FHIR release
             child = self.children[0]
@@ -1046,7 +1071,10 @@ class Node:
                     "FHIRPrimitiveExtension"
                 )
                 ext_klass = root_mod.get_fhir_model_class(
-                    get_fhir_type_name(primitive_ext_klass.model_fields["extension"])
+                    get_fhir_type_name(
+                        primitive_ext_klass.model_fields["extension"],
+                        prefix=version_prefix,
+                    )
                 )
                 primitive_ext_params = {}
                 if len(child.comments) > 0:
@@ -1122,7 +1150,7 @@ def xml_loads(
 ) -> "FHIRAbstractModel":
     """ """
     root = etree.fromstring(b, parser=xmlparser)
-    node = Node.from_element(root)
+    node = Node.from_element(root, fhir_class=cls)
     return node.to_fhir(cls)
 
 

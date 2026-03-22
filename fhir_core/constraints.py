@@ -87,4 +87,4 @@ SUMMARY_MODE_CODING = OrderedDict(
         ("display", "Resource encoded in summary mode"),
     ]
 )
-FHIR_VERSIONS = re.compile(r"\.(DSTU2|STU3|R4|R4B|R5|R6)\.")
+FHIR_VERSIONS = re.compile(r"\.(DSTU2|STU3|R4|R4B|R5|R6)")

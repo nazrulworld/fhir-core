@@ -1,9 +1,9 @@
-import json
-from datetime import datetime, date, timezone, timedelta
 import decimal
 import importlib
+import json
 import typing
 import uuid
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 from pydantic import BaseModel, Field
@@ -12,7 +12,7 @@ from typing_extensions import Annotated
 
 from fhir_core import types as fhir_types
 from fhir_core.fhirabstractmodel import FHIRAbstractModel
-from fhir_core.types import DateTime, Date
+from fhir_core.types import Date, DateTime
 from tests.fixtures.resources import fhirtypes
 
 __author__ = "Md Nazrul Islam"
