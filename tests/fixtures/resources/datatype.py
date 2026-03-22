@@ -16,8 +16,8 @@ class DataType(element.Element):
     Resource StructureDefinition, instead used to enable Extensibility feature
     for FHIR Primitive Data Types.
 
-    Reuseable Types.
-    The base class for all re-useable types defined as part of the FHIR
+    Reusable Types.
+    The base class for all re-usable types defined as part of the FHIR
     Specification.
     """
 

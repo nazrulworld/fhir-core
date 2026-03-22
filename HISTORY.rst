@@ -4,7 +4,7 @@ History
 1.1.7 (unreleased)
 ------------------
 
-- Fixes supporting multiple fhir version into xml utilities.
+- Fixes error in supporting multiple fhir version into xml utilities.
 
 
 1.1.6 (2026-03-19)
