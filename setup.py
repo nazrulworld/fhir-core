@@ -101,7 +101,7 @@ setup(
         "dev": (test_requirements + development_requirements),
     },
     url="https://github.com/nazrulworld/fhir-core",
-    version="1.1.7",
+    version="1.1.8.dev0",
     zip_safe=False,
     python_requires=">=3.8",
     project_urls={
