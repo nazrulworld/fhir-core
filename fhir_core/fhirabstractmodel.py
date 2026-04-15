@@ -586,9 +586,11 @@ class FHIRAbstractModel(BaseModel):
             _enc_klass = get_base64_encoder(field_info)
             if _enc_klass:
                 return _enc_klass.encode(value)
+        # @TODO: the function types.py#Decimal.__get_pydantic_core_schema__._serialize
+        # somehow is not called, until the reason is found, we serialize from here!
         if isinstance(value, decimal.Decimal):
-            # @TODO: the function types.py#Decimal.__get_pydantic_core_schema__._serialize
-            # somehow is not called, until the reason is found, we serialize from here!
+            if value == value.to_integral_value() and value.as_tuple().exponent >= 0:
+                return int(value)
             return float(value)
         return value
 
