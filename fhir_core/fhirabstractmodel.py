@@ -589,7 +589,13 @@ class FHIRAbstractModel(BaseModel):
         # @TODO: the function types.py#Decimal.__get_pydantic_core_schema__._serialize
         # somehow is not called, until the reason is found, we serialize from here!
         if isinstance(value, decimal.Decimal):
-            if value == value.to_integral_value() and value.as_tuple().exponent >= 0:
+            exp = value.as_tuple().exponent
+            if (
+                value.is_finite()
+                and value == value.to_integral_value()
+                and isinstance(exp, int)
+                and exp >= 0
+            ):
                 return int(value)
             return float(value)
         return value

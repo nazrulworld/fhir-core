@@ -18,7 +18,9 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["pydantic>=2.7.4,<3.0"]
+requirements = ["pydantic>=2.7.4,<3.0",
+                "fhir.resources",
+                ]
 if PY_VERSION_9_OR_EARLIER:
     requirements.append("eval-type-backport")
 
