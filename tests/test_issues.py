@@ -112,4 +112,8 @@ def test_fhir_resource_issue_202():
             return ["age"]
 
     pat = PatientCustom(age=R5_Age(value=10, unit="y"))
-    assert pat.model_dump_json() == '{"age":{"value":10.0,"unit":"y"}}'
+    # NOTE: Serializer change now preserves integer form for whole-number Decimals
+    # (e.g. 10 instead of 10.0). This removes artificial floating-point precision
+    # that was previously introduced during model_dump_json() serialization.
+    # Both representations are valid JSON, but this aligns better with FHIR numeric semantics.
+    assert pat.model_dump_json() == '{"age":{"value":10,"unit":"y"}}'
