@@ -11,3 +11,4 @@ Contributors
 ------------
 
 - Daniel Casals Amat [dacasals]
+- Chunhui Mo [cmodevcodes]
