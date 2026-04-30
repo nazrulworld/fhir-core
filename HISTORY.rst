@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.8 (unreleased)
+1.1.8 (2026-04-30)
 ------------------
 
 - Fixes: Decimal values lose precision during serialization — Decimal('19') becomes 19.0 in both model_dump() and model_dump_json() fhir.resources#203 [cmodevcodes]
