@@ -444,6 +444,9 @@ class Decimal:
             if not cls.pattern.fullmatch(str(input_value)):
                 raise ValueError("Decimal value string does not match spec regex.")
 
+            # Pass floats through str() so e.g. 1.0 becomes Decimal('1.0'), not Decimal('1').
+            if isinstance(input_value, float):
+                input_value = str(input_value)
             return decimal.Decimal(input_value)
 
         return core_schema.with_info_wrap_validator_function(

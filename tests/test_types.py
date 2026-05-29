@@ -138,6 +138,32 @@ def test_decimal_type():
     assert isinstance(model.point, decimal.Decimal)
 
 
+@pytest.mark.parametrize(
+    "raw_value,expected",
+    [
+        (1.0, 1.0),
+        (150.0, 150.0),
+        (100.0, 100.0),
+        (1234.5, 1234.5),
+        (1.01, 1.01),
+    ],
+)
+def test_decimal_whole_number_inputs_serialize_as_float(raw_value, expected):
+    """Float inputs to a Decimal field should preserve their exponent, so whole-number
+    floats (e.g. 100.0) serialise back to JSON with the exponent"""
+    import json
+
+    from tests.fixtures.resources.money import Money
+
+    money = Money.model_validate({"value": raw_value, "currency": "GBP"})
+    dumped = json.loads(money.model_dump_json())
+    assert isinstance(dumped["value"], float), (
+        f"Input {raw_value!r} serialised as "
+        f"{type(dumped['value']).__name__} ({dumped['value']!r}); expected float"
+    )
+    assert dumped["value"] == expected
+
+
 def test_date_type():
     """ """
 
