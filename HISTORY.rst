@@ -4,7 +4,9 @@ History
 1.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix regression where input to Decimal type can lose exponent i.e. 1.0 remains 1.0 not 1 #20
+
+- For primitive type's value required validation, empty extension is now acceptable.
 
 
 1.1.8 (2026-04-30)

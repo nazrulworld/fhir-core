@@ -510,7 +510,7 @@ class FHIRAbstractModel(BaseModel):
                 yield dict_key, value
 
             # Conditional looking for comments or primitive extension for primitive data type
-            # xxx: we are intentionally ignore any primitive type extension
+            # xxx: we are intentionally ignoring any primitive type extension
             # even if the main primitive field doesn't have value. Fx.
             # Patient.gender is None, but Patient.gender_ext (_gender) has value.
             if is_primitive and not self.__fhir_serialization_summary_only__:
@@ -668,11 +668,11 @@ class FHIRAbstractModel(BaseModel):
         for name, ext in required_fields:
             field_key = alias_maps[name]
             field_info = self.__class__.model_fields[field_key]
-            ext_field_info = self.__class__.model_fields[ext]
+            # ext_field_info = self.__class__.model_fields[ext]
             value = getattr(self, field_key, _missing)
             if value not in (_missing, None):
                 continue
-            ext_value = getattr(self, ext, _missing)
+            ext_value = getattr(self, ext, _missing) if ext is not None else None
             missing_ext = True
             if ext_value not in (_missing, None):
                 if isinstance(ext_value, dict):

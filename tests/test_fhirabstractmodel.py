@@ -112,6 +112,37 @@ def test_primitive_fields():
     serialized_data = obj.model_dump(exclude_comments=True)
 
 
+def test_extensions_url_required():
+    """ """
+
+    class MyExtensionModel(DomainResource):
+        __resource_type__ = "MyExtensionModel"
+        name: fhirtypes.StringType = Field(None, alias="name", title="name")
+        name__ext: FHIRPrimitiveExtensionType = Field(None, alias="_name", title="name")
+        url: fhirtypes.UriType = Field(None, alias="url", title="url")
+
+        @classmethod
+        def elements_sequence(cls):
+            return ["name", "url"]
+
+        def get_required_fields(self) -> typing.List[typing.Tuple[str, str | None]]:
+            return [("url", None), ("name", "name__ext")]
+
+    with pytest.raises(ValidationError) as exception_info:
+        MyExtensionModel.model_validate({})
+    assert len(exception_info.value.errors()) == 2
+
+    with pytest.raises(ValidationError) as exception_info:
+        MyExtensionModel.model_validate(
+            {
+                "_name": {
+                    "extension": [{"valueString": "different name"}],
+                }
+            }
+        )
+    assert len(exception_info.value.errors()) == 1
+
+
 def test_model_dump_serialization():
     """ """
     from tests.fixtures.resources.account import Account
@@ -194,6 +225,7 @@ def test_model_from_yaml():
         ).read_bytes()
     )
     assert obj.model_dump() == obj2.model_dump()
+
 
 @pytest.mark.skip(
     reason=(
@@ -305,6 +337,7 @@ def test_model_json_serialize_with_summary_fields():
     assert len(account_obj.model_dump_json(summary_only=False)) > len(
         account_obj.model_dump_json(summary_only=True)
     )
+
 
 def test_model_yaml_serialize_with_summary_fields():
     """ """
