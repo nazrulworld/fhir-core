@@ -419,10 +419,22 @@ class Decimal:
         """
 
         def _serialize(
-            value: typing.Union[str],
+            value: typing.Any,
             info: core_schema.SerializationInfo,
-        ) -> typing.Union[float]:
-            """Encodes a Decimal as float."""
+        ) -> typing.Union[int, float]:
+            """Encodes a Decimal preserving precision.
+
+            Per the FHIR spec, decimal precision is significant:
+            Decimal('19') and Decimal('19.0') are clinically distinct values.
+            Whole-number Decimals (exponent >= 0) are serialized as int
+            to avoid a trailing .0 in JSON output.
+            """
+            if isinstance(value, str):
+                value = decimal.Decimal(value)
+            if isinstance(value, decimal.Decimal):
+                exp = value.as_tuple().exponent
+                if isinstance(exp, int) and exp >= 0:
+                    return int(value)
             return float(value)
 
         def _validate(
@@ -456,7 +468,6 @@ class Decimal:
                 _serialize,
                 info_arg=True,
                 when_used="always",
-                return_schema=core_schema.decimal_schema(),
             ),
         )
 
