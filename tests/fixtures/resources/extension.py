@@ -1041,7 +1041,7 @@ class Extension(datatype.DataType):
         }
         return one_of_many_fields
 
-    def get_required_fields(self) -> typing.List[typing.Tuple[str, str | None]]:
+    def get_required_fields(self) -> typing.List[typing.Tuple[str, typing.Optional[str]]]:
         return [
             ("url", None),
         ]
