@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.9 (unreleased)
+1.1.9 (2026-06-28)
 ------------------
 
 - Fix regression where input to Decimal type can lose exponent i.e. 1.0 remains 1.0 not 1 #20
