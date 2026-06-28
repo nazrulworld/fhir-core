@@ -709,7 +709,7 @@ class FHIRAbstractModel(BaseModel):
         if len(errors) > 0:
             raise ValidationError.from_exception_data(self.__class__.__name__, errors)  # type: ignore
 
-    def get_required_fields(self) -> typing.List[typing.Tuple[str, str]]:
+    def get_required_fields(self) -> typing.List[typing.Tuple[str, str | None]]:
         """This method should be overridden in each subclass.
         [("type", "type__ext")]"""
         return []

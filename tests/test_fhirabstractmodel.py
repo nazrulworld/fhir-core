@@ -92,7 +92,7 @@ def test_primitive_fields():
         postCode=1230,
         active=True,
         meta={"id": "001"},
-        name__ext={"extension": [{"valueString": "different name"}]},
+        name__ext={"extension": [{"url": "https://example.com", "valueString": "different name"}]},
     )
     assert obj.model_dump()["_name"]["extension"][0]["valueString"] == "different name"
     json_str = obj.model_dump_json()
@@ -104,7 +104,7 @@ def test_primitive_fields():
         active=True,
         meta={"id": "001"},
         name__ext={
-            "extension": [{"valueString": "different name"}],
+            "extension": [{"url": "https://example.com", "valueString": "different name"}],
             "fhir_comments": "This is experiemental",
         },
     )
@@ -125,7 +125,7 @@ def test_extensions_url_required():
         def elements_sequence(cls):
             return ["name", "url"]
 
-        def get_required_fields(self) -> typing.List[typing.Tuple[str, str | None]]:
+        def get_required_fields(self) -> typing.List[typing.Tuple[str, typing.Optional[str]]]:
             return [("url", None), ("name", "name__ext")]
 
     with pytest.raises(ValidationError) as exception_info:
