@@ -39,7 +39,7 @@ FHIR_DATE_PARTS = re.compile(r"(?P<year>\d{4})(-(?P<month>\d{2}))?(-(?P<day>\d{2
 LOGGER = logging.getLogger(__name__)
 
 if sys.version_info < (3, 10):
-    SLOTS = {}
+    SLOTS: dict[str, typing.Any] = {}
 else:
     SLOTS = {"slots": True}
 
