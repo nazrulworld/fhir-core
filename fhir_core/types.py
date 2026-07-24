@@ -10,7 +10,7 @@ import typing
 from functools import lru_cache
 
 import typing_extensions
-from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
+from annotated_types import BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
 from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
@@ -289,7 +289,7 @@ class FhirElementOrResourceBase(FhirBase):
         return FhirBase.fhir_model_validator(value, _model_klass)
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class String(GroupedMetadata):
     """A sequence of Unicode characters	xs:string	JSON String
     Note that strings SHALL NOT exceed 1,048,576 (1024*1024) characters in size.
@@ -329,7 +329,7 @@ class String(GroupedMetadata):
         yield pydantic_general_metadata(pattern=regex)
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Base64Binary:
     """A stream of bytes, base64 encoded (RFC 4648 )
     Just a symbolic class, no need to further check with regex as value is already decoded.
@@ -343,7 +343,7 @@ class Base64Binary:
         return hash(self.__class__)
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Code(GroupedMetadata):
     """Indicates that the value is taken from a set of controlled
     strings defined elsewhere (see Using codes for further discussion).
@@ -362,7 +362,7 @@ class Code(GroupedMetadata):
         return hash(self.__class__)
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Id(GroupedMetadata):
     """Any combination of upper- or lower-case ASCII letters
     ('A'..'Z', and 'a'..'z', numerals ('0'..'9'), '-' and '.',
@@ -394,7 +394,7 @@ class Id(GroupedMetadata):
             yield pydantic_general_metadata(pattern=self.pattern)
 
 
-@dataclasses.dataclass(**SLOTS)
+@dataclasses.dataclass(slots=True)
 class Decimal:
     """Rational numbers that have a decimal representation.
     See below about the precision of the number"""
@@ -464,7 +464,7 @@ class Decimal:
         return hash(self.__class__)
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Integer(GroupedMetadata):
     """A signed integer in the range −2,147,483,648..2,147,483,647 (32-bit;
     for larger values, use decimal)"""
@@ -516,7 +516,7 @@ class PositiveInt(UnsignedInt):
     min_length = 1
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class PatternConstraint(GroupedMetadata):
     if typing.TYPE_CHECKING:
         pattern: re.Pattern
@@ -567,7 +567,7 @@ class Canonical(Uri):
     __visit_name__ = "canonical"
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Url:
     """A Uniform Resource Locator (RFC 1738 ).
     Note URLs are accessed directly using the specified protocol.
@@ -683,7 +683,7 @@ class Xhtml:  # type:ignore
     __visit_name__ = "xhtml"
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Date:
     """A date, or partial date (e.g. just year or year + month)
     as used in human communication. The format is YYYY, YYYY-MM, or YYYY-MM-DD,
@@ -899,7 +899,7 @@ class Instant(DateTime):
         return validated_value
 
 
-@dataclasses.dataclass(frozen=True, **SLOTS)
+@dataclasses.dataclass(frozen=True, slots=True)
 class Time:
     """A time during the day, in the format hh:mm:ss.
     There is no date specified. Seconds must be provided due
