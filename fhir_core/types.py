@@ -44,7 +44,6 @@ else:
     SLOTS = {"slots": True}
 
 
-
 class FhirBase(metaclass=abc.ABCMeta):
     """The base type aka validator for FHIR resource model.
 
