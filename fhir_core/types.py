@@ -7,10 +7,11 @@ import decimal
 import logging
 import re
 import typing
+import sys
 from functools import lru_cache
 
 import typing_extensions
-from annotated_types import SLOTS, BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
+from annotated_types import BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLen
 from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
@@ -36,6 +37,11 @@ __email__ = "email2nazrul@gmail.com"
 
 FHIR_DATE_PARTS = re.compile(r"(?P<year>\d{4})(-(?P<month>\d{2}))?(-(?P<day>\d{2}))?$")
 LOGGER = logging.getLogger(__name__)
+
+if sys.version_info < (3, 10):
+    SLOTS: dict[str, typing.Any] = {}
+else:
+    SLOTS = {"slots": True}
 
 
 class FhirBase(metaclass=abc.ABCMeta):
