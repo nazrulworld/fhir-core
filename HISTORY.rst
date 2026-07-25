@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.10 (unreleased)
+1.1.10 (2026-07-25)
 -------------------
 
 - Fix issue #23 with annotated_types package after 0.8.0
