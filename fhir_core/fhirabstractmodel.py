@@ -1,6 +1,7 @@
 from __future__ import annotations as _annotations
 
 import decimal
+import uuid
 import inspect
 import logging
 import typing
@@ -586,6 +587,13 @@ class FHIRAbstractModel(BaseModel):
             _enc_klass = get_base64_encoder(field_info)
             if _enc_klass:
                 return _enc_klass.encode(value)
+        # @TODO: the function types.py#Uuid.__get_pydantic_core_schema__._serialize
+        # is not called either (see the Decimal note below), so the FHIR ``uuid``
+        # type, which is a URI and always carries the ``urn:uuid:`` scheme,
+        # is serialized from here as well.
+        # https://hl7.org/fhir/R5/datatypes.html#uuid
+        if isinstance(value, uuid.UUID):
+            return f"urn:uuid:{value}"
         # @TODO: the function types.py#Decimal.__get_pydantic_core_schema__._serialize
         # somehow is not called, until the reason is found, we serialize from here!
         if isinstance(value, decimal.Decimal):
