@@ -4,7 +4,8 @@ History
 1.1.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Serialize the FHIR ``uuid`` type as the URI the specification asks for,
+  ``urn:uuid:<uuid>``, instead of a bare UUID nazrulworld/fhir.resources#180
 
 
 1.1.10 (2026-07-25)
