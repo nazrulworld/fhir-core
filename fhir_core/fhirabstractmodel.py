@@ -151,9 +151,14 @@ class FHIRAbstractModel(BaseModel):
     ) -> typing.Dict[str, str]:
         """Mappings between a field's name and alias"""
         aliases = cls.elements_sequence()
-        return {
-            fi.alias: fn for fn, fi in cls.model_fields.items() if fi.alias in aliases
-        }
+        mapping = {}
+        for field_name, field_info in cls.model_fields.items():
+            # A subclass may redeclare a field to change its default, which drops
+            # the generated alias. The field name is the element name in that case.
+            element_name = field_info.alias or field_name
+            if element_name in aliases:
+                mapping[element_name] = field_name
+        return mapping
 
     @classmethod
     def get_json_encoder(cls) -> typing.Callable[[typing.Any], typing.Any]:
