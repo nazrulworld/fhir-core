@@ -79,6 +79,26 @@ def test_xml_node_patient_resource():
         raise AssertionError("code should not come here!")
 
 
+def test_xml_node_from_subclass_of_versioned_model():
+    """A user subclass keeps its parent's FHIR version prefix.
+
+    Regression test for nazrulworld/fhir.resources#209: the version prefix was
+    taken from the model's own module, so a subclass declared outside the
+    generated package resolved to no version and model_dump_xml raised
+    ValueError.
+    """
+
+    class MyPatient(Patient):
+        pass
+
+    patient = MyPatient.model_validate_json(
+        (STATIC_PATH_JSON_EXAMPLES / "patient-example.json").read_bytes()
+    )
+    # Raised ValueError before the fix
+    node = xml_utils.Node.from_fhir_obj(patient)
+    assert node.name == "Patient"
+
+
 def test_element_to_node():
     """ """
     from tests.fixtures.resources.patient import Patient
