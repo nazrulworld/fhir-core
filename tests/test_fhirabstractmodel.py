@@ -286,6 +286,28 @@ def test_model_from_xml():
     assert obj.model_dump() == obj2.model_dump()
 
 
+def test_model_dump_with_overridden_field_default():
+    """A subclass may redeclare a field to change its default.
+
+    Regression test for nazrulworld/fhir.resources#182: redeclaring a field drops
+    the generated alias, so the element fell out of get_alias_mapping() and
+    serialization raised KeyError.
+    """
+    from tests.fixtures.resources.attachment import Attachment
+
+    class MyAttachment(Attachment):
+        contentType: fhirtypes.CodeType = "text/plain"
+
+    assert MyAttachment.get_alias_mapping()["contentType"] == "contentType"
+
+    instance = MyAttachment(data=b"aGVsbG8=")
+    assert instance.model_dump()["contentType"] == "text/plain"
+
+    # The base class is unaffected
+    base = Attachment(data=b"aGVsbG8=", contentType="text/plain")
+    assert base.model_dump()["contentType"] == "text/plain"
+
+
 def test_model_dump_xml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition

@@ -7,6 +7,15 @@ History
 - Serialize the FHIR ``uuid`` type as the URI the specification asks for,
   ``urn:uuid:<uuid>``, instead of a bare UUID nazrulworld/fhir.resources#180
 
+- Restore the lower bounds on ``unsignedInt`` and ``positiveInt`` so negative
+  values no longer validate nazrulworld/fhir.resources#207 [asaraog]
+
+- Resolve the FHIR version prefix through the class MRO so ``model_dump_xml()``
+  works on subclasses nazrulworld/fhir.resources#209 [asaraog]
+
+- Fix ``KeyError`` during ``model_dump()`` when a subclass overrides a field's
+  default and drops its alias nazrulworld/fhir.resources#182 [asaraog]
+
 
 1.1.10 (2026-07-25)
 -------------------
