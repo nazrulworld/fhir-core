@@ -22,6 +22,7 @@ from pydantic_core._pydantic_core import Url
 
 from .utils import (
     determine_version_prefix,
+    determine_version_prefix_from_class,
     get_base64_encoder,
     get_fhir_type_name,
     is_list_type,
@@ -575,7 +576,7 @@ class Node:
         if parent is not None:
             version_prefix = parent.version_prefix
         elif fhir_class is not None:
-            version_prefix = determine_version_prefix(fhir_class.__module__)
+            version_prefix = determine_version_prefix_from_class(fhir_class)
         else:
             raise ValueError("Either 'parent' or 'fhir_class' must be provided.")
 
@@ -826,7 +827,7 @@ class Node:
     @classmethod
     def from_fhir_obj(cls, model: "FHIRAbstractModel"):
         """ """
-        version_prefix = determine_version_prefix(model.__module__)
+        version_prefix = determine_version_prefix_from_class(type(model))
         resource_node = cls(
             model.get_resource_type(),
             namespaces=[Namespace(None, ROOT_NS)],

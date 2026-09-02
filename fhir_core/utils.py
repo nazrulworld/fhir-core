@@ -119,6 +119,26 @@ def determine_version_prefix(class_or_module_path: str):
         return ""
 
 
+def determine_version_prefix_from_class(klass: typing.Any) -> str:
+    """Return the FHIR version prefix for ``klass``, searching its bases.
+
+    A user-defined subclass lives in its own module, which carries no version
+    segment. The version belongs to the generated class it inherits from, so
+    walk the MRO until a versioned module is found.
+
+    Args:
+        klass: The class to determine the version prefix for.
+
+    Returns:
+        The version prefix (e.g. ``"STU3."``), or ``""`` for the default version.
+    """
+    for candidate in getattr(klass, "__mro__", (klass,)):
+        prefix = determine_version_prefix(candidate.__module__)
+        if prefix:
+            return prefix
+    return ""
+
+
 @lru_cache(maxsize=1024, typed=True)
 def get_base64_encoder(field_info: FieldInfo) -> typing.Any:
     """ """
@@ -132,6 +152,8 @@ def get_base64_encoder(field_info: FieldInfo) -> typing.Any:
 
 
 __all__ = [
+    "determine_version_prefix",
+    "determine_version_prefix_from_class",
     "is_primitive_type",
     "get_fhir_type_name",
     "is_list_type",

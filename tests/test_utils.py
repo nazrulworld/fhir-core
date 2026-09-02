@@ -152,3 +152,31 @@ def test_is_list_type():
     assert utils.is_list_type(ActivityDefinition.model_fields["dosage"]) is True
     assert utils.is_list_type(ActivityDefinition.model_fields["doNotPerform"]) is False
     assert utils.is_list_type(Element.model_fields["extension"]) is True
+
+
+def test_determine_version_prefix_from_class():
+    """The version prefix is inherited from a versioned base class."""
+
+    class Versioned:
+        pass
+
+    # Generated resources live in modules like fhir.resources.STU3.patient
+    Versioned.__module__ = "fhir.resources.STU3.patient"
+
+    class UserSubclass(Versioned):
+        pass
+
+    UserSubclass.__module__ = "myapp.models"
+
+    assert utils.determine_version_prefix("fhir.resources.STU3.patient") == "STU3."
+    assert utils.determine_version_prefix("myapp.models") == ""
+
+    assert utils.determine_version_prefix_from_class(Versioned) == "STU3."
+    # Own module carries no version, so the base class supplies it
+    assert utils.determine_version_prefix_from_class(UserSubclass) == "STU3."
+
+    class Unversioned:
+        pass
+
+    Unversioned.__module__ = "fhir.resources.patient"
+    assert utils.determine_version_prefix_from_class(Unversioned) == ""
