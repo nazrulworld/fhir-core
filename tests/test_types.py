@@ -187,6 +187,36 @@ def test_uri_type():
     assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"
 
 
+def test_fhir_type_unsigned_and_positive_int():
+    """Lower bounds must survive dataclass inheritance.
+
+    Regression test for nazrulworld/fhir.resources#207: UnsignedInt and
+    PositiveInt declared the narrower min_length as an unannotated class
+    attribute, so Integer's inherited __init__ reset it to -2147483648 and
+    negative values validated.
+    """
+    from fhir_core.types import PositiveInt, PositiveIntType, UnsignedInt, UnsignedIntType
+
+    assert PositiveInt().min_length == 1
+    assert UnsignedInt().min_length == 0
+
+    class Unsigned(BaseModel):
+        value: UnsignedIntType
+
+    class Positive(BaseModel):
+        value: PositiveIntType
+
+    assert Unsigned(value=0).value == 0
+    assert Positive(value=1).value == 1
+
+    with pytest.raises(ValidationError):
+        Unsigned(value=-1)
+    with pytest.raises(ValidationError):
+        Positive(value=0)
+    with pytest.raises(ValidationError):
+        Positive(value=-1)
+
+
 def test_fhir_type_integer64():
     import sys
 
