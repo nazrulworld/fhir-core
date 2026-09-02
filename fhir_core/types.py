@@ -506,20 +506,25 @@ class Integer64(GroupedMetadata):
         yield Ge(self.min_length)
 
 
+@dataclasses.dataclass(frozen=True, **SLOTS)
 class UnsignedInt(Integer):
     """Any non-negative integer in the range 0..2,147,483,647"""
 
     regex = re.compile(r"^[0]|([1-9][0-9]*)$")
     __visit_name__ = "unsignedInt"
-    min_length = 0
+    # Annotated and decorated so the narrower bound becomes this dataclass's
+    # field default. An unannotated class attribute is overwritten by the
+    # inherited __init__, which restores Integer's -2147483648 lower bound.
+    min_length: int = 0
 
 
+@dataclasses.dataclass(frozen=True, **SLOTS)
 class PositiveInt(UnsignedInt):
     """Any positive integer in the range 1..2,147,483,647"""
 
     regex = re.compile(r"^\+?[1-9][0-9]*$")
     __visit_name__ = "positiveInt"
-    min_length = 1
+    min_length: int = 1
 
 
 @dataclasses.dataclass(frozen=True, **SLOTS)
