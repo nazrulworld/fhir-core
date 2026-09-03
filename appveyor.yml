@@ -52,8 +52,9 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "python -m pip install --upgrade pip wheel"
+  - "python -m pip install --upgrade pip wheel setuptools"
 
+  - "python -m pip install --only-binary=:all: 'lxml==6.1.3' "
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
