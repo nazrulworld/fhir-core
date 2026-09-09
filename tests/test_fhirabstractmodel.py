@@ -308,6 +308,32 @@ def test_model_dump_with_overridden_field_default():
     assert base.model_dump()["contentType"] == "text/plain"
 
 
+def test_null_in_complex_list_is_rejected():
+    """Regression test for nazrulworld/fhir.resources#208.
+
+    A null element in a list of complex types is rejected, while a null in a
+    primitive list (the extension placeholder) and a null Optional scalar
+    are still accepted.
+    """
+    from tests.fixtures.resources.humanname import HumanName
+    from tests.fixtures.resources.patient import Patient
+
+    with pytest.raises(
+        ValidationError, match="None is not allowed as an element of name"
+    ):
+        Patient(name=[None])
+
+    assert Patient(name=None).name is None
+    assert Patient(name=[HumanName(given=["Peter", None])]).name[0].given == [
+        "Peter",
+        None,
+    ]
+    # the ``_given`` sibling is a list of complex extensions, but its nulls are
+    # positional placeholders and must be accepted
+    name = HumanName(given=["Peter", "J"], _given=[None, {"id": "mid"}])
+    assert Patient(name=[name]).name[0].given__ext[0] is None
+
+
 def test_model_dump_xml():
     """ """
     from tests.fixtures.resources.activitydefinition import ActivityDefinition

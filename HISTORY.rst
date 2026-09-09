@@ -4,6 +4,9 @@ History
 1.1.11 (unreleased)
 -------------------
 
+- Reject ``None`` elements in lists of complex types; primitive lists keep their
+  null placeholders nazrulworld/fhir.resources#208 [asaraog]
+
 - Serialize the FHIR ``uuid`` type as the URI the specification asks for,
   ``urn:uuid:<uuid>``, instead of a bare UUID nazrulworld/fhir.resources#180
 
