@@ -24,7 +24,7 @@ from pydantic_core import InitErrorDetails, PydanticCustomError, ValidationError
 from typing_extensions import Literal, Self
 
 from .constraints import HAS_XML_SUPPORT, HAS_YAML_SUPPORT
-from .utils import get_base64_encoder, is_primitive_type
+from .utils import get_base64_encoder, is_list_type, is_primitive_type
 
 if HAS_YAML_SUPPORT:
     from .yaml_utils import yaml_dumps, yaml_loads
@@ -612,6 +612,44 @@ class FHIRAbstractModel(BaseModel):
                 return int(value)
             return float(value)
         return value
+
+    @model_validator(mode="before")
+    @classmethod
+    def reject_null_complex_elements(cls, data: typing.Any) -> typing.Any:
+        """A null inside a list of complex types has no meaning in FHIR.
+
+        Primitive lists keep their nulls: there a null is the positional
+        placeholder that lines a value up with its ``_field`` extension sibling.
+        """
+        if not isinstance(data, dict):
+            return data
+        errors: typing.List[InitErrorDetails] = []
+        for name, field in cls.model_fields.items():
+            # ``<name>__ext`` lists are the extension siblings of primitive
+            # arrays; their nulls are positional placeholders and stay.
+            if (
+                not is_list_type(field)
+                or is_primitive_type(field)
+                or name.endswith("__ext")
+            ):
+                continue
+            key = field.alias if field.alias and field.alias in data else name
+            value = data.get(key)
+            if isinstance(value, list) and any(item is None for item in value):
+                errors.append(
+                    {
+                        "type": PydanticCustomError(
+                            "list_type",
+                            "None is not allowed as an element of {field}",
+                            {"field": key},
+                        ),
+                        "loc": (key,),
+                        "input": value,
+                    }
+                )
+        if errors:
+            raise ValidationError.from_exception_data(cls.__name__, errors)
+        return data
 
     @model_validator(mode="after")
     def validate_after_model_construction(self) -> Self:
