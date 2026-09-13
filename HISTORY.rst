@@ -1,7 +1,7 @@
 History
 =======
 
-1.1.11 (unreleased)
+1.1.11 (2026-09-13)
 -------------------
 
 - Reject ``None`` elements in lists of complex types; primitive lists keep their
