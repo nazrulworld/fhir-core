@@ -181,7 +181,7 @@ class FHIRAbstractModel(BaseModel):
         # FHIR custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> str:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump_json
 
@@ -240,7 +240,7 @@ class FHIRAbstractModel(BaseModel):
         # FHIR custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> str:
         """
         Generates a YAML representation of the model using PyYAML.
@@ -280,7 +280,7 @@ class FHIRAbstractModel(BaseModel):
         # FHIR custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> str:
         """
         Generates a YAML representation of the model using PyYAML.
@@ -321,7 +321,7 @@ class FHIRAbstractModel(BaseModel):
         # our custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> typing.Dict[str, typing.Any]:
         """Usage docs: https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump
 
@@ -381,7 +381,7 @@ class FHIRAbstractModel(BaseModel):
         # FHIR custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> typing.Dict[str, typing.Any]:
         warnings.warn(
             "The `dict` method is deprecated; use `model_dump` instead.",
@@ -403,7 +403,7 @@ class FHIRAbstractModel(BaseModel):
         # FHIR custom
         exclude_comments: bool = False,
         summary_only: bool = False,
-        **pydantic_kwargs,
+        **pydantic_kwargs: typing.Any,
     ) -> str:
         warnings.warn(
             "The `json` method is deprecated; use `model_dump_json` instead.",

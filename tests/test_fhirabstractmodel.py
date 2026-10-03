@@ -409,3 +409,17 @@ def test_model_xml_serialize_with_summary_fields():
     assert len(account_obj.model_dump_xml(summary_only=False)) > len(
         account_obj.model_dump_xml(summary_only=True)
     )
+
+
+@pytest.mark.parametrize(
+    "method",
+    ["model_dump", "model_dump_json", "model_dump_yaml", "model_dump_xml", "dict", "json"],
+)
+def test_serializer_pydantic_kwargs_are_annotated(method):
+    """Type checkers in strict mode report an unannotated ``**kwargs`` as Unknown.
+
+    Reads the raw annotation: ``get_type_hints`` would evaluate the module's
+    ``int | None`` hints, which fail on Python < 3.10.
+    """
+    annotations = getattr(FHIRAbstractModel, method).__annotations__
+    assert annotations["pydantic_kwargs"] == "typing.Any"
