@@ -792,9 +792,9 @@ class FHIRAbstractModel(BaseModel):
     def set_global_model_config(cls, **overrides: typing.Any) -> None:
         """Set ``model_config`` overrides applied globally to all FHIR models.
 
-        For example ``FHIRAbstractModel.set_global_model_config(extra="ignore")``
+        For example, ``FHIRAbstractModel.set_global_model_config(extra="ignore")``
         makes every subsequently defined (or imported) model ignore unknown
-        fields, without subclassing each generated resource. Must be called
+         fields without subclassing each generated resource. Must be called
         before the model classes are defined, i.e. before importing e.g.
         ``fhir.resources`` models; models that are already defined keep the
         config they were created with. A ``model_config`` declared explicitly
@@ -820,7 +820,7 @@ class FHIRAbstractModel(BaseModel):
     def reset_global_model_config(cls) -> None:
         """Restore the default global ``model_config``.
 
-        Only affects models defined/imported afterwards; models that are
+        Only affects models defined/imported afterward; models that are
         already defined keep the config they were created with.
         """
         global _global_model_config_snapshot

@@ -4,7 +4,9 @@ History
 1.1.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+New feature
+
+- Global model_config customization for FHIR models #21 [developer-rpai]
 
 
 1.1.11 (2026-09-13)
