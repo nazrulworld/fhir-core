@@ -117,3 +117,63 @@ def test_fhir_resource_issue_202():
     # that was previously introduced during model_dump_json() serialization.
     # Both representations are valid JSON, but this aligns better with FHIR numeric semantics.
     assert pat.model_dump_json() == '{"age":{"value":10,"unit":"y"}}'
+
+
+def test_issue_21():
+    """Global model_config customization for FHIR models
+    @url: https://github.com/nazrulworld/fhir-core/issues/21
+
+    There should be a supported way to change pydantic settings like
+    ``extra="ignore"`` once for all FHIR models, without subclassing every
+    generated resource.
+    """
+    from pydantic import ConfigDict, ValidationError
+
+    from fhir_core.fhirabstractmodel import FHIRAbstractModel
+
+    try:
+        FHIRAbstractModel.set_global_model_config(extra="ignore")
+        assert FHIRAbstractModel.get_global_model_config()["extra"] == "ignore"
+
+        class PatientGlobal(FHIRAbstractModel):
+            __resource_type__ = "PatientGlobal"
+            name: str = Field(default=None, alias="name")
+
+            @classmethod
+            def elements_sequence(cls):
+                return ["name"]
+
+        # unknown fields are ignored, not rejected and not stored
+        obj = PatientGlobal.model_validate({"name": "x", "unknownField": 1})
+        assert obj.name == "x"
+        assert not hasattr(obj, "unknownField")
+        assert PatientGlobal.model_config["extra"] == "ignore"
+
+        # an explicitly declared model_config keeps precedence for its own keys
+        class PatientExplicit(FHIRAbstractModel):
+            __resource_type__ = "PatientExplicit"
+            model_config = ConfigDict(extra="allow")
+            name: str = Field(default=None, alias="name")
+
+            @classmethod
+            def elements_sequence(cls):
+                return ["name"]
+
+        obj = PatientExplicit.model_validate({"name": "x", "unknownField": 1})
+        assert obj.unknownField == 1
+    finally:
+        FHIRAbstractModel.reset_global_model_config()
+
+    # after reset, subsequently defined models go back to the default
+    assert FHIRAbstractModel.get_global_model_config()["extra"] == "forbid"
+
+    class PatientDefault(FHIRAbstractModel):
+        __resource_type__ = "PatientDefault"
+        name: str = Field(default=None, alias="name")
+
+        @classmethod
+        def elements_sequence(cls):
+            return ["name"]
+
+    with pytest.raises(ValidationError):
+        PatientDefault.model_validate({"name": "x", "unknownField": 1})
