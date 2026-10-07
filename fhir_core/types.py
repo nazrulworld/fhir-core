@@ -22,6 +22,7 @@ from pydantic_core import ValidationError, core_schema
 from pydantic_core.core_schema import ValidationInfo
 from typing_extensions import Annotated
 
+from . import constraints as _constraints_module
 from .constraints import (
     FHIR_PRIMITIVES,
     FHIR_PRIMITIVES_MAPS,
@@ -376,7 +377,19 @@ class Id(GroupedMetadata):
     (This might be an integer, an un-prefixed OID, UUID or any other identifier
     pattern that meets these constraints.)
 
-    But it is possible to change the default behaviour by patching constraint.TYPES_ID_MAX_LENGTH value!
+    The default behaviour can be changed by patching the
+    ``fhir_core.constraints`` module values *before* the FHIR models are
+    imported (pydantic builds the validation schema when a model class is
+    defined), for example::
+
+        import fhir_core.constraints
+        fhir_core.constraints.TYPES_ID_MAX_LENGTH = 1024 * 1024
+        fhir_core.constraints.TYPES_ID_PATTERN = r"^[A-Za-z0-9\\-_.]+$"
+
+        from fhir.resources.R4B.patient import Patient  # noqa: E402
+
+    Setting ``TYPES_ID_MAX_LENGTH`` to ``None`` removes the length limit and
+    setting ``TYPES_ID_PATTERN`` to ``None`` disables the pattern check.
 
     There are a lots of discussion about ``Resource.Id`` length of value.
         1. https://bit.ly/360HksL
@@ -394,10 +407,19 @@ class Id(GroupedMetadata):
         """ """
         if self.min_length is not None:
             yield MinLen(self.min_length)
-        if self.max_length is not None:
-            yield MaxLen(self.max_length)
-        if self.pattern:
-            yield pydantic_general_metadata(pattern=self.pattern)
+        # NOTE: max_length and pattern are resolved from the constraints
+        # module at schema build time (not from the values bound when this
+        # class was defined) so that patching TYPES_ID_MAX_LENGTH /
+        # TYPES_ID_PATTERN before the FHIR models are imported customizes
+        # validation, as documented on this class.
+        max_length = getattr(
+            _constraints_module, "TYPES_ID_MAX_LENGTH", self.max_length
+        )
+        if max_length is not None:
+            yield MaxLen(max_length)
+        pattern = getattr(_constraints_module, "TYPES_ID_PATTERN", self.pattern)
+        if pattern:
+            yield pydantic_general_metadata(pattern=pattern)
 
 
 @dataclasses.dataclass(**SLOTS)

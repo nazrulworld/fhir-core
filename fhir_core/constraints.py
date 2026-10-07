@@ -9,6 +9,7 @@ __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
 TYPES_ID_MAX_LENGTH = 255
+TYPES_ID_PATTERN = r"^[A-Za-z0-9\-.]+$"
 TYPES_STRING_ALLOW_EMPTY_STR = False
 try:
     import yaml
