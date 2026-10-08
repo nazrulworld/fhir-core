@@ -37,12 +37,41 @@ __author__ = "Md Nazrul Islam"
 __email__ = "email2nazrul@gmail.com"
 
 FHIR_DATE_PARTS = re.compile(r"(?P<year>\d{4})(-(?P<month>\d{2}))?(-(?P<day>\d{2}))?$")
+FHIR_LEAP_SECOND = re.compile(
+    r"(?P<head>(.*T)?[0-9]{2}:[0-9]{2}:)60"
+    r"(?P<tail>(\.[0-9]+)?(Z|[+\-][0-9]{2}:[0-9]{2})?)"
+)
 LOGGER = logging.getLogger(__name__)
 
 if sys.version_info < (3, 10):
     SLOTS: dict[str, typing.Any] = {}
 else:
     SLOTS = {"slots": True}
+
+
+def validate_leap_second(
+    input_value: str, validator: typing.Callable[[typing.Any], typing.Any]
+) -> typing.Optional[str]:
+    """Validate a dateTime, instant or time string whose seconds field is ``60``.
+
+    The FHIR specification allows leap seconds in the ``dateTime``, ``instant``
+    and ``time`` types, but Python's ``datetime`` cannot represent a second of
+    60, so the pydantic validator rejects such values. The string is validated
+    with the seconds replaced by ``59`` (so the date, the other time parts and
+    the time zone offset are still checked) and then returned unchanged, as the
+    value cannot be converted without losing information.
+
+    Args:
+        input_value: The string value to be validated.
+        validator: The pydantic validator for the underlying date/time type.
+    Returns:
+        The original string if it contains a leap second, otherwise ``None``.
+    """
+    matched = FHIR_LEAP_SECOND.fullmatch(input_value)
+    if matched is None:
+        return None
+    validator(matched.group("head") + "59" + matched.group("tail"))
+    return input_value
 
 
 class FhirBase(metaclass=abc.ABCMeta):
@@ -805,6 +834,12 @@ class Date:
             # we keep the original string
             return input_value
 
+        leap_second = validate_leap_second(input_value, validator)
+        if leap_second is not None:
+            # a leap second (only possible for the DateTime subclass) cannot be
+            # represented by datetime, so we keep the original string
+            return leap_second
+
         return validator(input_value)
 
 
@@ -851,7 +886,7 @@ class DateTime(Date):
         validated_value = super()._validate(input_value, validator, validation_info)
 
         if isinstance(validated_value, str):
-            # A partial date
+            # A partial date or a leap second
             return validated_value
 
         if type(input_value) is datetime.date:
@@ -907,18 +942,22 @@ class Instant(DateTime):
         input_value: typing.Union[str, PydanticUrl],
         validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
         validation_info: ValidationInfo,
-    ) -> datetime.datetime:
+    ) -> typing.Union[datetime.datetime, str]:
         """
         Validate an instant from the provided timestamp or str value.
 
         Args:
             input_value: The instant value to be validated.
         Returns:
-            Datetime
+            Datetime or str (only for a leap second, e.g. ``2016-12-31T23:59:60Z``).
         """
         if isinstance(input_value, str):
             if not cls.pattern.fullmatch(input_value):
                 raise ValueError("Instant value string does not match spec regex.")
+            leap_second = validate_leap_second(input_value, validator)
+            if leap_second is not None:
+                # the regex already guarantees the time zone is present
+                return leap_second
 
         validated_value = validator(input_value)
 
@@ -966,21 +1005,36 @@ class Time:
             input_value: typing.Union[str, PydanticUrl],
             validator: typing.Callable[[typing.Union[str, PydanticUrl]], typing.Any],
             validation_info: ValidationInfo,
-        ) -> typing.Union[str, PydanticUrl]:
+        ) -> typing.Union[str, datetime.time]:
             """
-            Validate a MAC Address from the provided str value.
+            Validate a time from the provided time or str value.
 
             Args:
-                input_value: The Decimal value to be validated.
+                input_value: The time value to be validated.
             Returns:
-                time.
+                time or str (only for a leap second, e.g. ``23:59:60``).
 
             """
             return cls._validate_time(input_value, validator)
 
+        def _serialize(
+            value: typing.Union[str, datetime.time],
+            info: core_schema.SerializationInfo,
+        ) -> typing.Union[str, datetime.time]:
+            if isinstance(value, str):
+                return value
+            if info.mode == "json":
+                return value.isoformat()
+            return value
+
         return core_schema.with_info_wrap_validator_function(
             _validate,
             core_schema.time_schema(),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                _serialize,
+                info_arg=True,
+                when_used="always",
+            ),
         )
 
     @classmethod
@@ -989,6 +1043,10 @@ class Time:
         if isinstance(input_value, str):
             if not cls.pattern.fullmatch(input_value):
                 raise ValueError("Time value string does not match spec regex.")
+            leap_second = validate_leap_second(input_value, validator)
+            if leap_second is not None:
+                # a leap second cannot be represented by time, keep the string
+                return leap_second
 
         return validator(input_value)
 

@@ -13,6 +13,13 @@ New feature
   the FHIR models are imported relaxes validation as documented
   nazrulworld/fhir.resources#173
 
+Fixes
+
+- Accept leap seconds (``23:59:60``) in the ``dateTime``, ``instant`` and ``time``
+  types as the FHIR specification allows. Python's ``datetime`` cannot represent
+  a second of 60, so such a value is validated and kept as the original string
+  nazrulworld/fhir.resources#212
+
 
 1.1.11 (2026-09-13)
 -------------------

@@ -3,7 +3,7 @@ import importlib
 import json
 import typing
 import uuid
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 
 import pytest
 from pydantic import BaseModel, Field
@@ -449,6 +449,108 @@ def test_instant_type_invalid(
     """The time SHALL specified at least to the second and SHALL include a timezone offset. See https://hl7.org/fhir/datatypes.html#instant"""
     with pytest.raises(ValidationError, match=error_message):
         MySimpleInstantModel(instant=instant_value)
+
+
+class MySimpleTimeModel(BaseModel):
+    time_value: fhir_types.TimeType = Field(..., alias="time_value", title="Time")
+
+
+@pytest.mark.parametrize(
+    ("time_value", "model_dump_expected"),
+    [
+        ("12:30:15", time(12, 30, 15)),
+        ("12:30:15.250", time(12, 30, 15, 250000)),
+        (time(12, 30, 15), time(12, 30, 15)),  # valid time object
+    ],
+)
+def test_time_type_valid(
+    time_value: typing.Union[str, time], model_dump_expected: time
+):
+    """valid times. See https://hl7.org/fhir/datatypes.html#time"""
+    assert (
+        MySimpleTimeModel(time_value=time_value).model_dump()["time_value"]
+        == model_dump_expected
+    )
+    assert json.loads(MySimpleTimeModel(time_value=time_value).model_dump_json()) == {
+        "time_value": model_dump_expected.isoformat()
+    }
+
+
+@pytest.mark.parametrize(
+    ("model_class", "field_name", "leap_second_value"),
+    [
+        (MySimpleDateTimeModel, "time_stamp", "2016-12-31T23:59:60Z"),
+        (MySimpleDateTimeModel, "time_stamp", "2016-12-31T23:59:60.500+00:00"),
+        (MySimpleDateTimeModel, "time_stamp", "2016-12-31T18:59:60-05:00"),
+        (MySimpleInstantModel, "instant", "2016-12-31T23:59:60Z"),
+        (MySimpleInstantModel, "instant", "2016-12-31T23:59:60.500+00:00"),
+        (MySimpleInstantModel, "instant", "2017-01-01T08:59:60+09:00"),
+        (MySimpleTimeModel, "time_value", "23:59:60"),
+        (MySimpleTimeModel, "time_value", "23:59:60.123"),
+    ],
+)
+def test_leap_second_valid(
+    model_class: typing.Type[BaseModel], field_name: str, leap_second_value: str
+):
+    """Leap seconds are allowed in dateTime, instant and time. Python's datetime
+    cannot represent a second of 60, so the original string is kept and
+    round-trips unchanged. See https://hl7.org/fhir/datatypes.html#primitive
+    and nazrulworld/fhir.resources#212"""
+    model = model_class(**{field_name: leap_second_value})
+    assert model.model_dump()[field_name] == leap_second_value
+    assert json.loads(model.model_dump_json()) == {field_name: leap_second_value}
+
+
+@pytest.mark.parametrize(
+    ("model_class", "field_name", "invalid_value", "error_message"),
+    [
+        (
+            MySimpleTimeModel,
+            "time_value",
+            "23:60:60",  # invalid minutes
+            "Time value string does not match spec regex",
+        ),
+        (
+            MySimpleDateTimeModel,
+            "time_stamp",
+            "2016-12-31T23:59:61Z",  # only 60 is allowed as a leap second
+            "DateTime value string does not match spec regex",
+        ),
+        (
+            MySimpleDateTimeModel,
+            "time_stamp",
+            "2016-12-31T24:59:60Z",  # invalid hours
+            "DateTime value string does not match spec regex",
+        ),
+        (
+            MySimpleDateTimeModel,
+            "time_stamp",
+            "2016-02-30T23:59:60Z",  # invalid date
+            "day value is outside expected range",
+        ),
+        (
+            MySimpleInstantModel,
+            "instant",
+            "2016-12-31T23:59:60",  # missing timezone
+            "Instant value string does not match spec regex",
+        ),
+        (
+            MySimpleInstantModel,
+            "instant",
+            "2016-02-30T23:59:60Z",  # invalid date
+            "day value is outside expected range",
+        ),
+    ],
+)
+def test_leap_second_invalid(
+    model_class: typing.Type[BaseModel],
+    field_name: str,
+    invalid_value: str,
+    error_message: str,
+):
+    """A leap second does not bypass the other date, time and timezone checks."""
+    with pytest.raises(ValidationError, match=error_message):
+        model_class(**{field_name: invalid_value})
 
 
 def test_fhir_type_quantity():
