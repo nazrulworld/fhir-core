@@ -19,6 +19,9 @@ Fixes
   types as the FHIR specification allows. Python's ``datetime`` cannot represent
   a second of 60, so such a value is validated and kept as the original string
   nazrulworld/fhir.resources#212
+- Annotate ``**pydantic_kwargs`` as ``typing.Any`` on the serializer methods
+  (``model_dump``, ``model_dump_json``, ``model_dump_yaml``, ``model_dump_xml``,
+  ``dict``, ``json``), so strict type checkers no longer see them as Unknown.
 
 
 1.1.11 (2026-09-13)
