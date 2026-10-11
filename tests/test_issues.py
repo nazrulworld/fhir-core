@@ -177,3 +177,33 @@ def test_issue_21():
 
     with pytest.raises(ValidationError):
         PatientDefault.model_validate({"name": "x", "unknownField": 1})
+
+
+def test_fhir_resource_issue_74():
+    """https://github.com/nazrulworld/fhir.resources/issues/74
+    When are Falsy values evaluated as None?
+
+    FHIR elements are never empty, so an empty list is omitted from the output
+    like a ``None`` value, unless ``exclude_none=False`` is requested.
+    """
+    from tests.fixtures.resources.patient import Patient
+
+    patient = Patient(
+        active=True,
+        address=[],
+        name=[{"family": "Doe", "given": [], "prefix": []}],
+    )
+    assert patient.model_dump() == {
+        "resourceType": "Patient",
+        "active": True,
+        "name": [{"family": "Doe"}],
+    }
+    assert (
+        patient.model_dump_json()
+        == '{"resourceType":"Patient","active":true,"name":[{"family":"Doe"}]}'
+    )
+    assert "address" not in patient.model_dump_yaml()
+
+    data = patient.model_dump(exclude_none=False)
+    assert data["address"] == []
+    assert data["name"][0]["given"] == []

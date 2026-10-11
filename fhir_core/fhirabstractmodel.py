@@ -521,6 +521,9 @@ class FHIRAbstractModel(BaseModel):
                 value = self._serialize_non_primitive_value(value, serialize, info)
             else:
                 value = self._serialize_primitive_value(value, field_info)
+            if info.exclude_none and isinstance(value, list) and len(value) == 0:
+                # FHIR elements are never empty, an empty list is omitted like None
+                value = None
             if value is not None or (info.exclude_none is False and value is None):
                 yield dict_key, value
 
