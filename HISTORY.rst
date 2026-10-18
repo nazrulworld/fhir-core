@@ -22,6 +22,10 @@ Fixes
 - Annotate ``**pydantic_kwargs`` as ``typing.Any`` on the serializer methods
   (``model_dump``, ``model_dump_json``, ``model_dump_yaml``, ``model_dump_xml``,
   ``dict``, ``json``), so strict type checkers no longer see them as Unknown.
+- Omit empty lists from ``model_dump()``, ``model_dump_json()`` and
+  ``model_dump_yaml()`` output, like ``None`` values, as FHIR elements are never
+  empty (the XML serializer already left them out). They are kept when
+  ``exclude_none=False`` is passed nazrulworld/fhir.resources#74
 
 
 1.1.11 (2026-09-13)
