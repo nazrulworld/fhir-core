@@ -8,6 +8,7 @@ import logging
 import re
 import typing
 import sys
+import uuid
 from functools import lru_cache
 
 import typing_extensions
@@ -15,7 +16,6 @@ from annotated_types import BaseMetadata, Ge, GroupedMetadata, Le, MaxLen, MinLe
 from pydantic import AnyUrl, Base64Bytes, GetCoreSchemaHandler
 from pydantic._internal._fields import pydantic_general_metadata
 from pydantic._internal._validators import import_string
-from pydantic.types import UUID4
 from pydantic_core import InitErrorDetails, PydanticCustomError
 from pydantic_core import Url as PydanticUrl
 from pydantic_core import ValidationError, core_schema
@@ -1119,7 +1119,8 @@ FHIR_PRIMITIVES_MAPS[OidType] = "oid"
 FHIR_PRIMITIVES_MAPS[Oid] = "oid"
 
 # uuid
-UuidType = UUID4
+# Any RFC 4122 UUID is a valid FHIR uuid, the version is not restricted.
+UuidType = uuid.UUID
 FHIR_PRIMITIVES_MAPS[UuidType] = "uuid"
 
 # url

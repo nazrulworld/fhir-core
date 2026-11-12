@@ -51,3 +51,12 @@ def test_fhir_core_uuid_serialization_issue_180():
     for _ in range(3):
         obj = DummyUuidHolder.model_validate_json(obj.model_dump_json())
         assert json.loads(obj.model_dump_json())["valueUuid"] == expected
+
+
+def test_fhir_core_uuid_any_version_round_trip():
+    """A uuid of a version other than 4 is valid FHIR and survives a JSON
+    round trip unchanged."""
+    expected = "urn:uuid:886313e1-3b8a-5372-9b90-0c9aee199e5d"  # version 5
+    obj = DummyUuidHolder.model_validate_json(json.dumps({"valueUuid": expected}))
+    assert obj.valueUuid == uuid.UUID(expected)
+    assert json.loads(obj.model_dump_json())["valueUuid"] == expected
