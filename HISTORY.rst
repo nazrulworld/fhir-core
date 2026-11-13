@@ -4,7 +4,11 @@ History
 1.1.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Fixes
+
+- Accept a ``uuid`` of any version (for example version 1, 5 or 7) and the nil
+  UUID. ``UuidType`` was pydantic's ``UUID4``, which rejects every UUID that is
+  not version 4, while the FHIR ``uuid`` type is any RFC 4122 UUID.
 
 
 1.1.12 (2026-10-18)

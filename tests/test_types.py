@@ -126,6 +126,33 @@ def test_uuid():
     assert "Input should be a valid UUID" in str(exc_info)
 
 
+@pytest.mark.parametrize(
+    "value",
+    [
+        # version 1 (time based)
+        "c232ab00-9414-11ec-b3c8-9f6bdeced846",
+        # version 3 (name based, MD5)
+        "6fa459ea-ee8a-3ca4-894e-db77e160355e",
+        # version 5 (name based, SHA-1)
+        "urn:uuid:886313e1-3b8a-5372-9b90-0c9aee199e5d",
+        # version 7 (Unix epoch time based)
+        "urn:uuid:017f22e2-79b0-7cc3-98c4-dc0c0c07398f",
+        # the nil UUID
+        "urn:uuid:00000000-0000-0000-0000-000000000000",
+    ],
+)
+def test_uuid_any_version(value):
+    """FHIR ``uuid`` is any RFC 4122 UUID; the version is not restricted.
+    https://hl7.org/fhir/R5/datatypes.html#uuid"""
+
+    class MySimpleUUIDModel(BaseModel):
+        myUUID: fhir_types.UuidType = Field(..., alias="myUUID", title="UUID")
+
+    model = MySimpleUUIDModel(myUUID=value)
+    assert isinstance(model.myUUID, uuid.UUID)
+    assert model.myUUID == uuid.UUID(value)
+
+
 def test_decimal_type():
     """ """
 
