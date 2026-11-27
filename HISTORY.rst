@@ -9,6 +9,10 @@ Fixes
 - Accept a ``uuid`` of any version (for example version 1, 5 or 7) and the nil
   UUID. ``UuidType`` was pydantic's ``UUID4``, which rejects every UUID that is
   not version 4, while the FHIR ``uuid`` type is any RFC 4122 UUID.
+- Reject whitespace in ``uri`` and ``canonical`` values. The ``Uri`` pattern
+  ``\S*`` was unanchored, so it matched the empty prefix of any string and a
+  value such as ``"http://loinc.org "`` validated, while the FHIR ``uri`` regex
+  ``\S*`` applies to the whole value #37
 
 
 1.1.12 (2026-10-18)
