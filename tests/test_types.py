@@ -214,6 +214,32 @@ def test_uri_type():
     assert MySimpleDateModel(minRules="None").model_dump()["minRules"] == "None"
 
 
+@pytest.mark.parametrize(
+    "value",
+    [
+        "http://loinc.org ",
+        " http://loinc.org",
+        "http://snomed.info/sct\n",
+        "http://example.org/a b",
+    ],
+)
+def test_uri_type_rejects_whitespace(value):
+    """FHIR ``uri`` (and ``canonical``) values match ``\\S*`` as a whole:
+    https://hl7.org/fhir/R4/datatypes.html#uri"""
+
+    class MyUriModel(BaseModel):
+        system: fhir_types.UriType = Field(..., alias="system", title="System")
+        profile: fhir_types.CanonicalType = Field(None, alias="profile")
+
+    with pytest.raises(ValidationError):
+        MyUriModel(system=value)
+    with pytest.raises(ValidationError):
+        MyUriModel(system="http://loinc.org", profile=value)
+
+    model = MyUriModel(system="http://loinc.org", profile="http://x.org/sd|1.0")
+    assert model.system == "http://loinc.org"
+
+
 def test_fhir_type_unsigned_and_positive_int():
     """Lower bounds must survive dataclass inheritance.
 
