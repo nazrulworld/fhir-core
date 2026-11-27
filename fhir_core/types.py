@@ -600,7 +600,7 @@ class Uri(PatternConstraint):
     This data type can be bound to a ValueSet"""
 
     __visit_name__ = "uri"
-    pattern = re.compile(r"\S*")
+    pattern = re.compile(r"^\S*$")
 
 
 class Oid(PatternConstraint):
